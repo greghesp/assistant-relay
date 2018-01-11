@@ -36,6 +36,10 @@ ssdpServer.start(function(){
 });
 
 // Endpoint API
+app.post('/custom', function (req, res) {
+  sendTextInput(req.query.command)
+})
+
 app.post('/customBroadcast', function (req, res) {
   sendTextInput(`broadcast ${req.query.text}`)
 })
@@ -90,9 +94,9 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 //Assistant Integration
 const startConversation = (conversation) => {
   conversation
-    .on('response', text => console.log('Assistant Response:', text))
-    .on('volume-percent', percent => console.log('New Volume Percent:', percent))
-    .on('device-action', action => console.log('Device Action:', action))
+    .on('response', text => console.log('Assistant is responding', text))
+    //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
+    //.on('device-action', action => console.log('Device Action:', action))
     .on('ended', (error, continueConversation) => {
       if (error) {
         console.log('Conversation Ended Error:', error);

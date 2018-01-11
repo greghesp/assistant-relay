@@ -82,6 +82,12 @@ To stop a stream, send the following request:
 
     http://<ip_address>:3000/nestStream?stop=true&chromecast=<chromecast_name>
 
+## Custom commands
+
+If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following request:
+
+    http://<ip_address>:3000/custom?command=<custom command>
+
 # Credit
 This project uses the google-assistant repository from endoplasmic
 https://github.com/endoplasmic/google-assistant
