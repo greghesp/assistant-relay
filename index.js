@@ -36,8 +36,52 @@ ssdpServer.start(function(){
 });
 
 // Endpoint API
-app.post('/broadcast', function (req, res) {
+app.post('/customBroadcast', function (req, res) {
   sendTextInput(`broadcast ${req.query.text}`)
+})
+
+app.post('/nestStream', function (req, res) {
+  if(req.query.stop) return sendTextInput(`Stop ${chromecast}`)
+  sendTextInput(`Show ${req.query.camera} on ${chromecast}`)
+})
+
+app.post('/broadcast', function (req, res) {
+  const preset = req.query.preset;
+
+  switch(preset) {
+    case 'wakeup':
+        sendTextInput(`broadcast wake up everyone`);
+        break;
+    case 'breakfast':
+        sendTextInput(`broadcast breakfast is ready`);
+        break;
+    case 'lunch':
+        sendTextInput(`broadcast it's lunch time`);
+        break;
+    case 'dinner':
+        sendTextInput('broadcast dinner is served');
+        break;
+    case 'timetoleave':
+        sendTextInput(`broadcast its time to leave`);
+        break;
+    case 'arrivedhome':
+        sendTextInput(`broadcast i'm home`);
+        break;
+    case 'ontheway':
+        sendTextInput(`broadcast i'm on the way`);
+        break;
+    case 'movietime':
+        sendTextInput(`broadcast the movie is about to start`);
+        break;
+    case 'tvtime':
+        sendTextInput(`broadcast the show is about to start`);
+        break;
+    case 'bedtime':
+        sendTextInput(`broadcast we should go to bed`);
+        break;
+    default:
+        sendTextInput(`broadcast you selected a broadcast in command but didn't specify one`);
+      }
 })
 
 //Start Express Web Server

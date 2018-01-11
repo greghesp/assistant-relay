@@ -34,11 +34,11 @@ Once signed in, a code will be presented to you.  Copy this code into the termin
 
 At the moment, the only command supported is Broadcast. Additional support for Home Groups will be coming in the future
 
-## Broadcast
+## Custom Broadcast
 
 To send a Broadcast command, simply send a HTTP Post request:
 
-    http://<ip_address>:3000/broadcast
+    http://<ip_address>:3000/customBroadcast
 
 with the following parameters:
 
@@ -46,8 +46,41 @@ with the following parameters:
 
 The full request would be:
 
-    http://<ip_address>:3000/broadcast?text=hello+world
+    http://<ip_address>:3000/customBroadcast?text=hello+world
 The Google Home device will now play an audio alert, and say `Hello World`
+
+## Preconfigured Broadcast
+
+The Google Home also has a number of preconfigured broadcasts that have some fancy additions to them such as sound effects.  These can be found [here](https://support.google.com/googlehome/answer/7531913?co=GENIE.Platform=Android&hl=en):
+
+Rather than configure these elsewhere, they are built into the Assistant Relay.  Simple send a request as follows:
+
+    http://<ip_address>:3000/broadcast?preset=<command>
+
+**Available Commands**
+
+ - wakeup
+ - breakfast
+ - lunch
+ - dinner
+ - timetoleave
+ - arrivedhome
+ - ontheway
+ - movietime
+ - tvtime
+ - bedtime
+
+*Note: Some of these preconfigured commands also say who triggered the command, such as the 'on the way' command. Since Assistant Relay only currently supports one user, this will automatically use the account for whoever setup Assistant Relay with their account*
+
+## Nest Camera Streaming
+
+If you want to start a stream from your Nest Cam to a Chromecast device, you can do this with the following request:
+
+    http://<ip_address>:3000/nestStream?camera=<camera name>&chromecast=<chromecast_name>
+
+To stop a stream, send the following request:
+
+    http://<ip_address>:3000/nestStream?stop=true&chromecast=<chromecast_name>
 
 # Credit
 This project uses the google-assistant repository from endoplasmic
