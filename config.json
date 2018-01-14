@@ -1,3 +1,7 @@
 {
-  "keyFile": "client_secret.json"
+  "users" : {
+    "greg": "greg_client_secret.json",
+    "rach": "rach_client_secret.json"
+  },
+  "language": "en-US"
 }
