@@ -20,6 +20,7 @@
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.0",
     "express": "^4.16.2",
     "google-assistant": "^0.2.0",
     "node-ssdp": "^3.2.5"

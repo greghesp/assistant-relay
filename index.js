@@ -4,6 +4,7 @@ const express = require('express');
 const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
 const readline = require('readline');
+const async = require('async');
 
 
 //Define SSDP Server Configuration
@@ -19,10 +20,16 @@ const config = {
   conversation: {
     lang: GRConfig.language,
   },
-  auth: {
-    keyFilePath: path.resolve(__dirname, `${GRConfig.client_secret}`),
-    savedTokensPath: path.resolve(__dirname, 'tokens.json'),  }
+  users: {},
+  assistants: {}
 }
+
+Object.keys(authKeys).forEach(function(k){
+  console.log(k)
+  config.users[k] = {};
+  config.users[k].keyFilePath = path.resolve(__dirname, `${authKeys[k]}`);
+  config.users[k].savedTokensPath = path.resolve(__dirname, `${k}-tokens.json`);
+})
 
 //Define SSDP USN type
 ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
@@ -51,40 +58,41 @@ app.post('/nestStream', function (req, res) {
 
 app.post('/broadcast', function (req, res) {
   const preset = req.query.preset;
+  const user = req.query.user;
 
   switch(preset) {
     case 'wakeup':
-        sendTextInput(`broadcast wake up everyone`);
+        sendTextInput(`broadcast wake up everyone`, user);
         break;
     case 'breakfast':
-        sendTextInput(`broadcast breakfast is ready`);
+        sendTextInput(`broadcast breakfast is ready`, user);
         break;
     case 'lunch':
-        sendTextInput(`broadcast it's lunch time`);
+        sendTextInput(`broadcast it's lunch time`, user);
         break;
     case 'dinner':
-        sendTextInput('broadcast dinner is served');
+        sendTextInput('broadcast dinner is served', user);
         break;
     case 'timetoleave':
-        sendTextInput(`broadcast its time to leave`);
+        sendTextInput(`broadcast its time to leave`, user);
         break;
     case 'arrivedhome':
-        sendTextInput(`broadcast i'm home`);
+        sendTextInput(`broadcast i'm home`, user);
         break;
     case 'ontheway':
-        sendTextInput(`broadcast i'm on the way`);
+        sendTextInput(`broadcast i'm on the way`, user);
         break;
     case 'movietime':
-        sendTextInput(`broadcast the movie is about to start`);
+        sendTextInput(`broadcast the movie is about to start`, user);
         break;
     case 'tvtime':
-        sendTextInput(`broadcast the show is about to start`);
+        sendTextInput(`broadcast the show is about to start`, user);
         break;
     case 'bedtime':
-        sendTextInput(`broadcast we should go to bed`);
+        sendTextInput(`broadcast we should go to bed`, user);
         break;
     default:
-        sendTextInput(`broadcast you selected a broadcast in command but didn't specify one`);
+        sendTextInput(`broadcast you selected a broadcast in command but didn't specify one`, user);
       }
 })
 
@@ -112,18 +120,26 @@ const startConversation = (conversation) => {
     });
 };
 
-const sendTextInput = (text) => {
-  if(!text) {
-    config.conversation.textQuery = 'broadcast Assistant Relay is now running. Enjoy!'
-  } else {
-    config.conversation.textQuery = text;
+const sendTextInput = (text, n) => {
+  let assistant =  Object.keys(config.assistants)[0];
+  if(n) {
+    assistant = config.assistants[`${n}`]
   }
+  config.conversation.textQuery = text;
   assistant.start(config.conversation, startConversation);
 }
 
-const assistant = new GoogleAssistant(config.auth);
-  assistant
-    .on('ready', ()=> sendTextInput())
-    .on('error', (error) => {
-      console.log('Assistant Error:', error);
-    });
+async.forEachOfLimit(config.users, 1, function(i, k, cb){
+  let auth = i;
+  config.assistants[k] = new GoogleAssistant(i)
+  let assistant = config.assistants[k];
+  assistant.on('ready', () => cb());
+  assistant.on('error', (e) => {
+    console.log(`Assistant Error when activating user ${k}. Trying next user`);
+    return cb();
+  })
+}, function(err){
+  if(err) return console.log(err.message);
+  const defaultA = Object.keys(config.assistants)[0];
+  sendTextInput(`broadcast Assistant Relay is now setup and running`, `${defaultA}`)
+})
