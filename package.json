@@ -1,5 +1,5 @@
 {
-  "name": "st-gassist",
+  "name": "assistant-relay",
   "version": "0.0.1",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "main": "index.js",
