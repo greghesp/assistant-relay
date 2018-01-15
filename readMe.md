@@ -1,6 +1,6 @@
 # Assistant Relay!
 
-Assistant Relay is a Node.js server that currently runs on any Unix platform (Windows is not supported).  It's exposed with SSDP, and runs an Express Web Server that allows for commands to be sent to the Google Assistant.
+Assistant Relay is a Node.js server. It's exposed with SSDP, and runs an Express Web Server that allows for commands to be sent to the Google Assistant.
 
 It also supports the Google Home Broadcast command, so unlike other TTS solutions that cast audio, Assistant Relay allows you to send audio notifications to your Google Home devices, without interrupting music.
 
@@ -14,7 +14,7 @@ Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do
 
 Once you have downloaded your client secret file, copy it to the root folder of this project.
 
-Open config.json and enter the full name of the client secret file, including the extension into the keyFile value like so
+Open config.json and replace the users with your name, including the extension into the keyFile value like the example below. You can add multiple users, however ensure that each user has correctly configured their Google account so that it is linked with your Google Home devices.
 
       {
         "users" : {
@@ -32,11 +32,13 @@ This should open a web browser asking you to sign in to your Google account. Mak
 
 Once signed in, a code will be presented to you.  Copy this code into the terminal, and press enter.  Your Google Home should now notify you that the Assistant Relay is setup.
 
-*Note: If your web browser does not open, follow the instructions in the terminal*
+*Note: If your web browser does not open, follow the instructions in the terminal
+This process will continue for each user you added to the config file.*
 
 # Issuing a command
 
-At the moment, the only command supported is Broadcast. Additional support for Home Groups will be coming in the future
+At the moment, it is only possible to issue a command to all Google Home devices. Additional support for Home Groups will be coming in the future.
+For all of the below commands, it is possible to override the account that issues the command by adding the user parameter to the request, and matching it against the name you set it in the config file.
 
 ## Custom Broadcast
 
@@ -59,7 +61,7 @@ The Google Home also has a number of preconfigured broadcasts that have some fan
 
 Rather than configure these elsewhere, they are built into the Assistant Relay.  Simple send a request as follows:
 
-    http://<ip_address>:3000/broadcast?preset=<command>&user=<name-as-in-config>
+    http://<ip_address>:3000/broadcast?preset=<command>&user=<config file user name>
 
 **Available Commands**
 
@@ -80,7 +82,7 @@ Rather than configure these elsewhere, they are built into the Assistant Relay. 
 
 If you want to start a stream from your Nest Cam to a Chromecast device, you can do this with the following request:
 
-    http://<ip_address>:3000/nestStream?camera=<camera name>&chromecast=<chromecast_name>&user=<user-from-config>
+    http://<ip_address>:3000/nestStream?camera=<camera name>&chromecast=<chromecast_name>&user=<config file user name>
 
 To stop a stream, send the following request:
 
@@ -92,7 +94,7 @@ To stop a stream, send the following request:
 
 If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following request:
 
-    http://<ip_address>:3000/custom?command=<custom command>&user=<user from config>
+    http://<ip_address>:3000/custom?command=<custom command>&user=<config file user name>
 
 # Credit
 This project uses the google-assistant repository from endoplasmic
