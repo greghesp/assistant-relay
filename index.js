@@ -24,7 +24,6 @@ const config = {
 }
 
 Object.keys(authKeys).forEach(function(k){
-  console.log(k)
   config.users[k] = {};
   config.users[k].keyFilePath = path.resolve(__dirname, `${authKeys[k]}`);
   config.users[k].savedTokensPath = path.resolve(__dirname, `${k}-tokens.json`);
@@ -51,9 +50,9 @@ app.post('/customBroadcast', function (req, res) {
 })
 
 app.post('/nestStream', function (req, res) {
-  if(req.query.stop) return sendTextInput(`Stop ${chromecast}`)
+  if(req.query.stop) return sendTextInput(`Stop ${req.query.chromecast}`)
 
-  sendTextInput(`Show ${req.query.camera} on ${chromecast}`, req.query.user)
+  sendTextInput(`Show ${req.query.camera} on ${req.query.chromecast}`, req.query.user)
 })
 
 app.post('/broadcast', function (req, res) {
@@ -102,7 +101,7 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 //Assistant Integration
 const startConversation = (conversation) => {
   conversation
-    .on('audio-data', data => console.log('Got some audio data'))
+    //.on('audio-data', data => console.log('Got some audio data')
     .on('response', text => console.log('Assistant is responding', text))
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
@@ -148,5 +147,6 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-  sendTextInput(`broadcast Assistant Relay is now setup and running`)
+    sendTextInput(`broadcast Assistant Relay is now setup and running`)
+
 })

@@ -11,6 +11,7 @@ Download a copy of this repository and then use `npm install` to get started
 ## Configuration
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
+**Note: When creating an Oauth Client ID, make sure you use the "Other" application type**
 
 Once you have downloaded your client secret file, copy it to the root folder of this project.
 
