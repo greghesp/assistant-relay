@@ -6,7 +6,6 @@ const GRConfig = require('./config.json');
 const readline = require('readline');
 const async = require('async');
 
-
 //Define SSDP Server Configuration
 const ssdpServer = new SSDP({
   location: 'http://' + require('ip').address() + ':3000/desc.xml',
@@ -53,7 +52,8 @@ app.post('/customBroadcast', function (req, res) {
 
 app.post('/nestStream', function (req, res) {
   if(req.query.stop) return sendTextInput(`Stop ${chromecast}`)
-  sendTextInput(`Show ${req.query.camera} on ${chromecast}`)
+
+  sendTextInput(`Show ${req.query.camera} on ${chromecast}`, req.query.user)
 })
 
 app.post('/broadcast', function (req, res) {
@@ -92,7 +92,7 @@ app.post('/broadcast', function (req, res) {
         sendTextInput(`broadcast we should go to bed`, user);
         break;
     default:
-        sendTextInput(`broadcast you selected a broadcast in command but didn't specify one`, user);
+        sendTextInput(`broadcast you selected a preset broadcast, but didn't say which one`, user);
       }
 })
 
@@ -102,6 +102,7 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 //Assistant Integration
 const startConversation = (conversation) => {
   conversation
+    .on('audio-data', data => console.log('Got some audio data'))
     .on('response', text => console.log('Assistant is responding', text))
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
@@ -121,11 +122,18 @@ const startConversation = (conversation) => {
 };
 
 const sendTextInput = (text, n) => {
-  let assistant =  Object.keys(config.assistants)[0];
+  console.log(`Received command ${text}`);
+
+  let assistant = Object.keys(config.assistants)[0];
+      assistant = config.assistants[`${assistant}`];
+  config.conversation.textQuery = text;
+
   if(n) {
+    console.log(`User specified was ${n}`)
     assistant = config.assistants[`${n}`]
   }
-  config.conversation.textQuery = text;
+  const f = path.resolve(__dirname, `doorbell.wav`);
+  //console.log(f)
   assistant.start(config.conversation, startConversation);
 }
 
@@ -140,6 +148,5 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-  const defaultA = Object.keys(config.assistants)[0];
-  sendTextInput(`broadcast Assistant Relay is now setup and running`, `${defaultA}`)
+  sendTextInput(`broadcast Assistant Relay is now setup and running`)
 })

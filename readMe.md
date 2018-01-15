@@ -42,7 +42,7 @@ To send a Broadcast command, simply send a HTTP Post request:
 
 with the following parameters:
 
-    text: hello world
+    text: hello world    
 
 The full request would be:
 
@@ -55,7 +55,7 @@ The Google Home also has a number of preconfigured broadcasts that have some fan
 
 Rather than configure these elsewhere, they are built into the Assistant Relay.  Simple send a request as follows:
 
-    http://<ip_address>:3000/broadcast?preset=<command>
+    http://<ip_address>:3000/broadcast?preset=<command>&user=<name-as-in-config>
 
 **Available Commands**
 
@@ -76,11 +76,13 @@ Rather than configure these elsewhere, they are built into the Assistant Relay. 
 
 If you want to start a stream from your Nest Cam to a Chromecast device, you can do this with the following request:
 
-    http://<ip_address>:3000/nestStream?camera=<camera name>&chromecast=<chromecast_name>
+    http://<ip_address>:3000/nestStream?camera=<camera name>&chromecast=<chromecast_name>&user=<user-from-config>
 
 To stop a stream, send the following request:
 
     http://<ip_address>:3000/nestStream?stop=true&chromecast=<chromecast_name>
+
+*Note: The user must have the Chromecast device in their account, and have the Nest camera assigned to their account*
 
 ## Custom commands
 
