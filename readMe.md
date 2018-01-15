@@ -16,13 +16,13 @@ Once you have downloaded your client secret file, copy it to the root folder of 
 
 Open config.json and enter the full name of the client secret file, including the extension into the keyFile value like so
 
-  {
-    "users" : {
-      "user1": "user1_client_secret.json",
-      "user": "user2_client_secret.json"
-    },
-    "language": "en-US"
-  }
+      {
+        "users" : {
+          "user1": "user1_client_secret.json",
+          "user": "user2_client_secret.json"
+        },
+        "language": "en-US"
+      }
 
 ## Running the Relay
 
