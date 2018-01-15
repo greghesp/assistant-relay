@@ -16,9 +16,13 @@ Once you have downloaded your client secret file, copy it to the root folder of 
 
 Open config.json and enter the full name of the client secret file, including the extension into the keyFile value like so
 
-    {
-      "keyFile": "client_secret_123456-abcde.apps.googleusercontent.com.json"
-    }
+  {
+    "users" : {
+      "user1": "user1_client_secret.json",
+      "user": "user2_client_secret.json"
+    },
+    "language": "en-US"
+  }
 
 ## Running the Relay
 
@@ -88,7 +92,7 @@ To stop a stream, send the following request:
 
 If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following request:
 
-    http://<ip_address>:3000/custom?command=<custom command>
+    http://<ip_address>:3000/custom?command=<custom command>&user=<user from config>
 
 # Credit
 This project uses the google-assistant repository from endoplasmic
