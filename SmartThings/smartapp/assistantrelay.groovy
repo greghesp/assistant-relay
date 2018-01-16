@@ -12,6 +12,8 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
+ *  Credit:
+ *      Thanks to Joshua Lyon for letting me use Wink Relay as a base for the SmartApp
  */
 definition(
         name: "Assistant Relay",
@@ -19,9 +21,9 @@ definition(
         author: "Greg Hesp",
         description: "SmartApp for adding a Google Assistant relay to SmartThings",
         category: "SmartThings Labs",
-        iconUrl: "https://assets.ifttt.com/images/channels/423083547/icons/on_color_large.png",
-        iconX2Url: "https://assets.ifttt.com/images/channels/423083547/icons/on_color_large.png",
-        iconX3Url: "https://assets.ifttt.com/images/channels/423083547/icons/on_color_large.png")
+        iconUrl: "https://cdn.rawgit.com/greghesp/assistant-relay/6f82a0a5/img/logo.png",
+        iconX2Url: "https://cdn.rawgit.com/greghesp/assistant-relay/6f82a0a5/img/logo.png",
+        iconX3Url: "https://cdn.rawgit.com/greghesp/assistant-relay/6f82a0a5/img/logo.png")
 
 
 preferences {
