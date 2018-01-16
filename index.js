@@ -1,3 +1,5 @@
+'use strict'
+
 const SSDP = require('node-ssdp').Server;
 const path = require('path');
 const express = require('express');
