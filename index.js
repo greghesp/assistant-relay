@@ -5,6 +5,7 @@ const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
 const readline = require('readline');
 const async = require('async');
+const loader = require('audio-loader');
 
 //Define SSDP Server Configuration
 const ssdpServer = new SSDP({
@@ -34,6 +35,7 @@ ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'xml')));
+app.use(express.static(path.join(__dirname, 'audio')));
 
 //Start SSDP Server
 ssdpServer.start(function(){
@@ -43,16 +45,33 @@ ssdpServer.start(function(){
 // Endpoint API
 app.post('/custom', function (req, res) {
   sendTextInput(req.query.command)
+  res.status(200).json({
+      message: `Custom command executed`,
+      command: `${req.query.command}`
+  });
 })
 
 app.post('/customBroadcast', function (req, res) {
   sendTextInput(`broadcast ${req.query.text}`)
+  res.status(200).json({
+      message: `Custom broadcast command executed`,
+      command: `broadcast ${req.query.text}`
+  });
 })
 
 app.post('/nestStream', function (req, res) {
-  if(req.query.stop) return sendTextInput(`Stop ${req.query.chromecast}`)
-
+  if(req.query.stop) {
+    sendTextInput(`Stop ${req.query.chromecast}`);
+    res.status(200).json({
+        message: `Nest stream command executed`,
+        command: `Stop ${req.query.chromecast}`
+    });
+  }
   sendTextInput(`Show ${req.query.camera} on ${req.query.chromecast}`, req.query.user)
+  res.status(200).json({
+      message: `Nest stream command executed`,
+      command: `Stop ${req.query.chromecast}`
+  });
 })
 
 app.post('/broadcast', function (req, res) {
@@ -62,6 +81,7 @@ app.post('/broadcast', function (req, res) {
   switch(preset) {
     case 'wakeup':
         sendTextInput(`broadcast wake up everyone`, user);
+
         break;
     case 'breakfast':
         sendTextInput(`broadcast breakfast is ready`, user);
@@ -92,7 +112,12 @@ app.post('/broadcast', function (req, res) {
         break;
     default:
         sendTextInput(`broadcast you selected a preset broadcast, but didn't say which one`, user);
-      }
+  }
+
+    res.status(200).json({
+        message: `Predefined command executed`,
+        command: `${req.query.preset}`
+    });
 })
 
 //Start Express Web Server
@@ -100,8 +125,13 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 
 //Assistant Integration
 const startConversation = (conversation) => {
+  //
+  // loader('http://localhost:3000/bell.wav').then(function(b){
+  //   console.log(b)
+  // })
+
   conversation
-    //.on('audio-data', data => console.log('Got some audio data')
+    .on('audio-data', data => console.log('Got some audio data'))
     .on('response', text => console.log('Assistant is responding', text))
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
@@ -148,5 +178,5 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
 }, function(err){
   if(err) return console.log(err.message);
     sendTextInput(`broadcast Assistant Relay is now setup and running`)
-
+    //sendTextInput()
 })

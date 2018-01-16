@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
+    "audio-loader": "^1.0.3",
     "express": "^4.16.2",
     "google-assistant": "^0.2.0",
     "node-ssdp": "^3.2.5"
