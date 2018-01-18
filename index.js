@@ -141,7 +141,8 @@ const startConversation = (conversation) => {
       if (error) {
         console.log('Conversation Ended Error:', error);
       } else if (continueConversation) {
-        promptForInput();
+        console.log('Support for Actions on Google are not yet supported by Assistant Relay');
+        conversation.end();
       } else {
         console.log('Conversation Complete');
         conversation.end();
