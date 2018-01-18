@@ -105,8 +105,8 @@ If you want to send a custom command to the Google Home (anything that would fol
 This project uses the google-assistant repository from endoplasmic
 https://github.com/endoplasmic/google-assistant
 
-# Donations
-Whilst donations are appreciated, they are not expected, nor required.  If you really want to buy me a drink, then the here is the [donation link](paypal.me/ghesp)
+## Donations
+Whilst donations are appreciated, they are not expected, nor required.  If you really want to buy me a drink, then the here is the [donation link](http://paypal.me/ghesp)
 Alternatively, if you're into Cryptocurrency:
 
   - BTC: 19pi5ukYbeaZDLy5AS4Y8vFrZHQYxEG3YN
