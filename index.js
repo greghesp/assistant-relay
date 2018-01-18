@@ -69,21 +69,38 @@ app.post('/nestStream', function (req, res) {
         command: `Stop ${req.query.chromecast}`
     });
   }
+
+  if(!checkUser(req.query.user)) {
+    console.log(`User ${req.query.user} not found.  Cannot execute request`);
+    return res.status(400).json({
+        message: `User not found. Who is ${user}?`,
+        command: `Show ${req.query.camera} on ${req.query.chromecast} | User: ${req.query.user}`
+    });
+  }
+
   sendTextInput(`Show ${req.query.camera} on ${req.query.chromecast}`, req.query.user)
   res.status(200).json({
       message: `Nest stream command executed`,
-      command: `Stop ${req.query.chromecast}`
+      command: `Show ${req.query.camera} on ${req.query.chromecast}`
   });
 })
 
 app.post('/broadcast', function (req, res) {
+
   const preset = req.query.preset;
   const user = req.query.user;
+
+  if(!checkUser(user)) {
+    console.log(`User ${user} not found.  Cannot execute request`);
+    return res.status(400).json({
+        message: `User not found. Who is ${user}?`,
+        command: `Preset: ${preset} | User: ${user}`
+    });
+  }
 
   switch(preset) {
     case 'wakeup':
         sendTextInput(`broadcast wake up everyone`, user);
-
         break;
     case 'breakfast':
         sendTextInput(`broadcast breakfast is ready`, user);
@@ -127,14 +144,9 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 
 //Assistant Integration
 const startConversation = (conversation) => {
-  //
-  // loader('http://localhost:3000/bell.wav').then(function(b){
-  //   console.log(b)
-  // })
-
   conversation
-    .on('audio-data', data => console.log('Got some audio data'))
-    .on('response', text => console.log('Assistant is responding', text))
+    //.on('audio-data', data => console.log('Got some audio data'))
+    .on('response', text => console.log('Google Assistant:', text))
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
     .on('ended', (error, continueConversation) => {
@@ -164,8 +176,7 @@ const sendTextInput = (text, n) => {
     console.log(`User specified was ${n}`)
     assistant = config.assistants[`${n}`]
   }
-  const f = path.resolve(__dirname, `doorbell.wav`);
-  //console.log(f)
+
   assistant.start(config.conversation, startConversation);
 }
 
@@ -180,6 +191,12 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-    sendTextInput(`broadcast Assistant Relay is now setup and running`)
-    //sendTextInput()
+    //sendTextInput(`broadcast Assistant Relay is now setup and running`)
+    sendTextInput()
 })
+
+
+function checkUser(user) {
+  const users = Object.keys(GRConfig.users);
+  return users.includes(user)
+}
