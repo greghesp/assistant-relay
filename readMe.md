@@ -106,9 +106,10 @@ This project uses the google-assistant repository from endoplasmic
 https://github.com/endoplasmic/google-assistant
 
 ## Donations
-Whilst donations are appreciated, they are not expected, nor required.  If you really want to buy me a drink, then the here is the [donation link](http://paypal.me/ghesp)
-Alternatively, if you're into Cryptocurrency:
+Whilst donations are appreciated, they are not expected, nor required.  If you're into Cryptocurrency, and want to buy me a drink, here are my wallets:
 
   - BTC: 19pi5ukYbeaZDLy5AS4Y8vFrZHQYxEG3YN
   - ETH: 0x1bdf8697b932B1674d7fa23A03E2Ce5A7B96af54
   - LTC: LNCQxsJ1reN8jhgMsUvdcdvgf55LHNMNgr
+
+I can't figure out how to add a donate button for Paypal so that will have to wait :)
