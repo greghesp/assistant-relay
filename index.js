@@ -191,8 +191,8 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-    //sendTextInput(`broadcast Assistant Relay is now setup and running`)
-    sendTextInput()
+    sendTextInput(`broadcast Assistant Relay is now setup and running`)
+    //sendTextInput()
 })
 
 
