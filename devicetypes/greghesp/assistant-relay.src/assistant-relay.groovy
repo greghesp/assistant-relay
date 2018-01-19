@@ -13,11 +13,21 @@
  *  for the specific language governing permissions and limitations under the License.
  *
  */
+
+ /*
+    UPDATES:
+
+    19th Jan:
+      - Added Nest Camera supported
+      - Fixed bug with customBroadcast user support
+
+ */
 metadata {
     definition (name: "Assistant Relay", namespace: "greghesp", author: "Greg Hesp") {
 		capability "Actuator"
-        command "customBroadcast", [ "string" ]
+        command "customBroadcast", [ "string", "string" ]
         command "broadcast", [ "string" ]
+        command "nestStartStream", ["string", "string", "string"]
         capability "Polling"
         capability "Refresh"
     }
@@ -30,14 +40,25 @@ metadata {
     }
 }
 
-def customBroadcast(text) {
+def customBroadcast(text, user) {
 	def eText = URLEncoder.encode(text, "UTF-8");
-    httpPostJSON("/customBroadcast?text=${eText}")
+  def eUser = URLEncoder.encode(user, "UTF-8");
+
+  httpPostJSON("/customBroadcast?text=${eText}&user=${eUser}")
 }
 
 def broadcast(text) {
 	def eText = URLEncoder.encode(text, "UTF-8");
-    httpPostJSON("/broadcast?preset=${eText}")
+
+  httpPostJSON("/broadcast?preset=${eText}")
+}
+
+def nestStartStream(camera, chromecast, user) {
+	def eCam = URLEncoder.encode(camera, "UTF-8");
+  def eChromecast = URLEncoder.encode(chromecast, "UTF-8");
+  def eUser = URLEncoder.encode(user, "UTF-8");
+
+  httpPostJSON("/nestStream?camera=${eCam}&chromecast=${eChromecast}&user=${eUser}")
 }
 
 def installed(){

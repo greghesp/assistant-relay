@@ -73,7 +73,7 @@ app.post('/nestStream', function (req, res) {
   if(!checkUser(req.query.user)) {
     console.log(`User ${req.query.user} not found.  Cannot execute request`);
     return res.status(400).json({
-        message: `User not found. Who is ${user}?`,
+        message: `User not found. Who is ${req.query.user}?`,
         command: `Show ${req.query.camera} on ${req.query.chromecast} | User: ${req.query.user}`
     });
   }
