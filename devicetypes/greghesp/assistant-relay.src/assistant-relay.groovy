@@ -28,6 +28,7 @@ metadata {
         command "customBroadcast", [ "string", "string" ]
         command "broadcast", [ "string" ]
         command "nestStartStream", ["string", "string", "string"]
+        command "nestStopStream", ["string"]
         capability "Polling"
         capability "Refresh"
     }
@@ -59,6 +60,12 @@ def nestStartStream(camera, chromecast, user) {
   def eUser = URLEncoder.encode(user, "UTF-8");
 
   httpPostJSON("/nestStream?camera=${eCam}&chromecast=${eChromecast}&user=${eUser}")
+}
+
+def nestStopStream(chromecast) {
+  def eChromecast = URLEncoder.encode(chromecast, "UTF-8");
+
+  httpPostJSON("/nestStream?stop=true&chromecast=${eChromecast}")
 }
 
 def installed(){
