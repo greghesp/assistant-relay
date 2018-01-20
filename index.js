@@ -54,7 +54,7 @@ app.post('/custom', function (req, res) {
 })
 
 app.post('/customBroadcast', function (req, res) {
-  sendTextInput(`broadcast ${req.query.text}`)
+  sendTextInput(`broadcast ${req.query.text}`, req.query.user)
   res.status(200).json({
       message: `Custom broadcast command executed`,
       command: `broadcast ${req.query.text}`
