@@ -27,6 +27,7 @@ metadata {
 		capability "Actuator"
         command "customBroadcast", [ "string", "string" ]
         command "broadcast", [ "string" ]
+        command "customCommand", [ "string" ]
         command "nestStartStream", ["string", "string", "string"]
         command "nestStopStream", ["string"]
         capability "Polling"
@@ -52,6 +53,11 @@ def broadcast(text) {
 	def eText = URLEncoder.encode(text, "UTF-8");
 
   httpPostJSON("/broadcast?preset=${eText}")
+}
+
+def customCommand(text) {
+	def eText = URLEncoder.encode(text, "UTF-8");
+    httpPostJSON("/custom?command=${eText}")
 }
 
 def nestStartStream(camera, chromecast, user) {
