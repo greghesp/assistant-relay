@@ -53,11 +53,12 @@ To send a Broadcast command, simply send a HTTP Post request:
 
 with the following parameters:
 
-    text: hello world    
+    text: hello world
+    user: <user in config>
 
 The full request would be:
 
-    http://<ip_address>:3000/customBroadcast?text=hello+world
+    http://<ip_address>:3000/customBroadcast?text=hello+world&user=>user in config>
 The Google Home device will now play an audio alert, and say `Hello World`
 
 ## Preconfigured Broadcast
