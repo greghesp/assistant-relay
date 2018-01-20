@@ -25,10 +25,11 @@
 metadata {
     definition (name: "Assistant Relay", namespace: "greghesp", author: "Greg Hesp") {
 		capability "Actuator"
-        command "customBroadcast", [ "string", "string" ]
+        command "customBroadcast", [ "string" ]
         command "broadcast", [ "string" ]
         command "nestStartStream", ["string", "string", "string"]
         command "nestStopStream", ["string"]
+        command "customCommand", ["string", "string"]
         capability "Polling"
         capability "Refresh"
     }
@@ -41,11 +42,11 @@ metadata {
     }
 }
 
-def customBroadcast(text, user) {
+def customBroadcast(text) {
 	def eText = URLEncoder.encode(text, "UTF-8");
-  def eUser = URLEncoder.encode(user, "UTF-8");
+  //def eUser = URLEncoder.encode(user, "UTF-8");
 
-  httpPostJSON("/customBroadcast?text=${eText}&user=${eUser}")
+  httpPostJSON("/customBroadcast?text=${eText}")
 }
 
 def broadcast(text) {
@@ -66,6 +67,13 @@ def nestStopStream(chromecast) {
   def eChromecast = URLEncoder.encode(chromecast, "UTF-8");
 
   httpPostJSON("/nestStream?stop=true&chromecast=${eChromecast}")
+}
+
+def customCommand(command, user) {
+	def eCommand = URLEncoder.encode(command, "UTF-8");
+  def eUser = URLEncoder.encode(user, "UTF-8");
+
+  httpPostJSON("/custom?command=${eCommand}&user=${eUser}")
 }
 
 def installed(){
