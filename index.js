@@ -176,7 +176,7 @@ const sendTextInput = (text, n) => {
     console.log(`User specified was ${n}`)
     assistant = config.assistants[`${n}`]
   }
-
+  console.log(`No user specified, using ${Object.keys(config.assistants)[0]}`)
   assistant.start(config.conversation, startConversation);
 }
 
