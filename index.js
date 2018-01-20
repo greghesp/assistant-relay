@@ -8,9 +8,6 @@ const GRConfig = require('./config.json');
 const readline = require('readline');
 const async = require('async');
 const loader = require('audio-loader');
-const updater = require('./updateChecker.js');
-
-//test comment
 
 //Define SSDP Server Configuration
 const ssdpServer = new SSDP({
