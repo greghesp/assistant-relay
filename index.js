@@ -145,7 +145,17 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 const startConversation = (conversation) => {
   conversation
     //.on('audio-data', data => console.log('Got some audio data'))
-    .on('response', text => console.log('Google Assistant:', text))
+    .on('response', (text) => {
+      if (text) {
+        console.log('Google Assistant:', text)
+        var newLineSplit = text.split("\n")
+        // Ignore lines if Assistant responds with extra interactive data (such as a "See More" web URL)
+        if (newLineSplit.length > 1){
+          text = newLineSplit[0]
+        }
+        sendTextInput(`broadcast ${text}`)
+      }
+    })
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
     .on('ended', (error, continueConversation) => {
