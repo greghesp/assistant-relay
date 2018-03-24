@@ -7,7 +7,6 @@ const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
 const readline = require('readline');
 const async = require('async');
-const loader = require('audio-loader');
 
 //Define SSDP Server Configuration
 const ssdpServer = new SSDP({
@@ -28,8 +27,8 @@ const config = {
 
 Object.keys(authKeys).forEach(function(k){
   config.users[k] = {};
-  config.users[k].keyFilePath = path.resolve(__dirname, `${authKeys[k]}`);
-  config.users[k].savedTokensPath = path.resolve(__dirname, `${k}-tokens.json`);
+  config.users[k].keyFilePath = authKeys[k].keyFilePath;
+  config.users[k].savedTokensPath = authKeys[k].savedTokensPath;
 })
 
 //Define SSDP USN type
@@ -146,7 +145,17 @@ app.listen(3000, () => console.log('Firing up the Web Server for communication o
 const startConversation = (conversation) => {
   conversation
     //.on('audio-data', data => console.log('Got some audio data'))
-    .on('response', text => console.log('Google Assistant:', text))
+    .on('response', (text) => {
+      if (text) {
+        console.log('Google Assistant:', text)
+        var newLineSplit = text.split("\n")
+        // Ignore lines if Assistant responds with extra interactive data (such as a "See More" web URL)
+        if (newLineSplit.length > 1){
+          text = newLineSplit[0]
+        }
+        sendTextInput(`broadcast ${text}`)
+      }
+    })
     //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
     //.on('device-action', action => console.log('Device Action:', action))
     .on('ended', (error, continueConversation) => {
@@ -180,6 +189,26 @@ const sendTextInput = (text, n) => {
   assistant.start(config.conversation, startConversation);
 }
 
+let users;
+let numberUsers = Object.keys(config.users).length;
+
+if( numberUsers > 1){
+  Object.keys(config.users).forEach(function(i, idx, array){
+    if(idx === 0){
+      return users = `${i} `
+    }
+    if (idx === array.length - 1){
+      return users = users + `and ${i}`
+    } else {
+      users = users + `${i} `
+    }
+  })
+} else {
+  Object.keys(config.users).forEach(i => {
+    users = i
+  })
+}
+
 async.forEachOfLimit(config.users, 1, function(i, k, cb){
   let auth = i;
   config.assistants[k] = new GoogleAssistant(i)
@@ -191,8 +220,8 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-    sendTextInput(`broadcast Assistant Relay is now setup and running`)
-    //sendTextInput()
+  console.log(`running for ${users}`)
+    //sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
 })
 
 

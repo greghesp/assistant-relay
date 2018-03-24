@@ -1,6 +1,1 @@
-{
-  "users" : {
-    "greg": "greg_client_secret.json"
-  },
-  "language": "en-US"
-}
+{"language":"en-US","users":{}}

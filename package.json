@@ -4,7 +4,8 @@
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-config": "node configBuilder.js",
+    "start-relay": "node index.js"
   },
   "keywords": [
     "google",
@@ -26,6 +27,7 @@
     "express": "^4.16.2",
     "google-assistant": "^0.2.0",
     "ip": "^1.1.5",
-    "node-ssdp": "^3.2.5"
+    "node-ssdp": "^3.2.5",
+    "prompt": "^1.0.0"
   }
 }
