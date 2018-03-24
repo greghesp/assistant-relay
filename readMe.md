@@ -1,3 +1,4 @@
+
 # Assistant Relay!
 
 Assistant Relay is a Node.js server. It's exposed with SSDP, and runs an Express Web Server that allows for commands to be sent to the Google Assistant.
@@ -19,15 +20,13 @@ Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do
 
 Once you have downloaded your client secret file, copy it to the root folder of this project.
 
-Open config.json and replace the users with your name, including the extension into the keyFile value like the example below. You can add multiple users, however ensure that each user has correctly configured their Google account so that it is linked with your Google Home devices.
+Open your command prompt in the Assistant Relay directory, and run:
 
-      {
-        "users" : {
-          "user1": "user1_client_secret.json",
-          "user": "user2_client_secret.json"
-        },
-        "language": "en-US"
-      }
+    npm run build-config
+
+This will add your chosen name and associated client secret into the config file
+ You can add multiple users, however ensure that each user has correctly configured their Google account so that it is linked with your Google Home devices.
+
 
 ## Running the Relay
 
