@@ -52,6 +52,7 @@ ssdpServer.start(function(){
 
 // Endpoint API
 app.post('/custom', function (req, res) {
+  
   sendTextInput(req.query.command, req.query.user)
   res.status(200).json({
       message: `Custom command executed`,
