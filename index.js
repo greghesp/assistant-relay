@@ -5,8 +5,9 @@ const path = require('path');
 const express = require('express');
 const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
-const readline = require('readline');
 const async = require('async');
+const ip = require('ip')
+
 
 //Define SSDP Server Configuration
 const ssdpServer = new SSDP({
@@ -22,7 +23,13 @@ const config = {
     lang: GRConfig.language,
   },
   users: {},
-  assistants: {}
+  assistants: {},
+  port: GRConfig.port
+}
+
+
+if(Object.keys(authKeys).length === 0){
+  return console.log('No users configured, exiting..');
 }
 
 Object.keys(authKeys).forEach(function(k){
@@ -139,7 +146,7 @@ app.post('/broadcast', function (req, res) {
 })
 
 //Start Express Web Server
-app.listen(3000, () => console.log('Firing up the Web Server for communication on port 3000'))
+app.listen(config.port, () => console.log(`Firing up the Web Server for communication on address ${ip.address()}:${config.port}`))
 
 //Assistant Integration
 const startConversation = (conversation) => {
@@ -220,8 +227,7 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-  console.log(`running for ${users}`)
-    //sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
+    sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
 })
 
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-config": "node configBuilder.js",
-    "start-relay": "node index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "google",
