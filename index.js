@@ -55,22 +55,28 @@ ssdpServer.start(function(){
 
 // Endpoint API
 app.post('/custom', function (req, res) {
-  if(req.query.converse) {
-    returnAudio = true;
-  }
+  const converse = req.query.converse;
+  const command = req.query.command;
+  const user = req.query.user;
 
-  sendTextInput(req.query.command, req.query.user)
+  if(req.query.converse) returnAudio = true;
+
+  sendTextInput(command, user)
   res.status(200).json({
       message: `Custom command executed`,
-      command: `${req.query.command}`
+      command: `${command}`
   });
 })
 
 app.post('/customBroadcast', function (req, res) {
-  sendTextInput(`broadcast ${req.query.text}`, req.query.user)
+  const converse = req.query.converse;
+  const command = req.query.text;
+  const user = req.query.user
+
+  sendTextInput(`broadcast ${command}`, user)
   res.status(200).json({
       message: `Custom broadcast command executed`,
-      command: `broadcast ${req.query.text}`
+      command: `broadcast ${command}`
   });
 })
 
