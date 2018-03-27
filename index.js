@@ -27,6 +27,9 @@ const config = {
   port: GRConfig.port
 }
 
+const defaultAudio = false;
+let returnAudio;
+let assistant;
 
 if(Object.keys(authKeys).length === 0){
   return console.log('No users configured, exiting..');
@@ -52,7 +55,10 @@ ssdpServer.start(function(){
 
 // Endpoint API
 app.post('/custom', function (req, res) {
-  
+  if(req.query.converse) {
+    returnAudio = true;
+  }
+
   sendTextInput(req.query.command, req.query.user)
   res.status(200).json({
       message: `Custom command executed`,
@@ -149,54 +155,6 @@ app.post('/broadcast', function (req, res) {
 //Start Express Web Server
 app.listen(config.port, () => console.log(`Firing up the Web Server for communication on address ${ip.address()}:${config.port}`))
 
-//Assistant Integration
-const startConversation = (conversation) => {
-  conversation
-    //.on('audio-data', data => console.log('Got some audio data'))
-    .on('response', (text) => {
-      if (text) {
-        console.log('Google Assistant:', text)
-        var newLineSplit = text.split("\n")
-        // Ignore lines if Assistant responds with extra interactive data (such as a "See More" web URL)
-        if (newLineSplit.length > 1){
-          text = newLineSplit[0]
-        }
-        sendTextInput(`broadcast ${text}`)
-      }
-    })
-    //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
-    //.on('device-action', action => console.log('Device Action:', action))
-    .on('ended', (error, continueConversation) => {
-      if (error) {
-        console.log('Conversation Ended Error:', error);
-      } else if (continueConversation) {
-        console.log('Support for Actions on Google are not yet supported by Assistant Relay');
-        conversation.end();
-      } else {
-        console.log('Conversation Complete');
-        conversation.end();
-      }
-    })
-    .on('error', (error) => {
-      console.log('Conversation Error:', error);
-    });
-};
-
-const sendTextInput = (text, n) => {
-  console.log(`Received command ${text}`);
-
-  let assistant = Object.keys(config.assistants)[0];
-      assistant = config.assistants[`${assistant}`];
-  config.conversation.textQuery = text;
-
-  if(n) {
-    console.log(`User specified was ${n}`)
-    assistant = config.assistants[`${n}`]
-  }
-  console.log(`No user specified, using ${Object.keys(config.assistants)[0]}`)
-  assistant.start(config.conversation, startConversation);
-}
-
 let users;
 let numberUsers = Object.keys(config.users).length;
 
@@ -228,11 +186,68 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
+  //console.log('running')
     sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
 })
-
 
 function checkUser(user) {
   const users = Object.keys(GRConfig.users);
   return users.includes(user)
+}
+
+
+//Assistant Integration
+
+function startConversation(conversation) {
+  conversation
+    //.on('audio-data', data => console.log('Got some audio data'))
+    .on('response', (text) => {
+      if (text) {
+        console.log('Google Assistant:', text)
+        var newLineSplit = text.split("\n")
+        // Ignore lines if Assistant responds with extra interactive data (such as a "See More" web URL)
+        if (newLineSplit.length > 1) text = newLineSplit[0]
+        sendTextInput(`broadcast ${text}`)
+        if(returnAudio) {
+          //console.log(`sendTextInput ${text}`)
+          //sendTextInput(`broadcast ${text}`)
+        }
+
+      }
+    })
+    //.on('volume-percent', percent => console.log('New Volume Percent:', percent))
+    //.on('device-action', action => console.log('Device Action:', action))
+    .on('ended', (error, continueConversation) => {
+      if (error) {
+        console.log('Conversation Ended Error:', error);
+      } else if (continueConversation) {
+        //console.log('Support for Actions on Google are not yet supported by Assistant Relay');
+        conversation.end();
+      } else {
+        console.log('Conversation Complete');
+        conversation.end();
+      }
+    })
+    .on('error', (error) => {
+      console.log('Conversation Error:', error);
+    });
+}
+
+function sendTextInput(text, n) {
+  console.log(`Received command ${text}`);
+
+      assistant = Object.keys(config.assistants)[0];
+      assistant = config.assistants[`${assistant}`];
+
+  config.conversation.textQuery = text;
+
+  if(n) {
+    n = n.toLowerCase();
+    console.log(`User specified was ${n}`)
+    assistant = config.assistants[`${n}`]
+  } else {
+    console.log(`No user specified, using ${Object.keys(config.assistants)[0]}`)
+  }
+
+  assistant.start(config.conversation, startConversation);
 }

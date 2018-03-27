@@ -28,7 +28,7 @@ Number: `, (a) => {
 function addUser() {
   prompt.get(['Name', 'Client Secret File Name'], function (err, result) {
     let secret = result['Client Secret File Name'];
-    let name = result['Name'];
+    let name = result['Name'].toLowerCase();
 
     if(secret.substr(secret.length - 5) != '.json') {
       secret = `${secret}.json`
