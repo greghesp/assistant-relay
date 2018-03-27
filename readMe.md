@@ -41,6 +41,8 @@ This process will continue for each user you added to the config file.*
 At the moment, it is only possible to issue a command to all Google Home devices. Additional support for Home Groups will be coming in the future.
 For all of the below commands, it is possible to override the account that issues the command by adding the user parameter to the request, and matching it against the name you set it in the config file.
 
+If you want your Google Home to speak the response, make sure you pass a new parameter called "converse" as `true`.
+
 ## Custom Broadcast
 
 To send a Broadcast command, simply send a HTTP Post request:
