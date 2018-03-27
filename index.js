@@ -59,7 +59,7 @@ app.post('/custom', function (req, res) {
   const command = req.query.command;
   const user = req.query.user;
 
-  if(req.query.converse) returnAudio = true;
+  if(converse) returnAudio = true;
 
   sendTextInput(command, user)
   res.status(200).json({
@@ -73,7 +73,10 @@ app.post('/customBroadcast', function (req, res) {
   const command = req.query.text;
   const user = req.query.user
 
-  sendTextInput(`broadcast ${command}`, user)
+  if(converse) returnAudio = true;
+
+  sendTextInput(`broadcast ${command}`, user);
+
   res.status(200).json({
       message: `Custom broadcast command executed`,
       command: `broadcast ${command}`
@@ -81,8 +84,11 @@ app.post('/customBroadcast', function (req, res) {
 })
 
 app.post('/nestStream', function (req, res) {
+  if(req.query.converse) returnAudio = true;
+
   if(req.query.stop) {
     sendTextInput(`Stop ${req.query.chromecast}`);
+
     res.status(200).json({
         message: `Nest stream command executed`,
         command: `Stop ${req.query.chromecast}`
@@ -108,6 +114,8 @@ app.post('/broadcast', function (req, res) {
 
   const preset = req.query.preset;
   const user = req.query.user;
+
+  if(req.query.converse) returnAudio = true;
 
   if(!checkUser(user)) {
     console.log(`User ${user} not found.  Cannot execute request`);
@@ -213,10 +221,10 @@ function startConversation(conversation) {
         var newLineSplit = text.split("\n")
         // Ignore lines if Assistant responds with extra interactive data (such as a "See More" web URL)
         if (newLineSplit.length > 1) text = newLineSplit[0]
-        sendTextInput(`broadcast ${text}`)
         if(returnAudio) {
           //console.log(`sendTextInput ${text}`)
-          //sendTextInput(`broadcast ${text}`)
+          sendTextInput(`broadcast ${text}`);
+          returnAudio = defaultAudio;
         }
 
       }
