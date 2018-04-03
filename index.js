@@ -59,6 +59,7 @@ app.post('/custom', function (req, res) {
   const command = req.query.command;
   const user = req.query.user;
 
+  //Check the converse parameter
   if(converse) returnAudio = true;
 
   sendTextInput(command, user)
@@ -69,11 +70,8 @@ app.post('/custom', function (req, res) {
 })
 
 app.post('/customBroadcast', function (req, res) {
-  const converse = req.query.converse;
   const command = req.query.text;
-  const user = req.query.user
-
-  if(converse) returnAudio = true;
+  const user = req.query.user;
 
   sendTextInput(`broadcast ${command}`, user);
 
@@ -88,18 +86,9 @@ app.post('/nestStream', function (req, res) {
 
   if(req.query.stop) {
     sendTextInput(`Stop ${req.query.chromecast}`);
-
-    res.status(200).json({
+    return res.status(200).json({
         message: `Nest stream command executed`,
         command: `Stop ${req.query.chromecast}`
-    });
-  }
-
-  if(!checkUser(req.query.user)) {
-    console.log(`User ${req.query.user} not found.  Cannot execute request`);
-    return res.status(400).json({
-        message: `User not found. Who is ${req.query.user}?`,
-        command: `Show ${req.query.camera} on ${req.query.chromecast} | User: ${req.query.user}`
     });
   }
 
@@ -116,14 +105,6 @@ app.post('/broadcast', function (req, res) {
   const user = req.query.user;
 
   if(req.query.converse) returnAudio = true;
-
-  if(!checkUser(user)) {
-    console.log(`User ${user} not found.  Cannot execute request`);
-    return res.status(400).json({
-        message: `User not found. Who is ${user}?`,
-        command: `Preset: ${preset} | User: ${user}`
-    });
-  }
 
   switch(preset) {
     case 'wakeup':
@@ -200,13 +181,13 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
   })
 }, function(err){
   if(err) return console.log(err.message);
-  //console.log('running')
-    sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
+  console.log(`Assistant Relay is now setup and running for ${users}`)
+  sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
 })
 
 function checkUser(user) {
   const users = Object.keys(GRConfig.users);
-  return users.includes(user)
+  return users.includes(user.toLowerCase());
 }
 
 
@@ -224,7 +205,7 @@ function startConversation(conversation) {
         if(returnAudio) {
           //console.log(`sendTextInput ${text}`)
           sendTextInput(`broadcast ${text}`);
-          returnAudio = defaultAudio;
+          returnAudio = false;
         }
 
       }
@@ -238,7 +219,7 @@ function startConversation(conversation) {
         //console.log('Support for Actions on Google are not yet supported by Assistant Relay');
         conversation.end();
       } else {
-        console.log('Conversation Complete');
+        //console.log('Conversation Complete');
         conversation.end();
       }
     })
@@ -250,18 +231,21 @@ function startConversation(conversation) {
 function sendTextInput(text, n) {
   console.log(`Received command ${text}`);
 
-      assistant = Object.keys(config.assistants)[0];
-      assistant = config.assistants[`${assistant}`];
+  assistant = Object.keys(config.assistants)[0];
+  assistant = config.assistants[`${assistant}`];
 
   config.conversation.textQuery = text;
 
   if(n) {
-    n = n.toLowerCase();
-    console.log(`User specified was ${n}`)
-    assistant = config.assistants[`${n}`]
+    if(!checkUser(n)) {
+      console.log(`User not found, using ${Object.keys(config.assistants)[0]}`)
+    } else {
+      n = n.toLowerCase();
+      console.log(`User specified was ${n}`)
+      assistant = config.assistants[`${n}`]
+    }
   } else {
     console.log(`No user specified, using ${Object.keys(config.assistants)[0]}`)
   }
-
   assistant.start(config.conversation, startConversation);
 }
