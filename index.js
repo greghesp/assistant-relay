@@ -1,35 +1,47 @@
-'use strict'
 //Development
 
-const SSDP = require('node-ssdp').Server;
+//const SSDP = require('node-ssdp').Server;
 const path = require('path');
 const express = require('express');
 const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
 const async = require('async');
-const ip = require('ip')
+const ip = require('ip');
 
+const app = express();
 
-//Define SSDP Server Configuration
-const ssdpServer = new SSDP({
-  location: 'http://' + require('ip').address() + ':3000/desc.xml',
-  sourcePort: 1900,
-  ssdpTtl: 3,
-});
+global.GR = {
+  config = {
+    conversation: {
+      lang: GRConfig.language,
+    },
+    users: {},
+    assistants: {},
+    port: GRConfig.port
+  },
+  returnAudio: false
+};
+
+//app.use(express.static(path.join(__dirname, 'xml')));
+//app.use(express.static(path.join(__dirname, 'audio')));
+
+//Define SSDP Server Configuration - Disabled
+// const ssdpServer = new SSDP({
+//   location: 'http://' + require('ip').address() + ':3000/desc.xml',
+//   sourcePort: 1900,
+//   ssdpTtl: 3,
+// });
+
+//Define SSDP USN type - Disabled
+//ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
+
+//Start SSDP Server - Disabled
+//ssdpServer.start(() => console.log('Fired up the SSDP Server for network discovery...'));
 
 const authKeys = GRConfig.users;
 
-const config = {
-  conversation: {
-    lang: GRConfig.language,
-  },
-  users: {},
-  assistants: {},
-  port: GRConfig.port
-}
-
-const defaultAudio = false;
-let returnAudio;
+GR.defaultAudio = false;
+GR.returnAudio;
 let assistant;
 
 if(Object.keys(authKeys).length === 0){
@@ -37,122 +49,23 @@ if(Object.keys(authKeys).length === 0){
 }
 
 Object.keys(authKeys).forEach(function(k){
-  config.users[k] = {};
-  config.users[k].keyFilePath = authKeys[k].keyFilePath;
-  config.users[k].savedTokensPath = authKeys[k].savedTokensPath;
+  GR.config.users[k] = {};
+  GR.config.users[k].keyFilePath = authKeys[k].keyFilePath;
+  GR.config.users[k].savedTokensPath = authKeys[k].savedTokensPath;
 })
-
-//Define SSDP USN type
-ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
-
-const app = express()
-app.use(express.static(path.join(__dirname, 'xml')));
-app.use(express.static(path.join(__dirname, 'audio')));
-
-//Start SSDP Server
-ssdpServer.start(function(){
-  console.log('Fired up the SSDP Server for network discovery...')
-});
 
 // Endpoint API
-app.post('/custom', function (req, res) {
-  const converse = req.query.converse;
-  const command = req.query.command;
-  const user = req.query.user;
+app.post('/customBroadcast', require('./routes/customBroadcast'));
+app.post('/broadcast', require('./routes/broadcast'));
+app.post('/custom', require('./routes/custom'));
+app.post('/nestStream', require('./routes/nestStream'));
 
-  //Check the converse parameter
-  if(converse) returnAudio = true;
-
-  sendTextInput(command, user)
-  res.status(200).json({
-      message: `Custom command executed`,
-      command: `${command}`
-  });
-})
-
-app.post('/customBroadcast', function (req, res) {
-  const command = req.query.text;
-  const user = req.query.user;
-
-  sendTextInput(`broadcast ${command}`, user);
-
-  res.status(200).json({
-      message: `Custom broadcast command executed`,
-      command: `broadcast ${command}`
-  });
-})
-
-app.post('/nestStream', function (req, res) {
-  if(req.query.converse) returnAudio = true;
-
-  if(req.query.stop) {
-    sendTextInput(`Stop ${req.query.chromecast}`);
-    return res.status(200).json({
-        message: `Nest stream command executed`,
-        command: `Stop ${req.query.chromecast}`
-    });
-  }
-
-  sendTextInput(`Show ${req.query.camera} on ${req.query.chromecast}`, req.query.user)
-  res.status(200).json({
-      message: `Nest stream command executed`,
-      command: `Show ${req.query.camera} on ${req.query.chromecast}`
-  });
-})
-
-app.post('/broadcast', function (req, res) {
-
-  const preset = req.query.preset;
-  const user = req.query.user;
-
-  if(req.query.converse) returnAudio = true;
-
-  switch(preset) {
-    case 'wakeup':
-        sendTextInput(`broadcast wake up everyone`, user);
-        break;
-    case 'breakfast':
-        sendTextInput(`broadcast breakfast is ready`, user);
-        break;
-    case 'lunch':
-        sendTextInput(`broadcast it's lunch time`, user);
-        break;
-    case 'dinner':
-        sendTextInput('broadcast dinner is served', user);
-        break;
-    case 'timetoleave':
-        sendTextInput(`broadcast its time to leave`, user);
-        break;
-    case 'arrivedhome':
-        sendTextInput(`broadcast i'm home`, user);
-        break;
-    case 'ontheway':
-        sendTextInput(`broadcast i'm on the way`, user);
-        break;
-    case 'movietime':
-        sendTextInput(`broadcast the movie is about to start`, user);
-        break;
-    case 'tvtime':
-        sendTextInput(`broadcast the show is about to start`, user);
-        break;
-    case 'bedtime':
-        sendTextInput(`broadcast we should go to bed`, user);
-        break;
-    default:
-        sendTextInput(`broadcast you selected a preset broadcast, but didn't say which one`, user);
-  }
-
-    res.status(200).json({
-        message: `Predefined command executed`,
-        command: `${req.query.preset}`
-    });
-})
 
 //Start Express Web Server
-app.listen(config.port, () => console.log(`Firing up the Web Server for communication on address ${ip.address()}:${config.port}`))
+app.listen(GR.config.port, () => console.log(`Firing up the Web Server for communication on address ${ip.address()}:${GR.config.port}`))
 
 let users;
-let numberUsers = Object.keys(config.users).length;
+let numberUsers = Object.keys(GR.config.users).length;
 
 if( numberUsers > 1){
   Object.keys(config.users).forEach(function(i, idx, array){
@@ -166,15 +79,15 @@ if( numberUsers > 1){
     }
   })
 } else {
-  Object.keys(config.users).forEach(i => {
+  Object.keys(GR.config.users).forEach(i => {
     users = i
   })
 }
 
-async.forEachOfLimit(config.users, 1, function(i, k, cb){
+async.forEachOfLimit(GR.config.users, 1, function(i, k, cb){
   let auth = i;
-  config.assistants[k] = new GoogleAssistant(i)
-  let assistant = config.assistants[k];
+  GR.config.assistants[k] = new GoogleAssistant(i)
+  let assistant = GR.config.assistants[k];
   assistant.on('ready', () => cb());
   assistant.on('error', (e) => {
     console.log(`Assistant Error when activating user ${k}. Trying next user`);
@@ -183,7 +96,7 @@ async.forEachOfLimit(config.users, 1, function(i, k, cb){
 }, function(err){
   if(err) return console.log(err.message);
   console.log(`Assistant Relay is now setup and running for ${users}`)
-  sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
+  //sendTextInput(`broadcast Assistant Relay is now setup and running for ${users}`)
 })
 
 function checkUser(user) {
