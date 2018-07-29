@@ -54,7 +54,7 @@ ssdpServer.start(function(){
 });
 
 // Endpoint API
-app.post('/custom', function (req, res) {
+app.get('/custom', function (req, res) {
   const converse = req.query.converse;
   const command = req.query.command;
   const user = req.query.user;
@@ -69,7 +69,7 @@ app.post('/custom', function (req, res) {
   });
 })
 
-app.post('/customBroadcast', function (req, res) {
+app.get('/customBroadcast', function (req, res) {
   const command = req.query.text;
   const user = req.query.user;
 
@@ -81,7 +81,7 @@ app.post('/customBroadcast', function (req, res) {
   });
 })
 
-app.post('/nestStream', function (req, res) {
+app.get('/nestStream', function (req, res) {
   if(req.query.converse) returnAudio = true;
 
   if(req.query.stop) {
@@ -99,7 +99,7 @@ app.post('/nestStream', function (req, res) {
   });
 })
 
-app.post('/broadcast', function (req, res) {
+app.get('/broadcast', function (req, res) {
 
   const preset = req.query.preset;
   const user = req.query.user;
