@@ -45,7 +45,7 @@ If you want your Google Home to speak the response, make sure you pass a new par
 
 ## Custom Broadcast
 
-To send a Broadcast command, simply send a HTTP Post request:
+To send a Broadcast command, simply send a HTTP GET request:
 
     http://<ip_address>:<port>/customBroadcast
 
