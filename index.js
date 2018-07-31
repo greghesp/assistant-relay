@@ -6,7 +6,8 @@ const express = require('express');
 const GoogleAssistant = require('google-assistant');
 const GRConfig = require('./config.json');
 const async = require('async');
-const ip = require('ip')
+const ip = require('ip');
+const bodyParser = require('body-parser');
 
 
 //Define SSDP Server Configuration
@@ -47,6 +48,7 @@ ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
 const app = express()
 app.use(express.static(path.join(__dirname, 'xml')));
 app.use(express.static(path.join(__dirname, 'audio')));
+app.use(bodyParser.json());
 
 //Start SSDP Server
 ssdpServer.start(function(){
@@ -55,9 +57,9 @@ ssdpServer.start(function(){
 
 // Endpoint API
 app.post('/custom', function (req, res) {
-  const converse = req.query.converse;
-  const command = req.query.command;
-  const user = req.query.user;
+  const converse = req.body.converse;
+  const command = req.body.command;
+  const user = req.body.user;
 
   //Check the converse parameter
   if(converse) returnAudio = true;
@@ -70,8 +72,8 @@ app.post('/custom', function (req, res) {
 })
 
 app.post('/customBroadcast', function (req, res) {
-  const command = req.query.text;
-  const user = req.query.user;
+  const command = req.body.text;
+  const user = req.body.user;
 
   sendTextInput(`broadcast ${command}`, user);
 
@@ -82,29 +84,29 @@ app.post('/customBroadcast', function (req, res) {
 })
 
 app.post('/nestStream', function (req, res) {
-  if(req.query.converse) returnAudio = true;
+  if(req.body.converse) returnAudio = true;
 
-  if(req.query.stop) {
-    sendTextInput(`Stop ${req.query.chromecast}`);
+  if(req.body.stop) {
+    sendTextInput(`Stop ${req.body.chromecast}`);
     return res.status(200).json({
         message: `Nest stream command executed`,
-        command: `Stop ${req.query.chromecast}`
+        command: `Stop ${req.body.chromecast}`
     });
   }
 
-  sendTextInput(`Show ${req.query.camera} on ${req.query.chromecast}`, req.query.user)
+  sendTextInput(`Show ${req.body.camera} on ${req.body.chromecast}`, req.body.user)
   res.status(200).json({
       message: `Nest stream command executed`,
-      command: `Show ${req.query.camera} on ${req.query.chromecast}`
+      command: `Show ${req.body.camera} on ${req.body.chromecast}`
   });
 })
 
 app.post('/broadcast', function (req, res) {
 
-  const preset = req.query.preset;
-  const user = req.query.user;
+  const preset = req.body.preset;
+  const user = req.body.user;
 
-  if(req.query.converse) returnAudio = true;
+  if(req.body.converse) returnAudio = true;
 
   switch(preset) {
     case 'wakeup':
@@ -143,7 +145,7 @@ app.post('/broadcast', function (req, res) {
 
     res.status(200).json({
         message: `Predefined command executed`,
-        command: `${req.query.preset}`
+        command: `${req.body.preset}`
     });
 })
 
