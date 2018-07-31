@@ -49,14 +49,15 @@ To send a Broadcast command, simply send a HTTP Post request:
 
     http://<ip_address>:<port>/customBroadcast
 
-with the following parameters:
+with the following json-encoded parameters:
 
     text: hello world
     user: <user in config>
 
 The full request would be:
 
-    http://<ip_address>:<port>/customBroadcast?text=hello+world&user=>user in config>
+    curl -X POST -H 'Content-type: application/json' -d '{"text": "hello world", "user": "<user in config>"}' http://<ip_address>:<port>/customBroadcast
+
 The Google Home device will now play an audio alert, and say `Hello World`
 
 ## Preconfigured Broadcast
@@ -65,7 +66,7 @@ The Google Home also has a number of preconfigured broadcasts that have some fan
 
 Rather than configure these elsewhere, they are built into the Assistant Relay.  Simple send a request as follows:
 
-    http://<ip_address>:<port>/broadcast?preset=<command>&user=<config file user name>
+    curl -X POST -H 'Content-type: application/json' -d '{"preset": "<command>", "user": "<user in config>"}' http://<ip_address>:<port>/broadcast
 
 **Available Commands**
 
@@ -86,11 +87,11 @@ Rather than configure these elsewhere, they are built into the Assistant Relay. 
 
 If you want to start a stream from your Nest Cam to a Chromecast device, you can do this with the following request:
 
-    http://<ip_address>:<port>/nestStream?camera=<camera name>&chromecast=<chromecast_name>&user=<config file user name>
+    curl -X POST -H 'Content-type: application/json' -d '{"camera": "<camera name>", "chromecast": "<chromecast name>", "user": "<user in config>"}' http://<ip_address>:<port>/nestStream
 
 To stop a stream, send the following request:
 
-    http://<ip_address>:<port>/nestStream?stop=true&chromecast=<chromecast_name>
+    curl -X POST -H 'Content-type: application/json' -d '{"stop": true, "chromecast": "<chromecast name>", "user": "<user in config>"}' http://<ip_address>:<port>/nestStream
 
 *Note: The user must have the Chromecast device in their account, and have the Nest camera assigned to their account*
 
@@ -98,12 +99,12 @@ To stop a stream, send the following request:
 
 If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following request:
 
-    http://<ip_address>:<port>/custom?command=<custom command>&user=<config file user name>
+    curl -X POST -H 'Content-type: application/json' -d '{"command": "<custom command>", "user": "<user in config>"}' http://<ip_address>:<port>/custom
 
 This will only log out the response into console, so if you send "What time is it?" as the command, the response would be in the console only.
 To have your Google Home speak the answer, simple pass the converse parameter as true:
 
-    http://<ip_address>:<port>/custom?command=<custom command>&user=<config file user name>&converse=true
+    curl -X POST -H 'Content-type: application/json' -d '{"command": "<custom command>", "converse": true, "user": "<user in config>"}' http://<ip_address>:<port>/custom
 
 
 # Credit
