@@ -43,14 +43,15 @@ To send a Broadcast command, simply send a HTTP Post request:
 
     http://<ip_address>:<port>/customBroadcast
 
-with the following parameters:
+with the following json-encoded parameters:
 
     text: hello world
     user: <user in config>
 
 The full request would be:
 
-    http://<ip_address>:<port>/customBroadcast?text=hello+world&user=>user in config>
+    curl -X POST -H 'Content-type: application/json' -d '{"text": "hello world", "user": "<user in config>"}' http://<ip_address>:<port>/customBroadcast
+
 The Google Home device will now play an audio alert, and say `Hello World`
 
 ## Custom commands
