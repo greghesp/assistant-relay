@@ -2,10 +2,10 @@
   "name": "assistant-relay",
   "version": "1.0.1",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
-  "main": "index.js",
+  "main": "server/app.js",
   "scripts": {
     "build-config": "node configBuilder.js",
-    "start": "node index.js"
+    "start": "node server/app.js"
   },
   "keywords": [
     "google",
@@ -16,18 +16,16 @@
     "voice",
     "control",
     "broadcast",
-    "smartthings"
+    "iot",
+    "node"
   ],
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.1",
-    "audio-loader": "^1.0.3",
-    "auto-updater": "^1.0.2",
     "express": "^4.16.3",
     "google-assistant": "^0.2.0",
     "ip": "^1.1.5",
-    "node-ssdp": "^3.3.0",
     "prompt": "^1.0.0"
   }
 }

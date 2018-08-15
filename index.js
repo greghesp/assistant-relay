@@ -1,6 +1,5 @@
 'use strict'
 
-const SSDP = require('node-ssdp').Server;
 const path = require('path');
 const express = require('express');
 const GoogleAssistant = require('google-assistant');
@@ -8,13 +7,6 @@ const GRConfig = require('./config.json');
 const async = require('async');
 const ip = require('ip')
 
-
-//Define SSDP Server Configuration
-const ssdpServer = new SSDP({
-  location: 'http://' + require('ip').address() + ':3000/desc.xml',
-  sourcePort: 1900,
-  ssdpTtl: 3,
-});
 
 const authKeys = GRConfig.users;
 
@@ -41,17 +33,9 @@ Object.keys(authKeys).forEach(function(k){
   config.users[k].savedTokensPath = authKeys[k].savedTokensPath;
 })
 
-//Define SSDP USN type
-ssdpServer.addUSN('urn:greghesp-com:device:GAssist:1');
 
 const app = express()
-app.use(express.static(path.join(__dirname, 'xml')));
-app.use(express.static(path.join(__dirname, 'audio')));
 
-//Start SSDP Server
-ssdpServer.start(function(){
-  console.log('Fired up the SSDP Server for network discovery...')
-});
 
 // Endpoint API
 app.post('/custom', function (req, res) {
@@ -150,25 +134,25 @@ app.post('/broadcast', function (req, res) {
 //Start Express Web Server
 app.listen(config.port, () => console.log(`Firing up the Web Server for communication on address ${ip.address()}:${config.port}`))
 
-let users;
-let numberUsers = Object.keys(config.users).length;
-
-if( numberUsers > 1){
-  Object.keys(config.users).forEach(function(i, idx, array){
-    if(idx === 0){
-      return users = `${i} `
-    }
-    if (idx === array.length - 1){
-      return users = users + `and ${i}`
-    } else {
-      users = users + `${i} `
-    }
-  })
-} else {
-  Object.keys(config.users).forEach(i => {
-    users = i
-  })
-}
+// let users;
+// let numberUsers = Object.keys(config.users).length;
+//
+// if( numberUsers > 1){
+//   Object.keys(config.users).forEach(function(i, idx, array){
+//     if(idx === 0){
+//       return users = `${i} `
+//     }
+//     if (idx === array.length - 1){
+//       return users = users + `and ${i}`
+//     } else {
+//       users = users + `${i} `
+//     }
+//   })
+// } else {
+//   Object.keys(config.users).forEach(i => {
+//     users = i
+//   })
+// }
 
 async.forEachOfLimit(config.users, 1, function(i, k, cb){
   let auth = i;
