@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.1",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "google-assistant": "^0.2.0",
     "ip": "^1.1.5",

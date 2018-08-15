@@ -1,6 +1,8 @@
 const GoogleAssistant = require('google-assistant');
 const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const ip = require('ip');
 
 const startConversation = require('./assistant.js')
@@ -13,7 +15,9 @@ const sendTextInput = require('./assistant').sendTextInput;
 const directory = path.resolve()
 
 const app = express();
+app.use(bodyParser.json());
 
+let config;
 const baseConfig = {
   conversation: {
     lang: configFile.language,
@@ -22,7 +26,6 @@ const baseConfig = {
   assistants: {},
   port: configFile.port
 }
-let config;
 
 // Configure users on first run
 configureUsers()
@@ -39,8 +42,8 @@ configureUsers()
 
 
 app.post('/customBroadcast', function (req, res) {
-  const command = req.query.text;
-  const user = req.query.user;
+  const command = req.body.text;
+  const user = req.body.user;
 
   sendTextInput(`broadcast ${command}`, user, config);
 
@@ -51,9 +54,9 @@ app.post('/customBroadcast', function (req, res) {
 })
 
 app.post('/custom', function (req, res) {
-  const converse = req.query.converse;
-  const command = req.query.command;
-  const user = req.query.user;
+  const converse = req.body.converse;
+  const command = req.body.command;
+  const user = req.body.user;
 
   //Check the converse parameter
   sendTextInput(command, user, config, converse)
