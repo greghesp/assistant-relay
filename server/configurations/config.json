@@ -1,10 +1,17 @@
 {
-  "language": "en-US",
+  "conversation": {
+    "language": "en-US",
+    "audio": {
+      "sampleRateOut": 24000,
+      "sampleRateIn": 24000
+    }
+  },
   "users": {
     "greg": {
       "keyFilePath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\secrets\\greg.json",
       "savedTokensPath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\tokens\\greg-tokens.json"
     }
   },
-  "port": "3000"
+  "port": "3000",
+  "assistants": {}
 }
