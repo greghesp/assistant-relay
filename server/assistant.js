@@ -76,8 +76,7 @@ var self = module.exports = {
     fs.readFile(`${path.resolve(__dirname, 'response.wav')}`, (err, file) => {
       if(err) console.log(err)
       assistant.start(global.config.conversation, (conversation) => {
-        conversation.write(file)
-         return self.startConversation(conversation)
+         return self.startConversation(conversation, file)
          .then((data) => {
            console.log(data)
            //resolve(data)
@@ -90,10 +89,11 @@ var self = module.exports = {
     });
   },
 
-  startConversation: function(conversation, outputFileStream) {
+  startConversation: function(conversation, file) {
     let response = {};
     const fileStream = self.outputFileStream();
     return new Promise((resolve, reject) => {
+      conversation.write(file)
       conversation
         .on('audio-data', data => {
           fileStream.write(data)
