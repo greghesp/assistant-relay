@@ -1,44 +1,64 @@
 const async = require('async');
 const GoogleAssistant = require('google-assistant');
+const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
+const ip = require('ip');
+const terminalImage = require('terminal-image');
+const path = require('path');
+const fs = require("fs");
+var tou8 = require('buffer-to-uint8array');
+
 
 const defaultAudio = false;
 let returnAudio;
 let gConfig;
 
+var playbackWriter = new FileWriter('server/playback.wav', {
+  sampleRate: 24000,
+  channels: 1
+});
+
+const inputFiles = [
+  `${path.resolve(__dirname, 'broadcast.wav')}`,
+  `${path.resolve(__dirname, 'response.wav')}`
+];
+
 var self = module.exports = {
-  setupAssistant: function(config) {
+  setupAssistant: function() {
     return new Promise((resolve, reject) => {
       let users = []
-      async.forEachOfLimit(config.users, 1, function(i, k, cb){
+      async.forEachOfLimit(global.config.users, 1, function(i, k, cb){
         let auth = i;
         users.push(k)
-        config.assistants[k] = new GoogleAssistant(i)
-        let assistant = config.assistants[k];
+        global.config.assistants[k] = new GoogleAssistant(i)
+        let assistant = global.config.assistants[k];
         assistant.on('ready', () => cb());
         assistant.on('error', (e) => {
-          console.log(`Assistant Error when activating user ${k}. Trying next user`);
+          console.log(`❌ Assistant Error when activating user ${k}. Trying next user ❌ \n`);
           return cb();
         })
       }, function(err){
         if(err) return reject(err.message);
-        console.log(`Assistant Relay is now setup and running for${users.map(u => ` ${u}`)}`)
+        (async() => {
+          console.log(await terminalImage.file('./icon.png'))
+          console.log(`Assistant Relay is now setup and running for${users.map(u => ` ${u}`)} \n`)
+          console.log(`You can now visit ${ip.address()}:${global.config.port} in a browser, or send POST requests to it`);
+        })();
         resolve()
         //resolve('broadcast Assistant Relay is now setup and running')
       })
     })
   },
 
-  sendTextInput: function(text, n, config, converse) {
+  sendTextInput: function(text, n, converse) {
     return new Promise((resolve, reject) => {
-      gConfig = config
-      console.log(`Received command ${text}`);
+      console.log(`Received command ${text} \n`);
       if(converse) returnAudio = true;
       // set the conversation query to text
-      gConfig.conversation.textQuery = text;
-      const assistant = self.setUser(gConfig, n)
+      global.config.conversation.textQuery = text;
+      const assistant = self.setUser(n)
 
-       assistant.start(config.conversation, (conversation) => {
+       assistant.start(global.config.conversation, (conversation) => {
           return self.startConversation(conversation)
           .then((data) => {
             resolve(data)
@@ -50,28 +70,59 @@ var self = module.exports = {
     })
   },
 
-  // audioTest: function(text, n, config, audio) {
-  //   console.log(`Received command ${text}`);
-  //   return new Promise(resolve => {
-  //     config.conversation.textQuery = text;
-  //     const assistant = self.setUser(config, n)
-  //
-  //      assistant.start(config.conversation, (conversation) => {
-  //         return self.startConversation(conversation, audio)
-  //       });
-  //   })
-  // },
+  sendAudioInput: function() {
+    let raw = []
+    const assistant = self.setUser('greg');
+    var file = fs.createReadStream(`${path.resolve(__dirname, 'response.wav')}`);
+    const reader = new FileReader();
+
+    // var format;
+    // var data = [];
+    // file.pipe(reader)
+    //
+    // reader.on('format', function (f) {
+    //     format = f;
+    // });
+    //
+    // reader.on('readable', function () {
+    //     console.log(reader.read())
+    //     raw = raw.concat(reader.read());
+    // });
+
+    //reader.on("end", function () {
+        assistant.start(global.config.conversation, (conversation) => {
+          conversation.write(file)
+           return self.startConversation(conversation)
+           .then((data) => {
+             console.log(data)
+             //resolve(data)
+           })
+           .catch((err) => {
+             console.log(err)
+             //reject(err)
+           })
+         });
+    //});
+
+
+
+
+
+  },
 
   startConversation: function(conversation, outputFileStream) {
     let response = {};
+    const fileStream = self.outputFileStream();
     return new Promise((resolve, reject) => {
       conversation
-        // .on('audio-data', data => {
-        //   if(outputFileStream) outputFileStream.write(data)
-        // })
+        .on('audio-data', data => {
+          fileStream.write(data)
+          // set a random parameter on audio url to prevent caching
+          response.audio = `http://${ip.address()}:${global.config.port}/audio?v=${Math.floor(Math.random() *  100)}`
+        })
         .on('response', (text) => {
           if (text) {
-            console.log('Google Assistant:', text)
+            console.log(`Google Assistant: ${text} \n`)
             response.response = text;
             if(returnAudio) {
               self.sendTextInput(`broadcast ${text}`, null, gConfig);
@@ -79,57 +130,90 @@ var self = module.exports = {
             }
           }
         })
+        .on('end-of-utterance', () => {
+          console.log("Done speaking")
+        })
+        .on('transcription', (data) => {
+          console.log(data)
+        })
         .on('volume-percent', percent => {
-          console.log('New Volume Percent:', percent)
-          response.response = `New Volume Percent is ${percent}`;
+          console.log(`Volume has been set to ${percent} \n`)
+          response.volume = `New Volume Percent is ${percent}`;
         })
         .on('device-action', action => {
-          console.log('Device Action:', action)
-          response.response = `Device Action is ${action}`;
+          console.log(`Device Action: ${action} \n`)
+          response.action = `Device Action is ${action}`;
         })
         .on('ended', (error, continueConversation) => {
           if (error) {
             console.log('Conversation Ended Error:', error);
-            response.false = true;
+            response.success = false;
             reject(response)
           } else if (continueConversation) {
             response.success = true;
-            console.log('Continue the conversation... somehow');
+            console.log('Continue the conversation... somehow \n');
             conversation.end();
             resolve();
           } else {
             response.success = true;
-            console.log('Conversation Complete');
-            // if(outputFileStream) outputFileStream.end()
+            console.log('Conversation Complete \n');
+            fileStream.end()
+            //self.joinAudio();
             conversation.end();
             resolve(response);
           }
         })
         .on('error', (error) => {
-          reject(error)
+          console.log(`Something went wrong: ${error}`)
+          response.success = false;
+          response.error = error;
+          reject(response)
         });
     })
   },
 
-  setUser: function(config, n) {
+  setUser: function(n) {
     // set default assistant to first user
-    assistant = Object.keys(config.assistants)[0];
-    assistant = config.assistants[`${assistant}`];
+    assistant = Object.keys(global.config.assistants)[0];
+    assistant = global.config.assistants[`${assistant}`];
 
     // check to see if user passed exists
     if(n) {
-      const users = Object.keys(config.users);
+      const users = Object.keys(global.config.users);
       if(!users.includes(n.toLowerCase())) {
-        console.log(`User not found, using ${Object.keys(config.assistants)[0]}`)
+        console.log(`User not found, using ${Object.keys(global.config.assistants)[0]} \n`)
       } else {
         n = n.toLowerCase();
-        console.log(`User specified was ${n}`)
-        assistant = config.assistants[`${n}`]
+        console.log(`User specified was ${n} \n`)
+        assistant = global.config.assistants[`${n}`]
       }
     } else {
-      console.log(`No user specified, using ${Object.keys(config.assistants)[0]}`)
+      console.log(`No user specified, using ${Object.keys(global.config.assistants)[0]} \n`)
     }
 
     return assistant;
-  }
+  },
+
+  outputFileStream: function() {
+    return new FileWriter(path.resolve(__dirname, 'response.wav'), {
+      sampleRate: global.config.conversation.audio.sampleRateOut,
+      channels: 1
+    });
+  },
+
+  joinAudio: function() {
+    if(!inputFiles.length) {
+      playbackWriter.end("done");
+      return;
+    }
+
+    currentFile = inputFiles.shift()
+    let stream = fs.createReadStream(currentFile);
+    stream.pipe(playbackWriter, {end: false});
+    stream.on('end', () => {
+        console.log(currentFile, "appended")
+        self.joinAudio()
+    });
+
+  },
 }

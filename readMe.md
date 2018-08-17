@@ -37,20 +37,20 @@ This process will continue for each user you added to the config file.*
 
 If you want your Google Home to speak the response, make sure you pass a new parameter called "converse" as `true`.
 
-## Custom Broadcast
+## Broadcast
 
-To send a Broadcast command, simply send a HTTP Post request:
+To send a Broadcast command, simply send a HTTP POST request:
 
-    http://<ip_address>:<port>/customBroadcast
+    http://<ip_address>:<port>/broadcast
 
-with the following json-encoded parameters:
+with the following parameters:
 
-    text: hello world
+    command: hello world
     user: <user in config>
 
 The full request would be:
 
-    curl -X POST -H 'Content-type: application/json' -d '{"text": "hello world", "user": "<user in config>"}' http://<ip_address>:<port>/customBroadcast
+    http://<ip_address>:<port>/broadcast?command="hello world"&user="greg"
 
 The Google Home device will now play an audio alert, and say `Hello World`
 
