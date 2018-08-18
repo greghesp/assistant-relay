@@ -6,11 +6,11 @@ const sendAudioInput = require('./assistant').sendAudioInput;
 
 
 routes.post('/assistant', function (req, res) {
-  let command = req.query.command;
-  const broadcast = req.query.broadcast;
-  const user = req.query.user;
-  const converse = req.query.converse;
-  const preset = req.query.preset;
+  let command = req.body.command;
+  const broadcast = req.body.broadcast;
+  const user = req.body.user;
+  const converse = req.body.converse;
+  const preset = req.body.preset;
 
   //if no command passed, return 400
   if(!command) return res.status(400).json({success: false, error: "No command given"})

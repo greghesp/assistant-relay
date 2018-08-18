@@ -52,7 +52,7 @@ Simply send a HTTP POST request to `http://<ip_address>:<port>/assistant` with t
 
 ## Broadcast
 
-To send a Broadcast command, simply send a HTTP POST request with the following parameters
+To send a Broadcast command, simply send a HTTP POST request with the following json-encoded body parameters
 
     command: hello world
     user: <user in config>
@@ -66,7 +66,7 @@ The Google Home device will now play an audio alert, and say `Hello World`
 
 ## Custom commands
 
-If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following parameters:
+If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following json-encoded body parameters:
 
     command: tell me a joke
     user: <user in config>
@@ -81,7 +81,7 @@ If you want Assistant Relay to broadcast the response from Assistant, set the co
 
 Google Assistant supports a number of preset broadcasts out of the box, that come with sound effects and other surprises that can be found [here](https://support.google.com/googlehome/answer/7531913?co=GENIE.Platform=Android&hl=en).
 
-To make use of these presets, send a request with the following parameters
+To make use of these presets, send a request with the following json-encoded body parameters
 
     preset: <command>
     user: <user in config>
