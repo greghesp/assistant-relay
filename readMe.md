@@ -4,9 +4,16 @@
 
 **Note: This is a work in progress. Things might break, things might not work, and not all features exist yet.   If you want to test this, I suggest you set it up to run alongside your V1.0 installation**
 
-Assistant Relay is a Node.js server. It's exposed with SSDP, and runs an Express Web Server that allows for commands to be sent to the Google Assistant.
+Assistant Relay is a Node.js server. It's exposed with an Express Web Server that allows for commands to be sent to the Google Assistant.
 
 It also supports the Google Home Broadcast command, so unlike other TTS solutions that cast audio, Assistant Relay allows you to send audio notifications to your Google Home devices, without interrupting music.
+
+## New in V2.0
+
+- JSON responses for all requests
+- Access to Google Assistant audio Responses
+- 1 endpoint for all requests
+- Improved setup process removing manual user configuration
 
 # Installation
 
@@ -15,6 +22,7 @@ Download a copy of this repository and then use `npm install` to get started
 ## Configuration
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
+
 **Note: When creating an Oauth Client ID, make sure you use the "Other" application type**
 
 Once you have downloaded your client secret file, rename the file to your chosen user name.  For example: `greg.json`.  Once renamed, copy your OAuth file to the folder `server\configurations\secrets`
@@ -33,32 +41,79 @@ Once signed in, a code will be presented to you.  Copy this code into the termin
 *Note: If your web browser does not open, follow the instructions in the terminal
 This process will continue for each user you added to the config file.*
 
+---
+
 # Issuing a command
 
 If you want your Google Home to speak the response, make sure you pass a new parameter called "converse" as `true`.
+In version 2, the endpoint for all interactions with Google Assistant is simple `/assistant`
+Simply send a HTTP POST request to `http://<ip_address>:<port>/assistant` with the parameters below
+
 
 ## Broadcast
 
-To send a Broadcast command, simply send a HTTP POST request:
-
-    http://<ip_address>:<port>/broadcast
-
-with the following parameters:
+To send a Broadcast command, simply send a HTTP POST request with the following parameters
 
     command: hello world
     user: <user in config>
+    broadcast: true
 
 The full request would be:
 
-    http://<ip_address>:<port>/broadcast?command="hello world"&user="greg"
+    http://<ip_address>:<port>/broadcast?command="hello world"&user="greg"&broadcast=true
 
 The Google Home device will now play an audio alert, and say `Hello World`
 
 ## Custom commands
 
-If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following request:
+If you want to send a custom command to the Google Home (anything that would follow 'OK Google'), use the following parameters:
 
-    http://<ip_address>:<port>/custom?command=<custom command>&user=<config file user name>
+    command: tell me a joke
+    user: <user in config>
+
+If you want Assistant Relay to broadcast the response from Assistant, set the converse parameter to true
+
+    command: tell me a joke
+    user: <user in config>
+    converse: true
+
+## Preset Broadcasts
+
+Google Assistant supports a number of preset broadcasts out of the box, that come with sound effects and other surprises that can be found [here](https://support.google.com/googlehome/answer/7531913?co=GENIE.Platform=Android&hl=en).
+
+To make use of these presets, send a request with the following parameters
+
+    preset: <command>
+    user: <user in config>
+
+**Available Commands**
+
+  - wakeup
+  - breakfast
+  - lunch
+  - dinner
+  - timetoleave
+  - arrivedhome
+  - ontheway
+  - movietime
+  - tvtime
+  - bedtime
+
+*Note: Some of these preconfigured commands also say who triggered the command, such as the 'on the way' command. Make sure you pass the correct username in the user parameter, otherwise it will use the first user you setup*
+
+# Responses
+
+For each request sent, Assistant Relay will now response with a JSON message.  The message can contain the following fields:
+
+**success** - A boolean field to declare if the command was successful
+
+**audio** - A url that will playback to audio response from Google Assistant when a GET request is made to it
+
+**response** - The text response from Google Assistant
+
+**error** - The error message from Google Assistant
+
+---
 
 # Credit
 This project uses the google-assistant repository from endoplasmic

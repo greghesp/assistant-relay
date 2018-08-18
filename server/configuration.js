@@ -16,7 +16,7 @@ const self = module.exports = {
 
       // loop through the secrets folder. Add new files to newFiles array
       fs.readdirSync(secretsFolder).forEach(file => {
-        secrets.push(file)
+        if(file.split('.').pop() === 'json') secrets.push(file)
       })
 
       // wipe users

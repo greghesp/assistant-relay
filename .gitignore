@@ -1,3 +1,3 @@
-*client_secret*.json
-*-tokens.json
+/server/configurations/secrets/*
+/server/configurations/tokens/*
 /node_modules
