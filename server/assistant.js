@@ -73,47 +73,27 @@ var self = module.exports = {
   sendAudioInput: function() {
     let raw = []
     const assistant = self.setUser('greg');
-    var file = fs.createReadStream(`${path.resolve(__dirname, 'response.wav')}`);
-    const reader = new FileReader();
-
-    // var format;
-    // var data = [];
-    // file.pipe(reader)
-    //
-    // reader.on('format', function (f) {
-    //     format = f;
-    // });
-    //
-    // reader.on('readable', function () {
-    //     console.log(reader.read())
-    //     raw = raw.concat(reader.read());
-    // });
-
-    //reader.on("end", function () {
-        assistant.start(global.config.conversation, (conversation) => {
-          conversation.write(file)
-           return self.startConversation(conversation)
-           .then((data) => {
-             console.log(data)
-             //resolve(data)
-           })
-           .catch((err) => {
-             console.log(err)
-             //reject(err)
-           })
-         });
-    //});
-
-
-
-
-
+    fs.readFile(`${path.resolve(__dirname, 'response.wav')}`, (err, file) => {
+      if(err) console.log(err)
+      assistant.start(global.config.conversation, (conversation) => {
+         return self.startConversation(conversation, file)
+         .then((data) => {
+           console.log(data)
+           //resolve(data)
+         })
+         .catch((err) => {
+           console.log(err)
+           //reject(err)
+         })
+       });
+    });
   },
 
-  startConversation: function(conversation, outputFileStream) {
+  startConversation: function(conversation, file) {
     let response = {};
     const fileStream = self.outputFileStream();
     return new Promise((resolve, reject) => {
+      conversation.write(file)
       conversation
         .on('audio-data', data => {
           fileStream.write(data)
