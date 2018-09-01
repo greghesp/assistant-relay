@@ -2,6 +2,8 @@ const async = require('async');
 const GoogleAssistant = require('google-assistant');
 const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
+//const wavFileInfo = require('wav-file-info');
+
 const ip = require('ip');
 const terminalImage = require('terminal-image');
 const path = require('path');
@@ -17,6 +19,7 @@ var playbackWriter = new FileWriter('server/playback.wav', {
   sampleRate: 24000,
   channels: 1
 });
+
 
 const inputFiles = [
   `${path.resolve(__dirname, 'broadcast.wav')}`,
@@ -125,7 +128,7 @@ var self = module.exports = {
           response.action = `Device Action is ${action}`;
         })
         .on('ended', (error, continueConversation) => {
-          if (error) {
+                    if (error) {
             console.log('Conversation Ended Error:', error);
             response.success = false;
             reject(response)
@@ -140,6 +143,7 @@ var self = module.exports = {
             fileStream.end()
             //self.joinAudio();
             conversation.end();
+
             resolve(response);
           }
         })
