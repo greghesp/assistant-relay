@@ -60,7 +60,8 @@ To send a Broadcast command, simply send a HTTP POST request with the following 
 
 The full request would be:
 
-    http://<ip_address>:<port>/broadcast?command="hello world"&user="greg"&broadcast=true
+    curl -d '{"command":"hello world", "user":"greg", "broadcast":"true"}' -H "Content-Type: application/json" -X POST http://<ip_address>:<port>/assistant
+
 
 The Google Home device will now play an audio alert, and say `Hello World`
 
