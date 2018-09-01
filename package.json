@@ -33,6 +33,7 @@
     "prompt": "^1.0.0",
     "speaker": "^0.4.1",
     "terminal-image": "^0.1.1",
-    "wav": "^1.0.2"
+    "wav": "^1.0.2",
+    "wav-file-info": "0.0.8"
   }
 }

@@ -2,6 +2,8 @@ const async = require('async');
 const GoogleAssistant = require('google-assistant');
 const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
+//const wavFileInfo = require('wav-file-info');
+
 const ip = require('ip');
 const terminalImage = require('terminal-image');
 const path = require('path');
@@ -17,6 +19,7 @@ var playbackWriter = new FileWriter('server/playback.wav', {
   sampleRate: 24000,
   channels: 1
 });
+
 
 const inputFiles = [
   `${path.resolve(__dirname, 'broadcast.wav')}`,
