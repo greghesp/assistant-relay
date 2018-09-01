@@ -128,7 +128,7 @@ var self = module.exports = {
           response.action = `Device Action is ${action}`;
         })
         .on('ended', (error, continueConversation) => {
-                    if (error) {
+          if (error) {
             console.log('Conversation Ended Error:', error);
             response.success = false;
             reject(response)
