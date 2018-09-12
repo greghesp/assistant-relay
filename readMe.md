@@ -2,7 +2,7 @@
 
 # Assistant Relay v2.0!
 
-**Note: This is a work in progress. Things might break, things might not work, and not all features exist yet.   If you want to test this, I suggest you set it up to run alongside your V1.0 installation**
+**Note: V1 is no longer supported. There is no upgrade path to V2, simply save your existing auth file, download V2 to a new folder and away you go**
 
 Assistant Relay is a Node.js server. It's exposed with an Express Web Server that allows for commands to be sent to the Google Assistant.
 
