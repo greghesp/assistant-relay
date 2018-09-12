@@ -23,6 +23,10 @@ Download a copy of this repository and then use `npm install` to get started
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
 
+Once your project is setup, you can enable the Google Assistant API and get the credentials OAuth file from here:
+https://console.developers.google.com/apis/api/embeddedassistant.googleapis.com/overview
+Just select your project from the top left
+
 **Note: When creating an Oauth Client ID, make sure you use the "Other" application type**
 
 Once you have downloaded your client secret file, rename the file to your chosen user name.  For example: `greg.json`.  Once renamed, copy your OAuth file to the folder `server\configurations\secrets`
