@@ -8,7 +8,7 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const config = require('./configurations/config.json');
+const config = require('./server/configurations/config.json');
 
 rl.question(`What do you want to do? (Enter 1 or 2):
 1) Change port
