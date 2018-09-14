@@ -19,6 +19,8 @@ It also supports the Google Home Broadcast command, so unlike other TTS solution
 
 Download a copy of this repository and then use `npm install` to get started
 
+*Note: If your install fails due to the "Speaker" module, try installing with the production parameter: `npm i --production`*
+
 ## Configuration
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
