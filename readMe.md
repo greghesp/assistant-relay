@@ -19,8 +19,6 @@ It also supports the Google Home Broadcast command, so unlike other TTS solution
 
 Download a copy of this repository and then use `npm install` to get started
 
-*Note: If your install fails due to the "Speaker" module, try installing with the production parameter: `npm i --production`*
-
 ## Configuration
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
@@ -108,6 +106,8 @@ To make use of these presets, send a request with the following json-encoded bod
 
 *Note: Some of these preconfigured commands also say who triggered the command, such as the 'on the way' command. Make sure you pass the correct username in the user parameter, otherwise it will use the first user you setup*
 
+---
+
 # Responses
 
 For each request sent, Assistant Relay will now response with a JSON message.  The message can contain the following fields:
@@ -119,6 +119,18 @@ For each request sent, Assistant Relay will now response with a JSON message.  T
 **response** - The text response from Google Assistant
 
 **error** - The error message from Google Assistant
+
+---
+
+# Broadcasting to specific Google Homes
+
+This functionality is not supported by Google, and as such you have to put a work around in place.
+
+To do this, you will need to create a new Google account, and then connect the Google Home devices you want to put into a broadcast "group".
+
+Once you have this new Google Account, continue the setup as per above and give the OAuth file a name of your choice.  When you then broadcast, pass this name as the user fields
+
+For example, if I wanted to broadcast only to my Living Room Home, I would setup a new Google Account and link ONLY my Living Room Home to this account. I'd download the OAuth file and then rename it to "LivingRoom.json".  Then when sending a command to Assistant Relay, I would use the username "LivingRoom"
 
 ---
 
