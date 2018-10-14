@@ -6,12 +6,12 @@
       "sampleRateIn": 24000
     }
   },
-  "users": {
-    "greg": {
-      "keyFilePath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\secrets\\greg.json",
-      "savedTokensPath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\tokens\\greg-tokens.json"
-    }
-  },
+  "users": {},
   "port": "3000",
+  "muteStartup": true,
+  "quietHours": {
+    "start": 21,
+    "end": 8
+  },
   "assistants": {}
 }

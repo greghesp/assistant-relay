@@ -15,6 +15,16 @@ const sendTextInput = require('./assistant').sendTextInput;
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use( function( req, res, next ) {
+	const d = new Date();
+	if (global.config.quietHours && (global.config.quietHours.start >= d.getHours() || global.config.quietHours.end < d.getHours())) {
+		res.status(420).send("Dude, chill, it's quiet time!");
+	} else {
+		next();
+	}
+});
+
 app.use('/', routes);
 app.use('/dashboard', dashboard)
 app.use('/audio', audio)
