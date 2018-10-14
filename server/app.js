@@ -18,11 +18,13 @@ app.use(bodyParser.json());
 
 app.use( function( req, res, next ) {
 	const d = new Date();
-	if (global.config.quietHours && (global.config.quietHours.start >= d.getHours() || global.config.quietHours.end < d.getHours())) {
+	const now = d.getHours();
+	if (global.config.quietHours !== undefined && (global.config.quietHours.start <= now || global.config.quietHours.end >= now)) {
+		console.log('Got a command during quiet hours (start: ' + global.config.quietHours.start + ', end: ' + global.config.quietHours.end + ' now: ' + now + '). Ignoring.');
 		res.status(420).send("Dude, chill, it's quiet time!");
-	} else {
-		next();
+		return;
 	}
+	next();
 });
 
 app.use('/', routes);

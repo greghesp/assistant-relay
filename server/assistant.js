@@ -4,7 +4,6 @@ const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
 //const wavFileInfo = require('wav-file-info');
 
-const ip = require('ip');
 const terminalImage = require('terminal-image');
 const path = require('path');
 const fs = require("fs");
@@ -45,7 +44,7 @@ var self = module.exports = {
         (async() => {
           console.log(await terminalImage.file('./icon.png'))
           console.log(`Assistant Relay is now setup and running for${users.map(u => ` ${u}`)} \n`)
-          console.log(`You can now visit ${ip.address()}:${global.config.port} in a browser, or send POST requests to it`);
+          console.log(`You can now visit ${global.config.baseUrl} in a browser, or send POST requests to it`);
         })();
         if (!global.config.muteStartup) {
 		self.sendTextInput('broadcast Assistant Relay is now setup and running')
@@ -103,7 +102,7 @@ var self = module.exports = {
         .on('audio-data', data => {
           fileStream.write(data)
           // set a random parameter on audio url to prevent caching
-          response.audio = `http://${ip.address()}:${global.config.port}/audio?v=${Math.floor(Math.random() *  100)}`
+          response.audio = `http://${global.config.baseUrl}/audio?v=${Math.floor(Math.random() *  100)}`
         })
         .on('response', (text) => {
           if (text) {
