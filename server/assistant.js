@@ -47,7 +47,9 @@ var self = module.exports = {
           console.log(`Assistant Relay is now setup and running for${users.map(u => ` ${u}`)} \n`)
           console.log(`You can now visit ${ip.address()}:${global.config.port} in a browser, or send POST requests to it`);
         })();
-        self.sendTextInput('broadcast Assistant Relay is now setup and running')
+        if (!global.config.muteStartup) {
+		self.sendTextInput('broadcast Assistant Relay is now setup and running')
+	}
         resolve()
       })
     })
