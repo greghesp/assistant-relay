@@ -1,4 +1,12 @@
 {
+  "__INSTRUCTIONS": "change port below to the port you want the app to listen on.  Set baseUrl to the address reachable from the google home devices to the app.  Normally this is just your server's IP and the specified port, but if you are running the app through a reverse proxy like nginx, you may have to tweak this setting.  One suggestion is to set up a dyndns.org name and install client on your server to update it any time your IP changes, then put the name in baseName instead of IP.",
+  "port": "3000",
+  "muteStartup": true,
+  "quietHours": {
+    "start": 21,
+    "end": 8
+  },
+  "baseUrl": "http://your.ip.address:port",
   "conversation": {
     "language": "en-US",
     "audio": {
@@ -6,12 +14,6 @@
       "sampleRateIn": 24000
     }
   },
-  "users": {
-    "greg": {
-      "keyFilePath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\secrets\\greg.json",
-      "savedTokensPath": "C:\\Users\\greg_\\Documents\\Node\\assistant-relay\\server\\configurations\\tokens\\greg-tokens.json"
-    }
-  },
-  "port": "3000",
+  "users": {},
   "assistants": {}
 }
