@@ -13,7 +13,7 @@ routes.post('/assistant', function (req, res) {
   const preset = req.body.preset;
 
   //if no command passed, return 400
-  if(!command) return res.status(400).json({success: false, error: "No command given"})
+  if(!command || !preset) return res.status(400).json({success: false, error: "No command given"})
 
   if(preset) {
     broadcast = true;
