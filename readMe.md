@@ -8,6 +8,12 @@ Assistant Relay is a Node.js server. It's exposed with an Express Web Server tha
 
 It also supports the Google Home Broadcast command, so unlike other TTS solutions that cast audio, Assistant Relay allows you to send audio notifications to your Google Home devices, without interrupting music.
 
+## New in V2.1
+
+- Quiet Hours - thanks joeqread
+- Mute Startup - thanks joeqread
+- Bug fix for presets
+
 ## New in V2.0
 
 - JSON responses for all requests
@@ -20,6 +26,7 @@ It also supports the Google Home Broadcast command, so unlike other TTS solution
 Download a copy of this repository and then use `npm install` to get started
 
 ## Configuration
+### Creating Users
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
 
@@ -33,6 +40,19 @@ Once you have downloaded your client secret file, rename the file to your chosen
 
 When Assistant Relay is ran, it will automatically configure itself to according to the files in the secrets folder.  These are also the usernames you can now pass with your queries.  For example, the username for `greg.json` is `greg`
 
+### Configuring the Relay
+
+At the moment, the functionality of the config builder is limited. You can manually edit the `config.json` file found in `/server/configurations` to set this up.
+
+**Only edit the fields below**
+
+| Field | Decription |
+|---|---|
+|port|What local port do you want Assistant Relay to listen on?|
+|muteStartup|`true` or `false` - Will mute the startup announcement|
+|quietHours|Whole numbers only. Sets the hours between which Assistant Relay will ignore commands|
+|baseUrl|The port and URL to access your Assistant Relay instance on. This will normally be the machines local IP address, followed by the port set above. i.e. http://192.168.1.102:3000 You can set this to an external URL using dyndns or similar if you wish to access from outside your network|
+|muteStartup|`true` or `false` - Will mute the startup announcement|
 
 ## Running the Relay
 
