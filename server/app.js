@@ -13,16 +13,23 @@ const setupConfigVar = require('./configuration').setupConfigVar;
 const setupAssistant = require('./assistant').setupAssistant;
 const sendTextInput = require('./assistant').sendTextInput;
 
+const HOURS = 24;
+
 const app = express();
 app.use(bodyParser.json());
 
 app.use( function( req, res, next ) {
-	const d = new Date();
-	const now = d.getHours();
-	if (global.config.quietHours !== undefined && (global.config.quietHours.start <= now || global.config.quietHours.end >= now)) {
-		console.log('Got a command during quiet hours (start: ' + global.config.quietHours.start + ', end: ' + global.config.quietHours.end + ' now: ' + now + '). Ignoring.');
-		res.status(420).send("Dude, chill, it's quiet time!");
-		return;
+	if (global.config.quietHours) {
+		const d = new Date();
+		let now = d.getHours();
+		let { start, end } = global.config.quietHours;
+		end += (start > end) ? HOURS : 0;
+		now += (start > now) ? HOURS : 0;
+		if (start <= now && end > now) {
+			console.log(`Got a command during quiet hours (start: ${global.config.quietHours.start}, end: ${global.config.quietHours.end}, now: ${now}). Ignoring.`);
+			res.status(420).send("Dude, chill, it's quiet time!");
+			return;
+		}
 	}
 	next();
 });
