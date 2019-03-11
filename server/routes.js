@@ -69,4 +69,8 @@ routes.post('/t', (req, res) => {
   sendAudioInput();
 })
 
+routes.get('/status', (req, res) => {
+    res.status(200).json({ running: true })
+})
+
 module.exports = routes;
