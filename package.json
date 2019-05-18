@@ -22,12 +22,11 @@
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.6.1",
     "body-parser": "^1.18.3",
     "buffer-to-uint8array": "^1.1.0",
     "cli-color": "^1.2.0",
     "express": "^4.16.3",
-    "google-assistant": "^0.2.0",
+    "google-assistant": "^0.5.4",
     "ip": "^1.1.5",
     "lowdb": "^1.0.0",
     "prompt": "^1.0.0",
