@@ -132,7 +132,7 @@ const self = module.exports = {
                         console.log(`Google Assistant: ${text} \n`);
                         response.response = text;
                         if (returnAudio) {
-                            await self.sendTextInput(`broadcast ${text}`, 'juan', gConfig);
+                            await self.sendTextInput(`broadcast ${text}`, undefined, gConfig);
                             returnAudio = false;
                         }
                     }
