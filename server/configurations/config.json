@@ -6,7 +6,7 @@
     "start": 21,
     "end": 8
   },
-  "baseUrl": "http://your.ip.address:port",
+  "baseUrl": "your.ip.address:port",
   "conversation": {
     "language": "en-US",
     "audio": {
