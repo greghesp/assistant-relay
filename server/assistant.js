@@ -102,7 +102,7 @@ var self = module.exports = {
         .on('audio-data', data => {
           fileStream.write(data)
           // set a random parameter on audio url to prevent caching
-          response.audio = `http://${global.config.baseUrl}/audio?v=${Math.floor(Math.random() *  100)}`
+          response.audio = `${global.config.baseUrl}/audio?v=${Math.floor(Math.random() *  100)}`
         })
         .on('response', (text) => {
           if (text) {
