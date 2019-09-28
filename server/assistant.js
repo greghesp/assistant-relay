@@ -1,16 +1,11 @@
 const async = require('async');
 const GoogleAssistant = require('google-assistant');
-const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
-//const wavFileInfo = require('wav-file-info');
 
 const terminalImage = require('terminal-image');
 const path = require('path');
 const fs = require("fs");
-var tou8 = require('buffer-to-uint8array');
 
-
-const defaultAudio = false;
 let returnAudio;
 let gConfig;
 
@@ -75,7 +70,6 @@ var self = module.exports = {
   },
 
   sendAudioInput: function() {
-    let raw = []
     const assistant = self.setUser('greg');
     fs.readFile(`${path.resolve(__dirname, 'response.wav')}`, (err, file) => {
       if(err) console.log(err)
