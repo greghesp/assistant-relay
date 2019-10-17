@@ -1,6 +1,0 @@
-server/configurations/secrets
-server/configurations/tokens
-server/response.wav
-server/playback.wav
-node_modules
-npm-debug.log
