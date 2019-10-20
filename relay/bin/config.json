@@ -1,0 +1,71 @@
+{
+  "port": "3000",
+  "muteStartup": true,
+  "quietHours": {
+    "enabled": false,
+    "start": 21,
+    "end": 8
+  },
+  "baseUrl": "http://your.ip.address:port",
+  "conversation": {
+    "language": "en-US",
+    "audio": {
+      "encodingIn": "LINEAR16",
+      "sampleRateIn": 16000,
+      "encodingOut": "LINEAR16",
+      "sampleRateOut": 24000
+    },
+    "isNew": true,
+    "screen": {
+      "isOn": false
+    }
+  },
+  "users": [
+    {
+      "name": "greg",
+      "secret": {
+        "installed": {
+          "client_id": "402497812242-43nca4tm14a3bfue1nrc6v5jq5tp609n.apps.googleusercontent.com",
+          "project_id": "assistant-relay-26045",
+          "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+          "token_uri": "https://oauth2.googleapis.com/token",
+          "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+          "client_secret": "7-0EpG4n6kEPK1S5-lH_wThC",
+          "redirect_uris": [
+            "urn:ietf:wg:oauth:2.0:oob",
+            "http://localhost"
+          ]
+        }
+      },
+      "oauthClient": {
+        "_events": {},
+        "_eventsCount": 0,
+        "transporter": {},
+        "credentials": {
+          "access_token": "ya29.Il-iB9AK9Kw68E7Ip1VS9Lhl1NCAI2BwPi3jhvr7-Pcfxry4cCTcDxGeIbyBuk14EjtwWovkEpjPeFER9-WVTIDW63NIpow6xC6q1MrtBJj5_6mo-u70ygJrRWGci8L3DA",
+          "refresh_token": "1/RZkeMt4oogb2I9_njKdzN5MRQH6fzXgdmbkrogOSE84",
+          "scope": "https://www.googleapis.com/auth/assistant-sdk-prototype",
+          "token_type": "Bearer",
+          "expiry_date": 1571410496414
+        },
+        "certificateCache": {},
+        "certificateExpiry": null,
+        "certificateCacheFormat": "PEM",
+        "refreshTokenPromises": {},
+        "_clientId": "402497812242-43nca4tm14a3bfue1nrc6v5jq5tp609n.apps.googleusercontent.com",
+        "_clientSecret": "7-0EpG4n6kEPK1S5-lH_wThC",
+        "redirectUri": "urn:ietf:wg:oauth:2.0:oob",
+        "eagerRefreshThresholdMillis": 300000,
+        "forceRefreshOnFailure": false
+      },
+      "tokens": {
+        "access_token": "ya29.Il-iB9AK9Kw68E7Ip1VS9Lhl1NCAI2BwPi3jhvr7-Pcfxry4cCTcDxGeIbyBuk14EjtwWovkEpjPeFER9-WVTIDW63NIpow6xC6q1MrtBJj5_6mo-u70ygJrRWGci8L3DA",
+        "refresh_token": "1/RZkeMt4oogb2I9_njKdzN5MRQH6fzXgdmbkrogOSE84",
+        "scope": "https://www.googleapis.com/auth/assistant-sdk-prototype",
+        "token_type": "Bearer",
+        "expiry_date": 1571410496414
+      }
+    }
+  ],
+  "assistants": []
+}

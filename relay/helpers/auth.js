@@ -1,0 +1,46 @@
+'use strict';
+
+const EventEmitter = require('events');
+const util = require('util');
+const grpc = require('grpc');
+const open = require('open');
+const readline = require('readline');
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const {OAuth2Client} = require('google-auth-library');
+
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const adapter = new FileSync('./bin/config.json');
+
+
+exports.auth =  async function(keyData, name) {
+    try {
+        const db = await low(adapter);
+        const key = keyData.installed || keyData.web;
+        const oauthClient = new OAuth2Client(key.client_id, key.client_secret, key.redirect_uris[0]);
+        return oauthClient.generateAuthUrl({
+            access_type: 'offline',
+            scope: ['https://www.googleapis.com/auth/assistant-sdk-prototype'],
+        });
+    } catch (e) {
+        console.log("processTokens", e)
+    }
+};
+
+exports.processTokens = async function(oauthCode, name) {
+    try {
+        const db = await low(adapter);
+        let tokens;
+        const user = await db.get('users').find({name}).value();
+        const key = user.secret.installed || user.secret.web;
+        const oauthClient = new OAuth2Client(key.client_id, key.client_secret, key.redirect_uris[0]);
+        const r = await oauthClient.getToken(oauthCode);
+        oauthClient.setCredentials(r.tokens);
+        await db.get('users').chain().find({name: name}).assign({oauthClient: oauthClient, tokens: r.tokens}).write();
+        return oauthClient;
+    } catch (e) {
+        console.log("processTokens", e)
+    }
+};
