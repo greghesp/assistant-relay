@@ -15,6 +15,7 @@ function SetupWiz() {
         {
             title: 'Setting up your Project',
             content: <GetJson
+                previous={() => prev()}
                 next={() => next()}/>,
         },
         {
@@ -53,14 +54,6 @@ function SetupWiz() {
                 ))}
             </Steps>
             <div className="steps-content">{steps[current].content}</div>
-        </div>
-    )
-}
-
-function test() {
-    return (
-        <div>
-            Some content
         </div>
     )
 }

@@ -1,20 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 
-var app = express();
+const app = express();
+
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const adapter = new FileSync('./bin/config.json');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/build')));

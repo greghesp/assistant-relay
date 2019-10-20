@@ -24,6 +24,8 @@ function App() {
     async function getUserCount() {
         try {
             const response = await post({}, 'userCount');
+            console.log(response)
+            if(response.data.size <= 0) await post({}, 'init');
             setUserCount(response.data.size);
             setLoading(false)
         } catch (e) {
