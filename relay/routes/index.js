@@ -50,7 +50,10 @@ router.post('/init', async(req, res) => {
 router.post('/addUser', async(req, res) => {
   try {
     const db = await low(adapter);
-    db.get('users').push(req.body).write();
+    const userFound =  await db.get('users').find({name: req.body.name}).size().value();
+    if(userFound > 0) return res.status(400).send("Username already exists")
+
+    await db.get('users').push(req.body).write();
     const url = await auth(req.body.secret, req.body.name);
     res.status(200).send({url});
   } catch (e) {
@@ -80,10 +83,9 @@ router.post('/userCount',async(req, res) => {
     const size = db.get('users').size().value();
     res.status(200).send({size});
   } catch (e) {
-    console.log(e)
     res.status(500).send(e.message)
   }
-})
+});
 
 router.post('/getConfig', async(req, res, next) => {
   try {
