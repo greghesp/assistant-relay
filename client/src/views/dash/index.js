@@ -9,8 +9,9 @@ function Dash() {
         <div>
             <Menu/>
             <Switch>
-                <Route path="/dashboard" exact component={Home}/>
-                <Redirect to="/dashboard" />
+                <Route path="/home"  component={Home}/>
+                <Route path="/configuration"  component={Home}/>
+                <Redirect to="/home" />
             </Switch>
         </div>
     )
