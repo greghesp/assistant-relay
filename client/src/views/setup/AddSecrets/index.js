@@ -47,7 +47,7 @@ function AddSecrets({form, next, previous}) {
                         return next(values.name);
                     }
                 } catch (e) {
-                    message.error(e.message)
+                    message.error(e.response.data)
                 }
             }
         })
@@ -55,8 +55,8 @@ function AddSecrets({form, next, previous}) {
 
     return (
         <Styles.Container>
-            <Title>Setting up your accounts</Title>
-            <Paragraph>Now that you have the client secrets downloaded, you can import them into Assistant Relay below</Paragraph>
+            <Title level={2}>Setting up your account</Title>
+            <Paragraph>With your client secrets, you can import them into Assistant Relay below</Paragraph>
 
             <Form layout="inline" onSubmit={addUser}>
                 <Form.Item label="Users Name">

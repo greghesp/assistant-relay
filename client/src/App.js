@@ -12,6 +12,8 @@ import SetupWiz from '~/views/setup';
 import MenuNav from '~/views/dash/Menu';
 import Home from '~/views/dash/Home';
 import Configuration from '~/views/dash/Configuration';
+import AddUser from '~/views/dash/AddUser';
+import Sandbox from '~/views/dash/Sandbox';
 
 import {post} from '~/helpers/api';
 
@@ -43,7 +45,8 @@ function App() {
                 <Switch>
                     <Route path="/home" component={Home}/>
                     <Route path="/configuration" component={Configuration}/>
-
+                    <Route path="/addUser" component={AddUser}/>
+                    <Route path="/sandbox" component={Sandbox}/>
                     <Redirect to="/home" />
                 </Switch>
             </Dashboard>

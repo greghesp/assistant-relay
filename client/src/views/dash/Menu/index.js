@@ -23,7 +23,7 @@ function MenuContainer({history, location}) {
                 <Icon type="user-add" />
                 Add New User
             </Menu.Item>
-            <Menu.Item key="Test">
+            <Menu.Item key="sandbox">
                 <Icon type="code" />
                     Sandbox
             </Menu.Item>
