@@ -12,20 +12,8 @@ function Home({form}){
     const [initGet, setInitGet] = useState(true);
     const [startupSound, setStartupSound] = useState();
     const [port, setPort] = useState();
-    const [QHEnabled, setQHEnabled] = useState();
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
-
-    const formItemLayout = {
-        labelCol: {
-            xs: { span: 10 },
-            sm: { span: 5 },
-        },
-        wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 16 },
-        },
-    };
 
     useEffect(() => {
         getConfig()
@@ -39,9 +27,8 @@ function Home({form}){
 
     async function updateConfig() {
         try {
-            await delay(1000);
             const obj = {
-                muteStartup: !!startupSound,
+                muteStartup: startupSound,
                 port,
                 quietHours
             };
@@ -54,14 +41,12 @@ function Home({form}){
     async function getConfig() {
         try {
             const {data} = await post({}, 'getConfig');
+            console.log(data)
             setStartupSound(data.muteStartup);
             setPort(data.port);
-            setQHEnabled(data.quietHours.enabled);
-            if(data.quietHours.enabled) {
-                setQuietHours({start: data.quietHours.start, end: data.quietHours.end})
-            }
-            setLoading(false);
+            setQuietHours(data.quietHours);
             setInitGet(false);
+            setLoading(false);
         } catch (e) {
             message.error(e.message);
         }
@@ -76,14 +61,20 @@ function Home({form}){
     );
 
     function QuietHours() {
-        if(QHEnabled) {
+        if(quietHours.enabled) {
             return (
                 <Styles.QuietHours>
                     <Text>Start Time:</Text>
-                    <TimePicker defaultValue={moment('12:08', 'HH:mm')} format={'HH:mm'} />
+                    <TimePicker
+                        defaultValue={moment(quietHours.start, 'HH:mm')}
+                        format={'HH:mm'}
+                        onChange={(t,s) => setQuietHours({enabled: true, start: s, end: quietHours.end})}/>
 
                     <Text>End Time:</Text>
-                    <TimePicker defaultValue={moment('12:08', 'HH:mm')} format={'HH:mm'} />
+                    <TimePicker
+                        defaultValue={moment(quietHours.end, 'HH:mm')}
+                        format={'HH:mm'}
+                        onChange={(t,s) => setQuietHours({enabled: true, start: quietHours.start, end: s})}/>
                 </Styles.QuietHours>
             )
         }
@@ -93,12 +84,15 @@ function Home({form}){
     return (
         <Styles.Container>
             <Styles.Form>
-                <Text>Startup Sound:</Text>
+                <Text>Mute Startup Sound:</Text>
                 <Styles.Switch>
                     <Switch checkedChildren="On"
                             unCheckedChildren="Off"
-                            checked={!startupSound}
-                            onChange={(e) => setStartupSound(e) } />
+                            defaultChecked={startupSound}
+                            onChange={(e) => {
+                                console.log(e)
+                                setStartupSound(e)
+                            } } />
                 </Styles.Switch>
 
                 <Text>Port Number:</Text>
@@ -108,8 +102,8 @@ function Home({form}){
                 <Styles.Switch>
                     <Switch checkedChildren="On"
                             unCheckedChildren="Off"
-                            checked={QHEnabled}
-                            onChange={(e) => setQHEnabled(e) } />
+                            checked={quietHours.enabled}
+                            onChange={(e) => setQuietHours($ => ({...$, enabled: e}))} />
                 </Styles.Switch>
 
                 <div></div>

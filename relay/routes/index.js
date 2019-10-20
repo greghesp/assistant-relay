@@ -18,6 +18,37 @@ router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
+router.post('/init', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    await db.defaults({
+      port: 3000,
+      muteStartup: false,
+      quietHours: {
+        enabled: false,
+        start: 0,
+        end: 0
+      },
+      conversation: {
+        audio: {
+          encodingIn: 'LINEAR16',
+          sampleRateIn: 16000,
+          encodingOut: 'LINEAR16',
+          sampleRateOut: 24000,
+        },
+        lang: 'en-US',
+        screen: {
+          isOn: true,
+        }
+      },
+      users: []
+    }).write();
+    res.status(200).send();
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
 router.post('/addUser', async(req, res) => {
   try {
     const db = await low(adapter);
@@ -39,7 +70,7 @@ router.post('/processOAuth', async(req, res) => {
     const convo = db.get('conversation').value();
     convo.textQuery = "broadcast hello";
     await new Conversation(assistant, convo);
-    res.status(200);
+    res.status(200).send();
   } catch (e) {
     res.status(500).send(e.message)
   }
@@ -66,6 +97,19 @@ router.post('/getConfig', async(req, res, next) => {
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e.message)
+  }
+});
+
+router.post('/updateConfig', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    console.log(req.body)
+
+    Object.entries(req.body).forEach(([key, val]) => {
+      db.set(key, val).write();
+    });
+  } catch (e) {
+
   }
 });
 
