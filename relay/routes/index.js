@@ -12,8 +12,6 @@ const {auth, processTokens} = require('../helpers/auth');
 
 const router = express.Router();
 
-
-/* GET home page. */
 router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
@@ -103,13 +101,11 @@ router.post('/getConfig', async(req, res, next) => {
 router.post('/updateConfig', async(req, res) => {
   try {
     const db = await low(adapter);
-    console.log(req.body)
-
     Object.entries(req.body).forEach(([key, val]) => {
       db.set(key, val).write();
     });
   } catch (e) {
-
+    res.status(500).send(e.message)
   }
 });
 
