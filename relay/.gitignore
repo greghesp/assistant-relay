@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-/node_modules
-=======
 /node_modules
 /bin/config.json
->>>>>>> origin/v3
+/bin/audio-responses/*
+

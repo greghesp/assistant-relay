@@ -5,13 +5,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
+const {initializeServer} = require('./helpers/server');
+
+const serverRouter = require('./routes/server');
 const indexRouter = require('./routes/index');
 
 const app = express();
-
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const adapter = new FileSync('./bin/config.json');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -23,6 +22,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+global.assistants = {};
+
+(async function () {
+  try {
+    await initializeServer();
+    console.log("Assistant Relay Server Initialized");
+  } catch (e) {
+    console.log(e)
+  }
+})();
+
+
+app.use('/server', serverRouter);
 app.use('/', indexRouter);
 
 app.use(function(req, res, next) {
