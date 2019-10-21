@@ -1,70 +1,46 @@
 
 
-# Assistant Relay v2.0!
+# Assistant Relay v3.0!
 **Note: V3 is still in development. Please use version 2**
 
-**Note: V1 is no longer supported. There is no upgrade path to V2, simply save your existing auth file, download V2 to a new folder and away you go**
+Assistant Relay is a Node.js server that exposes the Google Assistant as a REST API.
 
-Assistant Relay is a Node.js server. It's exposed with an Express Web Server that allows for commands to be sent to the Google Assistant.
+Send Assistant Relay any query you would send the Google Assistant SDK, and get a response back.
 
-It also supports the Google Home Broadcast command, so unlike other TTS solutions that cast audio, Assistant Relay allows you to send audio notifications to your Google Home devices, without interrupting music.
+It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
-## New in V2.1
+## New in V3.0
 
-- Quiet Hours - thanks joeqread
-- Mute Startup - thanks joeqread
-- Bug fix for presets
-
-## New in V2.0
-
-- JSON responses for all requests
+- Removed reliance on console commands
+- Completely configurable from a dashboard
 - Access to Google Assistant audio Responses
-- 1 endpoint for all requests
-- Improved setup process removing manual user configuration
+- See your Assistant Relay commands on the dashboard (Coming Soon)
+- Listen to your history of audio responses (Coming Soon)
+- Force visual response from Assistant, pass back to response or view in dashboard (Coming Soon)
+- Sandbox mode to test requests from dashboard (Coming Soon)
 
 # Installation
 
 Download a copy of this repository and then use `npm install` to get started
 
+Note: If you cloned this repo, you will need to execute the command in both the relay and client folder as the interface is not packaged
+
+
 ## Configuration
 ### Creating Users
 
-Assistant Relay requires you to download an OAuth2 JSON file from Google.  To do this, please follow this guide: https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account
-
-Once your project is setup, you can enable the Google Assistant API and get the credentials OAuth file from here:
-https://console.developers.google.com/apis/api/embeddedassistant.googleapis.com/overview
-Just select your project from the top left
-
-**Note: When creating an Oauth Client ID, make sure you use the "Other" application type**
-
-Once you have downloaded your client secret file, rename the file to your chosen user name.  For example: `greg.json`.  Once renamed, copy your OAuth file to the folder `server\configurations\secrets`
-
-When Assistant Relay is ran, it will automatically configure itself to according to the files in the secrets folder.  These are also the usernames you can now pass with your queries.  For example, the username for `greg.json` is `greg`
+Assistant Relay requires you to download an OAuth2 JSON file from Google.  
+Follow the instructions from step one of the Setup Wizard
 
 ### Configuring the Relay
 
-At the moment, the functionality of the config builder is limited. You can manually edit the `config.json` file found in `/server/configurations` to set this up.
-
-**Only edit the fields below**
-
-| Field | Decription |
-|---|---|
-|port|What local port do you want Assistant Relay to listen on?|
-|muteStartup|`true` or `false` - Will mute the startup announcement|
-|quietHours|Whole numbers only. Sets the hours between which Assistant Relay will ignore commands|
-|baseUrl|The port and URL to access your Assistant Relay instance on. This will normally be the machines local IP address, followed by the port set above. i.e. http://192.168.1.102:3000 You can set this to an external URL using dyndns or similar if you wish to access from outside your network|
-|muteStartup|`true` or `false` - Will mute the startup announcement|
+Visit the `Configuration` tab on the Dashboard to configure
 
 ## Running the Relay
 
-Now that the Assistant Relay is configured, start the relay with the command `npm run start`
+Run `npm run start` to start the relay
 
-This should open a web browser asking you to sign in to your Google account. Make sure you use the account linked to you Google Home/Assistant.
-
-Once signed in, a code will be presented to you.  Copy this code into the terminal, and press enter.  Your Google Home should now notify you that the Assistant Relay is setup.
-
-*Note: If your web browser does not open, follow the instructions in the terminal
-This process will continue for each user you added to the config file.*
+Note: If you cloned this repo, you will need to execute the command in both the relay and client folder as the interface is not packaged
 
 ---
 
