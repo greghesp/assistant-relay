@@ -83,7 +83,7 @@ router.post('/updateConfig', async(req, res) => {
     Object.entries(req.body).forEach(([key, val]) => {
       db.set(key, val).write();
     });
-  } catch (e) {-
+  } catch (e) {
     res.status(500).send(e.message)
   }
 });
