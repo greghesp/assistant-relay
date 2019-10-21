@@ -1,57 +1,34 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+const app = require('../app');
+const debug = require('debug')('relay:server');
+const http = require('http');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const adapter = new FileSync('./bin/config.json');
 
-var app = require('../app');
-var debug = require('debug')('relay:server');
-var http = require('http');
+(async() =>{
+  const db = await low(adapter);
+  const p = db.get('port').value();
 
-/**
- * Get port from environment and store in Express.
- */
+  const port = p || '3000';
+  app.set('port', port);
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+  const server = http.createServer(app);
 
-/**
- * Create HTTP server.
- */
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+  function onListening() {
+    const addr = server.address();
+    const bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
   }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
+})();
 
 function onError(error) {
   if (error.syscall !== 'listen') {
@@ -59,8 +36,8 @@ function onError(error) {
   }
 
   var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+      ? 'Pipe ' + port
+      : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -75,16 +52,4 @@ function onError(error) {
     default:
       throw error;
   }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
 }

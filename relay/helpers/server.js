@@ -2,12 +2,14 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
+const {sendTextInput} = require('../helpers/assistant.js');
+
+
 const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
 const fs = require("fs");
 
 const Assistant = require('google-assistant/components/assistant');
-const Conversation = require('google-assistant/components/conversation');
 
 exports.initializeServer = function (text) {
     return new Promise(async(res, rej) => {
@@ -41,7 +43,8 @@ exports.initializeServer = function (text) {
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
-        const muteStartup = db.get('muteStartup').value();
+        const muted = await exports.isStartupMuted();
+        const isQH = await exports.isQuietHour();
         const promises = [];
 
         if(size > 0 ) {
@@ -53,8 +56,8 @@ exports.initializeServer = function (text) {
                 }));
             });
             await Promise.all(promises);
-
         }
+        if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
         return res();
     })
 };
@@ -86,9 +89,25 @@ exports.updateAudioResponses = function(command, timestamp) {
 exports.isQuietHour = function() {
     return new Promise(async(res,rej) => {
         const db = await low(adapter);
-        const quietHoursEnabled = db.get('quietHours.enabled').value();
-        if(!quietHoursEnabled) return res(false);
+        const quietHours = db.get('quietHours').value();
 
-      //if within quiet horus
+        if(!quietHours.enabled) return res(false);
+
+        const start = moment(quietHours.start, "HH:mm");
+        const until = moment(quietHours.end, "HH:mm");
+        let diff  = moment.duration(until.diff(start)).asMinutes();
+
+        if(diff < 0) until.add(1, 'days');
+
+        return res(moment().isBetween(start, until).toString());
+    })
+};
+
+exports.isStartupMuted = function() {
+    return new Promise(async(res, rej) => {
+        const db = await low(adapter);
+        const muteStartup = db.get('muteStartup').value();
+        if (muteStartup) return res(true);
+        return res(false);
     })
 }
