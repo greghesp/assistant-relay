@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
+import {withRouter} from 'react-router-dom';
 import AddSecrets from '~/views/setup/AddSecrets';
 import EnterToken from '~/views/setup/EnterToken';
 import * as Styles from './styles';
 import {Steps} from "antd";
 
-function AddUser(){
+function AddUser({history}){
     const [current, setCurrent] = useState(0);
     const [name, setName] = useState();
 
@@ -35,7 +36,7 @@ function AddUser(){
             title: 'Submit Token',
             content: <EnterToken
                 name={name}
-                done={() => next()}/>,
+                done={() => history.push('/home')}/>,
         },
     ];
 
@@ -50,4 +51,4 @@ function AddUser(){
         </Styles.Container>)
 }
 
-export default AddUser;
+export default withRouter(AddUser);

@@ -44,10 +44,7 @@ router.post('/processOAuth', async(req, res) => {
     const name = req.body.name;
     const client = await processTokens(oauthCode, name);
     global.assistants[name] = new Assistant(client);
-    // const db = await low(adapter);
-    // const convo = db.get('conversation').value();
-    // convo.textQuery = "broadcast hello";
-    // await new Conversation(global.assistants[name], convo);
+    await sendTextInput(`broadcast Assistant Relay is setup and running for ${name}`, name);
     res.status(200).send();
   } catch (e) {
     res.status(500).send(e.message)

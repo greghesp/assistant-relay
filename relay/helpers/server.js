@@ -3,7 +3,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const FileWriter = require('wav').FileWriter;
-const path = require('path');
+const moment = require('moment');
 const fs = require("fs");
 
 const Assistant = require('google-assistant/components/assistant');
@@ -80,5 +80,15 @@ exports.updateAudioResponses = function(command, timestamp) {
         }
         await db.get('audioResponses').push({command, response: timestamp}).write();
         res();
+    })
+}
+
+exports.isQuietHour = function() {
+    return new Promise(async(res,rej) => {
+        const db = await low(adapter);
+        const quietHoursEnabled = db.get('quietHours.enabled').value();
+        if(!quietHoursEnabled) return res(false);
+
+      //if within quiet horus
     })
 }
