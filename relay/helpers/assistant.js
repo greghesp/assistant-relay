@@ -1,18 +1,14 @@
-const GoogleAssistant = require('google-assistant');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
-const db = low(adapter);
+const Conversation = require('google-assistant/components/conversation');
 
-exports.setupAssistant = function() {
-  return new Promise((res, rej) => {
-
-  })
-};
-
-exports.sendTextInput = function ({text, name, converse}) {
-    return new Promise((res, rej) => {
-        const user = db.get('users').find({name: name}).value();
-        console.log(user)
+exports.sendTextInput = function (text, name, converse) {
+    return new Promise(async(res, rej) => {
+        const db = await low(adapter);
+        const convo = await db.get('conversation').value();
+        convo.textQuery = text;
+        const conversation = new Conversation(global.assistants[name], convo);
+        res(conversation)
     })
 };
