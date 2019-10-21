@@ -5,7 +5,7 @@ import GetJson from '~/views/setup/GetJson';
 import AddSecrets from '~/views/setup/AddSecrets';
 import EnterToken from '~/views/setup/EnterToken';
 
-function SetupWiz() {
+function SetupWiz({getUserCount}) {
     const [current, setCurrent] = useState(0);
     const [name, setName] = useState();
 
@@ -32,7 +32,7 @@ function SetupWiz() {
             title: 'Submit Token',
             content: <EnterToken
                 name={name}
-                done={() => next()}/>,
+                done={() => getUserCount()}/>,
         },
     ];
 

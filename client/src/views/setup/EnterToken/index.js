@@ -2,22 +2,21 @@ import React, { useState} from "react";
 import { Typography, Upload, Button, Icon, message, Form, Input } from 'antd';
 import * as Styles from './styles'
 import {post} from '~/helpers/api'
+import {withRouter} from 'react-router-dom'
 
 const { Title, Paragraph, Text } = Typography;
 
-function AddSecrets({form, next, previous, name}) {
+function AddSecrets({form, next, previous, name, done}) {
     function addUser(e){
         e.preventDefault();
         form.validateFields(async(err, values) => {
             if(!err) {
                 try {
-                    const response = await post({
+                    await post({
                         name: name,
                         oauthCode: values.oauthCode
                     }, 'processOAuth');
-                    const win = window.open(response.data.url, '_blank');
-                    win.focus();
-                    return next();
+                    return done();
                 } catch (e) {
                     message.error(e.message)
                 }
@@ -59,4 +58,4 @@ function AddSecrets({form, next, previous, name}) {
     )
 }
 
-export default Form.create()(AddSecrets)
+export default withRouter(Form.create()(AddSecrets));

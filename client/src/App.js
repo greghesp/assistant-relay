@@ -38,7 +38,7 @@ function App() {
 
     if(loading) return <Loading/>;
 
-    if(userCount > 0) {
+    if(userCount >= 1) {
         return (
             <Dashboard>
                 <MenuNav/>
@@ -56,7 +56,7 @@ function App() {
     return (
         <Setup>
             <Switch>
-                <Route path="/setup" component={SetupWiz}/>
+                <Route path="/setup" component={() => <SetupWiz getUserCount={() => getUserCount()}/>}/>
                 <Redirect to="/setup" />
             </Switch>
         </Setup>
