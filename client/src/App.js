@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
-import {message} from "antd";
+import Menu, {message} from "antd";
 
 /* Layouts */
 import Setup from '~/layout/Setup';
@@ -9,7 +9,11 @@ import Loading from "~/layout/Loading";
 
 /* Views */
 import SetupWiz from '~/views/setup';
-import Dash from '~/views/dash';
+import MenuNav from '~/views/dash/Menu';
+import Home from '~/views/dash/Home';
+import Configuration from '~/views/dash/Configuration';
+import AddUser from '~/views/dash/AddUser';
+import Sandbox from '~/views/dash/Sandbox';
 
 import {post} from '~/helpers/api';
 
@@ -24,6 +28,7 @@ function App() {
     async function getUserCount() {
         try {
             const response = await post({}, 'userCount');
+            if(response.data.size <= 0) await post({}, 'init');
             setUserCount(response.data.size);
             setLoading(false)
         } catch (e) {
@@ -36,9 +41,13 @@ function App() {
     if(userCount > 0) {
         return (
             <Dashboard>
+                <MenuNav/>
                 <Switch>
-                    <Route path="/dashboard" component={Dash}/>
-                    <Redirect to="/dashboard" />
+                    <Route path="/home" component={Home}/>
+                    <Route path="/configuration" component={Configuration}/>
+                    <Route path="/addUser" component={AddUser}/>
+                    <Route path="/sandbox" component={Sandbox}/>
+                    <Redirect to="/home" />
                 </Switch>
             </Dashboard>
         )

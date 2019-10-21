@@ -1,23 +1,21 @@
 {
-  "port": "3000",
+  "port": 3002,
   "muteStartup": true,
   "quietHours": {
     "enabled": false,
-    "start": 21,
-    "end": 8
+    "start": "05:08",
+    "end": "05:13"
   },
-  "baseUrl": "http://your.ip.address:port",
   "conversation": {
-    "language": "en-US",
     "audio": {
       "encodingIn": "LINEAR16",
       "sampleRateIn": 16000,
       "encodingOut": "LINEAR16",
       "sampleRateOut": 24000
     },
-    "isNew": true,
+    "lang": "en-US",
     "screen": {
-      "isOn": false
+      "isOn": true
     }
   },
   "users": [
@@ -42,11 +40,11 @@
         "_eventsCount": 0,
         "transporter": {},
         "credentials": {
-          "access_token": "ya29.Il-iB9AK9Kw68E7Ip1VS9Lhl1NCAI2BwPi3jhvr7-Pcfxry4cCTcDxGeIbyBuk14EjtwWovkEpjPeFER9-WVTIDW63NIpow6xC6q1MrtBJj5_6mo-u70ygJrRWGci8L3DA",
-          "refresh_token": "1/RZkeMt4oogb2I9_njKdzN5MRQH6fzXgdmbkrogOSE84",
+          "access_token": "ya29.Il-iB_SztBhaZr-fKzuus1GOpQ0pcy391IUWII31O_e_rOizvVdJ82J9hrP9mwL9pbfZ9J1yz_Lmgtaxssw5hxDHPdTE8EcQxTaplyNSh_1KK_HOgUMgfskHAMr1IEkQGQ",
+          "refresh_token": "1/82Wj0s2npzKDlC7IHDCnNtZx7aLjeQkk4zuhEUpFN3k",
           "scope": "https://www.googleapis.com/auth/assistant-sdk-prototype",
           "token_type": "Bearer",
-          "expiry_date": 1571410496414
+          "expiry_date": 1571601356703
         },
         "certificateCache": {},
         "certificateExpiry": null,
@@ -59,13 +57,12 @@
         "forceRefreshOnFailure": false
       },
       "tokens": {
-        "access_token": "ya29.Il-iB9AK9Kw68E7Ip1VS9Lhl1NCAI2BwPi3jhvr7-Pcfxry4cCTcDxGeIbyBuk14EjtwWovkEpjPeFER9-WVTIDW63NIpow6xC6q1MrtBJj5_6mo-u70ygJrRWGci8L3DA",
-        "refresh_token": "1/RZkeMt4oogb2I9_njKdzN5MRQH6fzXgdmbkrogOSE84",
+        "access_token": "ya29.Il-iB_SztBhaZr-fKzuus1GOpQ0pcy391IUWII31O_e_rOizvVdJ82J9hrP9mwL9pbfZ9J1yz_Lmgtaxssw5hxDHPdTE8EcQxTaplyNSh_1KK_HOgUMgfskHAMr1IEkQGQ",
+        "refresh_token": "1/82Wj0s2npzKDlC7IHDCnNtZx7aLjeQkk4zuhEUpFN3k",
         "scope": "https://www.googleapis.com/auth/assistant-sdk-prototype",
         "token_type": "Bearer",
-        "expiry_date": 1571410496414
+        "expiry_date": 1571601356703
       }
     }
-  ],
-  "assistants": []
+  ]
 }
