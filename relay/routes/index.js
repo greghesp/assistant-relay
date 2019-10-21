@@ -4,7 +4,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
-const {outputFileStream, updateAudioResponses} = require('../helpers/server.js');
+const {outputFileStream, updateAudioResponses, isQuietHour} = require('../helpers/server.js');
 
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.post('/assistant', async(req, res) => {
     const convoData = db.get('conversation').value();
     const timestamp = Date.now();
     const fileStream = outputFileStream(convoData, timestamp);
+    const isQH = await isQuietHour();
     const {user, converse, preset} = req.body;
     let {command, broadcast} = req.body;
     const response = {};
@@ -59,8 +60,14 @@ router.post('/assistant', async(req, res) => {
     if(!command) return res.status(400).json({success:  false, error: "No command given"});
     if(broadcast) command = `broadcast ${command}`;
 
-    const conversation = await sendTextInput(command, user, converse);
+    if(broadcast && isQH) {
+      return res.status(200).json({
+        success: false,
+        error: "Quiet Time Enabled - Broadcast command detected"
+      });
+    }
 
+    const conversation = await sendTextInput(command, user, converse);
     conversation
         .on('audio-data',async(data) => {
           fileStream.write(data);
