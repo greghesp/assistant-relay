@@ -36,7 +36,6 @@ function GetJson({next}) {
                     Next
                 </Button>
             </Styles.Steps>
-
         </Styles.Container>
     )
 }

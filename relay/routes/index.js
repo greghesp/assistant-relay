@@ -12,16 +12,48 @@ const {auth, processTokens} = require('../helpers/auth');
 
 const router = express.Router();
 
-
-/* GET home page. */
 router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
+
+router.post('/init', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    await db.defaults({
+      port: 3000,
+      muteStartup: false,
+      quietHours: {
+        enabled: false,
+        start: 0,
+        end: 0
+      },
+      conversation: {
+        audio: {
+          encodingIn: 'LINEAR16',
+          sampleRateIn: 16000,
+          encodingOut: 'LINEAR16',
+          sampleRateOut: 24000,
+        },
+        lang: 'en-US',
+        screen: {
+          isOn: true,
+        }
+      },
+      users: []
+    }).write();
+    res.status(200).send();
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
 });
 
 router.post('/addUser', async(req, res) => {
   try {
     const db = await low(adapter);
-    db.get('users').push(req.body).write();
+    const userFound =  await db.get('users').find({name: req.body.name}).size().value();
+    if(userFound > 0) return res.status(400).send("Username already exists")
+
+    await db.get('users').push(req.body).write();
     const url = await auth(req.body.secret, req.body.name);
     res.status(200).send({url});
   } catch (e) {
@@ -39,7 +71,7 @@ router.post('/processOAuth', async(req, res) => {
     const convo = db.get('conversation').value();
     convo.textQuery = "broadcast hello";
     await new Conversation(assistant, convo);
-    res.status(200);
+    res.status(200).send();
   } catch (e) {
     res.status(500).send(e.message)
   }
@@ -51,10 +83,9 @@ router.post('/userCount',async(req, res) => {
     const size = db.get('users').size().value();
     res.status(200).send({size});
   } catch (e) {
-    console.log(e)
     res.status(500).send(e.message)
   }
-})
+});
 
 router.post('/getConfig', async(req, res, next) => {
   try {
@@ -64,6 +95,17 @@ router.post('/getConfig', async(req, res, next) => {
     data.muteStartup = db.get('muteStartup').value();
     data.quietHours = db.get('quietHours').value();
     res.status(200).send(data);
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
+router.post('/updateConfig', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    Object.entries(req.body).forEach(([key, val]) => {
+      db.set(key, val).write();
+    });
   } catch (e) {
     res.status(500).send(e.message)
   }

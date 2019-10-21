@@ -1,6 +1,7 @@
 
 
 # Assistant Relay v2.0!
+**Note: V3 is still in development. Please use version 2**
 
 **Note: V1 is no longer supported. There is no upgrade path to V2, simply save your existing auth file, download V2 to a new folder and away you go**
 
