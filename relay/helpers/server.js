@@ -19,8 +19,8 @@ exports.initializeServer = function (text) {
             muteStartup: false,
             quietHours: {
                 enabled: false,
-                start: 0,
-                end: 0
+                start: "22:00",
+                end: "08:00"
             },
             maxAudioResponses: 5,
             maxTextResponses: 10,
