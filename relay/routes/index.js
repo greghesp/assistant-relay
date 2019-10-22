@@ -4,7 +4,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
-const {outputFileStream, updateAudioResponses, isQuietHour} = require('../helpers/server.js');
+const {outputFileStream, isQuietHour, updateResponses} = require('../helpers/server.js');
 
 const router = express.Router();
 
@@ -94,7 +94,7 @@ router.post('/assistant', async(req, res) => {
           }
           fileStream.end();
           conversation.end();
-          await updateAudioResponses(command, timestamp);
+          await updateResponses(command, response.response, timestamp);
           res.status(200).json(response);
         })
         .on('error', error => {

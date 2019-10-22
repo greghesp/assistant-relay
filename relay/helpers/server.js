@@ -22,8 +22,7 @@ exports.initializeServer = function (text) {
                 start: "22:00",
                 end: "08:00"
             },
-            maxAudioResponses: 5,
-            maxTextResponses: 10,
+            maxResponses: 5,
             conversation: {
                 audio: {
                     encodingIn: 'LINEAR16',
@@ -33,13 +32,11 @@ exports.initializeServer = function (text) {
                 },
                 lang: 'en-US',
                 screen: {
-                    isOn: true,
+                    isOn: false,
                 }
             },
             users: [],
-            textResponses: [],
-            audioResponses: [],
-            transcriptions:[]
+            responses: []
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
@@ -69,22 +66,22 @@ exports.outputFileStream = function(conversation, fileName) {
     });
 };
 
-exports.updateAudioResponses = function(command, timestamp) {
+exports.updateResponses = function(command, response, timestamp) {
     return new Promise(async(res, rej) => {
         const db = await low(adapter);
-        const size = db.get('audioResponses').size().value();
-        const maxAudio = db.get('maxAudioResponses').value();
-        if(size >= maxAudio) {
-            const results = db.get('audioResponses').sortBy('timestamp').value();
-            const timestamp = results[0].response;
+        const size = db.get('responses').size().value();
+        const maxResponse = db.get('maxResponses').value();
+        if(size >= maxResponse) {
+            const results = db.get('responses').sortBy('timestamp').value();
+            const timestamp = results[0].timestamp;
             fs.unlinkSync(`bin/audio-responses/${timestamp}.wav`);
-            const entries = db.get('audioResponses').sortBy('timestamp').drop(1).value();
-            await db.set('audioResponses', entries).write();
+            const entries = db.get('responses').sortBy('timestamp').drop(1).value();
+            await db.set('responses', entries).write();
         }
-        await db.get('audioResponses').push({command, response: timestamp}).write();
+        await db.get('responses').push({command, response, timestamp}).write();
         res();
     })
-}
+};
 
 exports.isQuietHour = function() {
     return new Promise(async(res,rej) => {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {withRouter} from 'react-router-dom';
 import AddSecrets from '~/views/setup/AddSecrets';
 import EnterToken from '~/views/setup/EnterToken';

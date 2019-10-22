@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "setup": "npm i -g pm2 && npm i",
+    "start" : "pm2 start ./bin/www",
+    "dev": "node ./bin/www"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -19,6 +21,7 @@
     "lowdb": "^1.0.0",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
+    "pm2": "^4.1.2",
     "wav": "^1.0.2"
   }
 }

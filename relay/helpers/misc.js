@@ -1,3 +1,3 @@
-export const delay = function(v) {
+exports.delay = function(v) {
     return new Promise(res => setTimeout(res, v))
 };

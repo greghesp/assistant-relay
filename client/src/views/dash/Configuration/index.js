@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Form, InputNumber, Switch, message, TimePicker} from "antd";
+import {InputNumber, Switch, message, TimePicker} from "antd";
 import {post} from '~/helpers/api';
-import {delay} from '~/helpers/misc';
 import * as Styles from './styles';
 import LoadingAnimation from "~/components/LoadingAnimation";
 import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
 
-function Configuration({form}){
+function Configuration(){
     const [initGet, setInitGet] = useState(true);
     const [startupSound, setStartupSound] = useState();
     const [port, setPort] = useState();
@@ -23,6 +22,7 @@ function Configuration({form}){
         if(!initGet) {
             updateConfig()
         }
+        //eslint-disable-next-line
     }, [startupSound, port, quietHours]);
 
     async function updateConfig() {
@@ -33,6 +33,9 @@ function Configuration({form}){
                 quietHours
             };
             await post(obj, 'updateConfig');
+            message.success("Assistant Relay restarting");
+            await post({}, 'restart');
+            localStorage.setItem('port', port);
         } catch (e) {
             message.error(e.message);
         }
@@ -111,4 +114,4 @@ function Configuration({form}){
         </Styles.Container>)
 }
 
-export default Form.create()(Configuration);
+export default Configuration;

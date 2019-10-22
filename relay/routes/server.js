@@ -8,6 +8,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
+const {delay} = require('../helpers/misc');
 
 
 const router = express.Router();
@@ -77,13 +78,33 @@ router.post('/getConfig', async(req, res, next) => {
 router.post('/updateConfig', async(req, res) => {
   try {
     const db = await low(adapter);
+    const promises = [];
     Object.entries(req.body).forEach(([key, val]) => {
-      db.set(key, val).write();
+      promises.push(db.set(key, val).write());
+
     });
+    await Promise.all(promises);
+    res.status(200).json({success: true})
   } catch (e) {
     res.status(500).send(e.message)
   }
 });
+
+router.post('/restart', async(req, res) => {
+  await delay(3000);
+  res.status(200).json({success: true});
+  process.exit(1);
+});
+
+router.post('/getResponses', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    const responses =  await db.get('responses').orderBy('timestamp','desc').value();
+    res.status(200).json({responses});
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+})
 
 router.get('/audio', async(req, res) => {
   res.sendFile(path.resolve(__dirname, `../bin/audio-responses/${req.query.v}.wav`));

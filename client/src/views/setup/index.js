@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Steps, Button, message } from 'antd';
+import { Steps} from 'antd';
 
 import GetJson from '~/views/setup/GetJson';
 import AddSecrets from '~/views/setup/AddSecrets';

@@ -1,10 +1,9 @@
-import React, { useState} from "react";
-import { Typography, Upload, Button, Icon, message, Form, Input } from 'antd';
+import React from "react";
+import { Typography, Button, message, Form, Input } from 'antd';
 import * as Styles from './styles'
 import {post} from '~/helpers/api'
 import {withRouter} from 'react-router-dom'
-
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 function AddSecrets({form, next, previous, name, done}) {
     function addUser(e){

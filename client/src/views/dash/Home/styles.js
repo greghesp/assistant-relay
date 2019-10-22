@@ -13,22 +13,38 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const Form = styled.div`
-  width: 400px;
+export const ResponseContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-row-gap: 20px
-`
+  grid-template-columns: 0.5fr 2fr 3fr ;
+  grid-template-rows: 1fr;
+  box-shadow: 0 0px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.12);
+    border-radius: 2px;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin: 30px;
+  
+  :hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12), 0 4px 6px rgba(0,0,0,0.12);
+  }
+`;
 
-export const QuietHours = styled.div`
-  width: 200px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-row-gap: 20px
-`
+export const Play = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
 
-export const Switch = styled.div`
-  width: 200px
-`
+export const QuoteWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const Response = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+

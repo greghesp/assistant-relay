@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {Form, InputNumber, Switch, message, TimePicker} from "antd";
+import React from "react";
 import * as Styles from './styles';
 
 
-function Sandbox({form}){
+function Sandbox(){
     return (
         <Styles.Container>
             <div>Sandbox</div>
         </Styles.Container>)
 }
 
-export default Form.create()(Sandbox);
+export default Sandbox;

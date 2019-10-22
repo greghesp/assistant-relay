@@ -1,11 +1,11 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
 export const Body = styled.div`
   background-color: ${(props) => props.theme.background};
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: cener;
+  align-items: center;
   justify-content: center;
 `;
 

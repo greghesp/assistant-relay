@@ -3,12 +3,11 @@ import { Typography, Upload, Button, Icon, message, Form, Input } from 'antd';
 import * as Styles from './styles'
 import {post} from '~/helpers/api'
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 function AddSecrets({form, next, previous}) {
     const [fileList, setFileList] = useState();
     const [fileData, setFileData] = useState();
-    const [submitting, setSubmitting] = useState(false);
     const fileReader = new FileReader();
 
     fileReader.onload = event => {
