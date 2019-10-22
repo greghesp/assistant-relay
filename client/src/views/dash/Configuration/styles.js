@@ -31,4 +31,5 @@ export const QuietHours = styled.div`
 
 export const Switch = styled.div`
   width: 200px
-`
+`;
+
