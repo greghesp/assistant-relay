@@ -3,7 +3,6 @@ import {Button, Input, Switch, Typography, message, notification} from 'antd';
 import * as Styles from './styles';
 import {sandbox} from '~/helpers/api';
 import PlayButton from "~/components/PlayButton";
-
 const {Text} = Typography;
 
 function Sandbox() {
