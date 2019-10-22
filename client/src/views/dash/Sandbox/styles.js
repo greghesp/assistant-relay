@@ -21,6 +21,36 @@ export const Switch = styled.div`
 
 
 export const JsonBox = styled.div`
+ background: #f3f3f3;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-`
+  white-space: pre;
+  padding: 10px 15px;
+`;
+
+export const Play = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const QuoteWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const Response = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const ResponseContainer = styled.div`
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 3fr ;
+  grid-template-rows: 1fr; 
+`;

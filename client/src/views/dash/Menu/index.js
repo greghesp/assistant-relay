@@ -27,6 +27,10 @@ function MenuContainer({history, location}) {
                 <Icon type="code" />
                     Sandbox
             </Menu.Item>
+            <Menu.Item key="about">
+                <Icon type="question-circle" />
+                About
+            </Menu.Item>
         </Menu>
     )
 }

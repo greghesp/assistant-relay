@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Sound from "react-sound";
 import {Button, Icon} from "antd";
 
-function PlayButton({timestamp}) {
+function PlayButton({timestamp, url}) {
     const [status, setStatus] = useState("STOPPED");
     const [port, setPort] = useState("STOPPED");
 
@@ -22,9 +22,9 @@ function PlayButton({timestamp}) {
     }
 
     return (
-        <div key={timestamp}>
+        <div>
             <Sound
-                url={`http://localhost:${port}/server/audio?v=${timestamp}`}
+                url={url ? url : `http://localhost:${port}/server/audio?v=${timestamp}`}
                 onFinishedPlaying={() => PlayStop()}
                 playStatus={status}
             />
