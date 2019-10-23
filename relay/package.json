@@ -17,6 +17,7 @@
     "google-assistant": "^0.6.0",
     "google-auth-library": "^5.5.0",
     "http-errors": "~1.6.3",
+    "ip": "^1.1.5",
     "jade": "~1.11.0",
     "lowdb": "^1.0.0",
     "moment": "^2.24.0",

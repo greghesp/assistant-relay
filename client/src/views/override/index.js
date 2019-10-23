@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import {withRouter} from 'react-router-dom'
 import {Button, InputNumber} from "antd";
 import * as Styles from './styles';
-import Text from "antd/es/typography/Text";
+import {Typography} from "antd";
 
+const {Text, Title, Paragraph} = Typography;
 
 function Override({setReload}){
     const [port, setPort] = useState();
@@ -15,13 +16,22 @@ function Override({setReload}){
 
     return (
         <Styles.Container>
-            <Styles.Form>
-                <Text>Port Number:</Text>
-                <InputNumber onChange={(e) => setPort(e) } defaultValue={port} />
-                <Button onClick={() => setReload()}>
-                    Save
-                </Button>
-            </Styles.Form>
+            <div>
+                <Title level={3}>Whoops! We lost your server connection</Title>
+                <Paragraph>
+                    Did you manually change your port?  Not to worry, add the port your server is using below to continue
+                </Paragraph>
+
+                <Styles.Form>
+                    <Text>Port Number:</Text>
+                    <InputNumber onChange={(e) => setPort(e) } defaultValue={port} />
+
+                    <div></div>
+                    <Button onClick={() => setReload()} type={"primary"}>
+                        Save
+                    </Button>
+                </Styles.Form>
+            </div>
         </Styles.Container>)
 }
 

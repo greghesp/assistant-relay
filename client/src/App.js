@@ -15,6 +15,7 @@ import Configuration from '~/views/dash/Configuration';
 import AddUser from '~/views/dash/AddUser';
 import Sandbox from '~/views/dash/Sandbox';
 import Override from '~/views/override';
+import About from '~/views/dash/About';
 
 import {post} from '~/helpers/api';
 
@@ -65,6 +66,7 @@ function App({history}) {
                     <Route path="/configuration" component={Configuration}/>
                     <Route path="/addUser" component={AddUser}/>
                     <Route path="/sandbox" component={Sandbox}/>
+                    <Route path="/about" component={About}/>
                     <Redirect to="/home" />
                 </Switch>
             </Dashboard>

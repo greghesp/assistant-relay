@@ -54,7 +54,7 @@ function AddSecrets({form, next, previous}) {
 
     return (
         <Styles.Container>
-            <Title level={2}>Setting up your account</Title>
+            <Title level={3}>Setting up your account</Title>
             <Paragraph>With your client secrets, you can import them into Assistant Relay below</Paragraph>
 
             <Form layout="inline" onSubmit={addUser}>

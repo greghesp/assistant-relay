@@ -14,7 +14,7 @@ const {delay} = require('../helpers/misc');
 const router = express.Router();
 
 router.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, './views', 'index.html'));
 });
 
 router.post('/init', async(req, res) => {

@@ -1,6 +1,8 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
+const ip = require('ip');
+
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const {sendTextInput} = require('../helpers/assistant.js');
@@ -41,6 +43,8 @@ exports.initializeServer = function (text) {
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
+        const port = db.get('port').value();
+
         const muted = await exports.isStartupMuted();
         const isQH = await exports.isQuietHour();
         const promises = [];
@@ -56,6 +60,8 @@ exports.initializeServer = function (text) {
             await Promise.all(promises);
         }
         if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
+        console.log("Assistant Relay Server Initialized");
+        console.log(`Visit http://${ip.address()}:${port} in a browser to configure`);
         return res();
     })
 };
@@ -96,7 +102,7 @@ exports.isQuietHour = function() {
         let diff  = moment.duration(until.diff(start)).asMinutes();
 
         if(diff < 0) until.add(1, 'days');
-
+        console.log(moment().isBetween(start, until).toString());
         return res(moment().isBetween(start, until).toString());
     })
 };

@@ -4,6 +4,7 @@ import {post} from '~/helpers/api';
 import * as Styles from './styles';
 import LoadingAnimation from "~/components/LoadingAnimation";
 import GoogleDevices from "./GoogleDevices";
+import Users from "./Users";
 import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
@@ -11,6 +12,7 @@ import Text from "antd/es/typography/Text";
 function Configuration(){
     const [initGet, setInitGet] = useState(true);
     const [startupSound, setStartupSound] = useState();
+    const [users, setUsers] = useState([]);
     const [port, setPort] = useState();
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
@@ -122,6 +124,9 @@ function Configuration(){
 
                 <div></div>
                 {quietHours.enabled ? <QuietHours/> : <div></div>}
+
+                {/*<Text>Users:</Text>*/}
+                {/*<Users />*/}
 
                 {/*<Text>Google Devices:</Text>*/}
                 {/*<GoogleDevices devices={devices} setDevices={(e) => setDevices(e)}/>*/}
