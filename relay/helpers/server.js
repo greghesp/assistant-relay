@@ -1,9 +1,9 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const path = require('path');
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const {sendTextInput} = require('../helpers/assistant.js');
-
 
 const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
@@ -36,7 +36,8 @@ exports.initializeServer = function (text) {
                 }
             },
             users: [],
-            responses: []
+            responses: [],
+            devices: []
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
@@ -74,7 +75,7 @@ exports.updateResponses = function(command, response, timestamp) {
         if(size >= maxResponse) {
             const results = db.get('responses').sortBy('timestamp').value();
             const timestamp = results[0].timestamp;
-            fs.unlinkSync(`bin/audio-responses/${timestamp}.wav`);
+            fs.unlinkSync(path.resolve(__dirname, `../bin/audio-responses/${timestamp}.wav`));
             const entries = db.get('responses').sortBy('timestamp').drop(1).value();
             await db.set('responses', entries).write();
         }

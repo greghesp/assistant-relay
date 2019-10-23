@@ -1,12 +1,17 @@
-import React, {useState} from "react";
-import {Button, Input, Switch, Typography, message, notification} from 'antd';
+import React, {useEffect, useState} from "react";
+import {Button, Input, Switch, Typography, message, notification, Select} from 'antd';
 import * as Styles from './styles';
-import {sandbox} from '~/helpers/api';
+import {sandbox, post} from '~/helpers/api';
 import PlayButton from "~/components/PlayButton";
 const {Text} = Typography;
 
 function Sandbox() {
     const [json, setJson] = useState({});
+    const [devices, setDevices] = useState([]);
+
+    useEffect(() => {
+        getDevices();
+    },[]);
 
     async function submit() {
         try {
@@ -27,17 +32,26 @@ function Sandbox() {
         }
     }
 
+    async function getDevices() {
+        try {
+            const response = await post({}, '/getConfig');
+            setDevices(response.data.devices)
+        } catch (e) {
+            message.error(e.message)
+        }
+    }
+
     return (
         <Styles.Container>
             <Styles.Form>
                 <Text>Name:</Text>
                 <Input
                     onChange={
-                    (e) => {
-                        e.persist();
-                        setJson($ => ({...$, name: e.target.value}))
-                    }
-                } />
+                        (e) => {
+                            e.persist();
+                            setJson($ => ({...$, name: e.target.value}))
+                        }
+                    } />
                 <Text>Command:</Text>
                 <Input
                     onChange={
@@ -56,6 +70,20 @@ function Sandbox() {
                                 }
                             }/>
                 </Styles.Switch>
+                {/*<Text>Devices:</Text>*/}
+                {/*<Select*/}
+                {/*    mode={"multiple"}*/}
+                {/*    placeholder="Select some devices"*/}
+                {/*    onChange={*/}
+                {/*        (e) => {*/}
+                {/*            setJson($ => ({...$, devices: e}))*/}
+                {/*        }*/}
+                {/*    }*/}
+                {/*>*/}
+                {/*    {devices.map(d => {*/}
+                {/*        return <Select.Option key={d.name}>{d.name}</Select.Option>*/}
+                {/*    })}*/}
+                {/*</Select>*/}
                 <Text>JSON Data:</Text>
                 <JSONData json={json}/>
                 <div/>
@@ -78,7 +106,7 @@ function NotificationContent({audio, json, response}) {
         <div>
             <Styles.ResponseContainer >
                 <Styles.Play>
-                    <PlayButton audio={audio}/>
+                    <PlayButton url={audio}/>
                 </Styles.Play>
                 <Styles.QuoteWrapper>
                     {json.command}

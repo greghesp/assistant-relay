@@ -12,10 +12,11 @@ router.post('/assistant', async(req, res) => {
   try {
     const db = await low(adapter);
     const convoData = db.get('conversation').value();
+    const port = db.get('port').value();
     const timestamp = Date.now();
     const fileStream = outputFileStream(convoData, timestamp);
     const isQH = await isQuietHour();
-    const {user, converse, preset} = req.body;
+    const {user, converse, preset, devices} = req.body;
     let {command, broadcast} = req.body;
     const response = {};
 
@@ -71,7 +72,7 @@ router.post('/assistant', async(req, res) => {
     conversation
         .on('audio-data',async(data) => {
           fileStream.write(data);
-          response.audio = `http://localhost:3000/server/audio?v=${timestamp}`
+          response.audio = `http://localhost:${port}/server/audio?v=${timestamp}`
         })
         .on('response', (text) => {
           response.response = text;

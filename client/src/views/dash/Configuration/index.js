@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {InputNumber, Switch, message, TimePicker} from "antd";
+import {Input, InputNumber, Switch, message, TimePicker, Button, Icon} from "antd";
 import {post} from '~/helpers/api';
 import * as Styles from './styles';
 import LoadingAnimation from "~/components/LoadingAnimation";
+import GoogleDevices from "./GoogleDevices";
 import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
@@ -13,6 +14,8 @@ function Configuration(){
     const [port, setPort] = useState();
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
+    const [devices, setDevices] = useState([]);
+    const [forceReboot, setForceReboot] = useState(false);
 
     useEffect(() => {
         getConfig()
@@ -23,19 +26,22 @@ function Configuration(){
             updateConfig()
         }
         //eslint-disable-next-line
-    }, [startupSound, port, quietHours]);
+    }, [startupSound, port, quietHours, devices]);
 
     async function updateConfig() {
         try {
             const obj = {
                 muteStartup: startupSound,
                 port,
-                quietHours
+                quietHours,
+                devices
             };
             await post(obj, 'updateConfig');
-            message.success("Assistant Relay restarting");
-            await post({}, 'restart');
-            localStorage.setItem('port', port);
+            if(forceReboot) {
+                message.success("Assistant Relay restarting");
+                await post({}, 'restart');
+                localStorage.setItem('port', port);
+            }
         } catch (e) {
             message.error(e.message);
         }
@@ -47,6 +53,7 @@ function Configuration(){
             setStartupSound(data.muteStartup);
             setPort(data.port);
             setQuietHours(data.quietHours);
+            setDevices(data.devices)
             setInitGet(false);
             setLoading(false);
         } catch (e) {
@@ -83,6 +90,8 @@ function Configuration(){
         return null;
     }
 
+
+
     return (
         <Styles.Container>
             <Styles.Form>
@@ -98,7 +107,10 @@ function Configuration(){
                 </Styles.Switch>
 
                 <Text>Port Number:</Text>
-                <InputNumber onChange={(e) => setPort(e) } defaultValue={port} />
+                <InputNumber onChange={(e) => {
+                    setPort(e);
+                    setForceReboot(true);
+                } } defaultValue={port} />
 
                 <Text>Quiet Hours:</Text>
                 <Styles.Switch>
@@ -109,7 +121,10 @@ function Configuration(){
                 </Styles.Switch>
 
                 <div></div>
-                <QuietHours/>
+                {quietHours.enabled ? <QuietHours/> : <div></div>}
+
+                {/*<Text>Google Devices:</Text>*/}
+                {/*<GoogleDevices devices={devices} setDevices={(e) => setDevices(e)}/>*/}
             </Styles.Form>
         </Styles.Container>)
 }

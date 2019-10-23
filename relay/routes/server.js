@@ -29,7 +29,7 @@ router.post('/addUser', async(req, res) => {
   try {
     const db = await low(adapter);
     const userFound =  await db.get('users').find({name: req.body.name}).size().value();
-    if(userFound > 0) return res.status(400).send("Username already exists")
+    if(userFound > 0) return res.status(400).send("Username already exists");
 
     await db.get('users').push(req.body).write();
     const url = await auth(req.body.secret, req.body.name);
@@ -69,6 +69,7 @@ router.post('/getConfig', async(req, res, next) => {
     data.port = db.get('port').value();
     data.muteStartup = db.get('muteStartup').value();
     data.quietHours = db.get('quietHours').value();
+    data.devices = db.get('devices').value();
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e.message)
