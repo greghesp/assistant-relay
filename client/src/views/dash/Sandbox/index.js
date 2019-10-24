@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Input, Switch, Typography, message, notification, Select} from 'antd';
+import {Button, Input, Switch, Typography, message, notification, Select, Icon} from 'antd';
 import * as Styles from './styles';
 import {sandbox, post} from '~/helpers/api';
 import PlayButton from "~/components/PlayButton";
@@ -16,20 +16,31 @@ function Sandbox() {
     async function submit() {
         try {
             const response = await sandbox(json);
-            notification.open({
-                style: {
-                    width: 600,
-                    marginLeft: 335 - 600,
-                },
-                message: 'Command Successful',
-                description: <NotificationContent
-                    audio={response.data.audio}
-                    json={json}
-                    response={response.data.response}/>,
-            });
+            if(!response.data.success) {
+                return notify("Quiet Hours Enabled", response.data.error,
+                    <Icon type="warning" style={{ color: '#e5ad29' }}/>);
+            }
+            return notify("Command Successful", <NotificationContent
+                audio={response.data.audio}
+                json={json}
+                response={response.data.response}/>,
+                <Icon type="check-circle"  style={{ color: '#26a63e' }}/>
+        );
         } catch (e) {
             message.error(e.message)
         }
+    }
+
+    function notify(message, description,icon){
+        return notification.open({
+            style: {
+                width: 600,
+                marginLeft: 335 - 600,
+            },
+            message,
+            description,
+            icon,
+        });
     }
 
     async function getDevices() {

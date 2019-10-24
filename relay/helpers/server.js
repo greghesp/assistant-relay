@@ -102,7 +102,6 @@ exports.isQuietHour = function() {
         let diff  = moment.duration(until.diff(start)).asMinutes();
 
         if(diff < 0) until.add(1, 'days');
-        console.log(moment().isBetween(start, until).toString());
         return res(moment().isBetween(start, until).toString());
     })
 };
