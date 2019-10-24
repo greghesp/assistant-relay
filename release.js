@@ -14,3 +14,4 @@ ncp('./relay/package.json', './release/package.json');
 ncp('./relay/package-lock.json', './release/package-lock.json');
 ncp('./LICENSE', './release/LICENSE');
 ncp('./readMe.md', './release/readMe.md');
+if (fs.existsSync('./release/bin/config.json')) fs.unlinkSync('./release/bin/config.json');

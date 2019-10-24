@@ -19,7 +19,7 @@ exports.initializeServer = function (text) {
     return new Promise(async(res, rej) => {
         const db = await low(adapter);
         await db.defaults({
-            port: 3010,
+            port: 3000,
             muteStartup: false,
             quietHours: {
                 enabled: false,

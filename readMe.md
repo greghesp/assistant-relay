@@ -19,8 +19,8 @@ It also supports the Google Home Broadcast command so you can send audio notific
 
 # Installation
 
-Download a copy of this repository and then use `npm install` to get started
-
+Download a copy of this repository and then use `npm run setup` to get started. 
+Once setup, run `npm run start`
 Note: If you cloned this repo, you will need to execute the command in both the relay and client folder as the interface is not packaged
 
 
