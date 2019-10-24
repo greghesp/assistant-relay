@@ -31,7 +31,7 @@ function App({history}) {
     async function getUserCount() {
         try {
             const response = await post({}, 'userCount');
-            if(response.data.size <= 0) await post({}, 'init');
+           // if(response.data.size <= 0) await post({}, 'init');
             setUserCount(response.data.size);
             setLoading(false)
         } catch (e) {

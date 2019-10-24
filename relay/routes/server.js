@@ -8,6 +8,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
+const {isUpdateAvailable, updateDetails} = require('../helpers/server');
 const {delay} = require('../helpers/misc');
 
 
@@ -17,13 +18,22 @@ router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, './views', 'index.html'));
 });
 
-router.post('/init', async(req, res) => {
+router.post('/checkUpdate', async(req, res) => {
   try {
-    res.status(200).send();
+    const update = await isUpdateAvailable();
+    const data = {};
+    if(update) {
+      const details = await updateDetails();
+      data.update = true;
+      data.details = details;
+    } else {
+      data.update = false
+    }
+    res.status(200).json(data);
   } catch (e) {
     res.status(500).send(e.message)
   }
-});
+})
 
 router.post('/addUser', async(req, res) => {
   try {

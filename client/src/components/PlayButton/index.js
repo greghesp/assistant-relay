@@ -4,7 +4,9 @@ import {Button, Icon} from "antd";
 
 function PlayButton({timestamp, url}) {
     const [status, setStatus] = useState("STOPPED");
-    const [port, setPort] = useState("STOPPED");
+    const [port, setPort] = useState();
+    const [ip, setIp] = useState();
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -13,18 +15,26 @@ function PlayButton({timestamp, url}) {
 
     async function getPort() {
         const p = await localStorage.getItem('port');
-        setPort(p)
+        const i = localStorage.getItem('ip');
+
+        const port = p ? p : '3000';
+        const ip = i ? i : '127.0.0.1';
+        setPort(port);
+        setIp(ip);
+        setLoading(false)
     }
 
     function PlayStop() {
-        if(status === "STOPPED") return setStatus("PLAYING")
+        if(status === "STOPPED") return setStatus("PLAYING");
         return setStatus("STOPPED")
     }
+
+    if(loading) return (<div></div>);
 
     return (
         <div>
             <Sound
-                url={url ? url : `http://localhost:${port}/server/audio?v=${timestamp}`}
+                url={url ? url : `http://${ip}:${port}/server/audio?v=${timestamp}`}
                 onFinishedPlaying={() => PlayStop()}
                 playStatus={status}
             />

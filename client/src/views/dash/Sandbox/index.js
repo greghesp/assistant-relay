@@ -45,7 +45,7 @@ function Sandbox() {
 
     async function getDevices() {
         try {
-            const response = await post({}, '/getConfig');
+            const response = await post({}, 'getConfig');
             setDevices(response.data.devices)
         } catch (e) {
             message.error(e.message)

@@ -2,6 +2,8 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
 const ip = require('ip');
+const Parser = require('rss-parser');
+const parser = new Parser();
 
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
@@ -17,7 +19,7 @@ exports.initializeServer = function (text) {
     return new Promise(async(res, rej) => {
         const db = await low(adapter);
         await db.defaults({
-            port: 3000,
+            port: 3010,
             muteStartup: false,
             quietHours: {
                 enabled: false,
@@ -39,13 +41,16 @@ exports.initializeServer = function (text) {
             },
             users: [],
             responses: [],
-            devices: []
+            devices: [],
+            lastCheck: moment().format()
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
         const port = db.get('port').value();
 
+
         const muted = await exports.isStartupMuted();
+        const updateAvail = await exports.isUpdateAvailable();
         const isQH = await exports.isQuietHour();
         const promises = [];
 
@@ -62,6 +67,7 @@ exports.initializeServer = function (text) {
         if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
         console.log("Assistant Relay Server Initialized");
         console.log(`Visit http://${ip.address()}:${port} in a browser to configure`);
+        if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
         return res();
     })
 };
@@ -113,4 +119,24 @@ exports.isStartupMuted = function() {
         if (muteStartup) return res(true);
         return res(false);
     })
-}
+};
+
+
+exports.isUpdateAvailable = function() {
+    return new Promise(async(res, rej) => {
+        const db = await low(adapter);
+        const lastCheck = db.get('lastCheck').value();
+        const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');
+        const latestTime = feed.items[0].pubDate;
+        return res(moment(lastCheck).isBefore(latestTime));
+    })
+};
+
+exports.updateDetails = function() {
+    return new Promise(async(res, rej) => {
+        const db = await low(adapter);
+        const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');
+        const latestUpdate = feed.items[0];
+        return res(latestUpdate);
+    })
+};

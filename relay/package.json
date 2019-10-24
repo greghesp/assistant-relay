@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "setup": "npm i -g pm2 && npm i",
-    "start": "pm2 start ./bin/www",
+    "start": "pm2 start ./bin/www && pm2 log www",
     "dev": "node ./bin/www"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "multicast-dns": "^7.2.0",
     "node-dns-sd": "^0.4.0",
     "pm2": "^4.1.2",
+    "rss-parser": "^3.7.3",
     "wav": "^1.0.2"
   }
 }
