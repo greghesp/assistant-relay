@@ -14,10 +14,6 @@ const {delay} = require('../helpers/misc');
 
 const router = express.Router();
 
-router.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, './views', 'index.html'));
-});
-
 router.post('/checkUpdate', async(req, res) => {
   try {
     const update = await isUpdateAvailable();

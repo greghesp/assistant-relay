@@ -2,11 +2,17 @@ const express = require('express');
 const low = require('lowdb');
 
 const FileSync = require('lowdb/adapters/FileSync');
+const path = require('path');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {outputFileStream, isQuietHour, updateResponses} = require('../helpers/server.js');
 
 const router = express.Router();
+
+
+router.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../views', 'index.html'));
+});
 
 router.post('/assistant', async(req, res) => {
   try {
