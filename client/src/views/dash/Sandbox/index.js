@@ -8,10 +8,12 @@ const {Text} = Typography;
 function Sandbox() {
     const [json, setJson] = useState({});
     const [devices, setDevices] = useState([]);
+    const [disabled, setDisabled] = useState([]);
 
     useEffect(() => {
         getDevices();
     },[]);
+
 
     async function submit() {
         try {
@@ -63,8 +65,31 @@ function Sandbox() {
                             setJson($ => ({...$, name: e.target.value}))
                         }
                     } />
+                <Text>Preset:</Text>
+                <Select
+                    disabled={disabled.includes("preset")}
+                    placeholder="Select a preset"
+                    allowClear
+                    onChange={
+                        (e) => {
+                            setJson($ => ({...$, preset: e}))
+                        }
+                    }
+                >
+                    <Select.Option key="wakeup">Wake Up</Select.Option>
+                    <Select.Option key="breakfast">Breakfast</Select.Option>
+                    <Select.Option key="lunch">Lunch</Select.Option>
+                    <Select.Option key="dinner">Dinner</Select.Option>
+                    <Select.Option key="timetoleave">Time To Leave</Select.Option>
+                    <Select.Option key="arrivedhome">Arrived Home</Select.Option>
+                    <Select.Option key="ontheway">On The Way</Select.Option>
+                    <Select.Option key="movietime">Movie Time</Select.Option>
+                    <Select.Option key="tvtime">TV Time</Select.Option>
+                    <Select.Option key="bedtime">Bed Time</Select.Option>
+                </Select>
                 <Text>Command:</Text>
                 <Input
+                    disabled={disabled.includes("command")}
                     onChange={
                         (e) => {
                             e.persist();
@@ -75,6 +100,7 @@ function Sandbox() {
                 <Styles.Switch>
                     <Switch checkedChildren="Yes"
                             unCheckedChildren="No"
+                            disabled={disabled.includes("broadcast")}
                             onChange={
                                 (e) => {
                                     setJson($ => ({...$, broadcast: e}))
@@ -85,6 +111,7 @@ function Sandbox() {
                 <Styles.Switch>
                     <Switch checkedChildren="Yes"
                             unCheckedChildren="No"
+                            disabled={disabled.includes("converse")}
                             onChange={
                                 (e) => {
                                     setJson($ => ({...$, converse: e}))

@@ -48,7 +48,7 @@ Note: If you cloned this repo, you will need to execute the command in both the 
 # Issuing a command
 
 If you want your Google Home to speak the response, make sure you pass a new parameter called "converse" as `true`.
-In version 2, the endpoint for all interactions with Google Assistant is simple `/assistant`
+In version 3, the endpoint for all interactions with Google Assistant is simple `/assistant`
 Simply send a HTTP POST request to `http://<ip_address>:<port>/assistant` with the parameters below
 
 
