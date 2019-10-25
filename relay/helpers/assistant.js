@@ -3,7 +3,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
 const Conversation = require('google-assistant/components/conversation');
 
-exports.sendTextInput = function (text, name, converse) {
+exports.sendTextInput = function (text, name) {
     return new Promise(async(res, rej) => {
         try {
             const db = await low(adapter);

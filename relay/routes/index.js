@@ -22,7 +22,7 @@ router.post('/assistant', async(req, res) => {
     const timestamp = Date.now();
     const fileStream = outputFileStream(convoData, timestamp);
     const isQH = await isQuietHour();
-    const {user, converse, preset, devices} = req.body;
+    const {user, converse, preset} = req.body;
     let {command, broadcast} = req.body;
     const response = {};
 
@@ -68,13 +68,14 @@ router.post('/assistant', async(req, res) => {
     if(broadcast) command = `broadcast ${command}`;
 
     if(broadcast && isQH) {
+      console.log("Broadcast command received, but quiet hours is enabled");
       return res.status(200).json({
         success: false,
         error: "Quiet Time Enabled - Broadcast command detected"
       });
     }
 
-    const conversation = await sendTextInput(command, user, converse);
+    const conversation = await sendTextInput(command, user);
     conversation
         .on('audio-data',async(data) => {
           fileStream.write(data);
@@ -82,6 +83,9 @@ router.post('/assistant', async(req, res) => {
         })
         .on('response', (text) => {
           response.response = text;
+          if(converse && isQH === false) {
+            sendTextInput(`broadcast ${text}`, user);
+          }
         })
         .on('volume-percent', (percent) => {
           // do stuff with a volume percent change (range from 1-100)

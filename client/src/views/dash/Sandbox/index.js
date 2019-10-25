@@ -81,6 +81,16 @@ function Sandbox() {
                                 }
                             }/>
                 </Styles.Switch>
+                <Text>Converse:</Text>
+                <Styles.Switch>
+                    <Switch checkedChildren="Yes"
+                            unCheckedChildren="No"
+                            onChange={
+                                (e) => {
+                                    setJson($ => ({...$, converse: e}))
+                                }
+                            }/>
+                </Styles.Switch>
                 {/*<Text>Devices:</Text>*/}
                 {/*<Select*/}
                 {/*    mode={"multiple"}*/}
