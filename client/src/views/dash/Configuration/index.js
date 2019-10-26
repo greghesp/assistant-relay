@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {withRouter} from 'react-router-dom'
 import {Input, InputNumber, Switch, message, TimePicker, Button, Icon} from "antd";
 import {post} from '~/helpers/api';
 import * as Styles from './styles';
@@ -9,7 +10,7 @@ import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
 
-function Configuration(){
+function Configuration({history}){
     const [initGet, setInitGet] = useState(true);
     const [startupSound, setStartupSound] = useState();
     const [users, setUsers] = useState([]);
@@ -44,7 +45,8 @@ function Configuration(){
             if(forceReboot) {
                 message.success("Assistant Relay restarting");
                 await post({}, 'restart');
-                localStorage.setItem('port', port);
+                console.log(`${window.location.hostname}:${port}`)
+                window.location.href(`http://${window.location.hostname}:${port}`)
             }
         } catch (e) {
             message.error(e.message);
@@ -140,4 +142,4 @@ function Configuration(){
         </Styles.Container>)
 }
 
-export default Configuration;
+export default withRouter(Configuration);

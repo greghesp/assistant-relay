@@ -1,2 +1,4 @@
 /release
 /logo.ai
+/node_modules
+/package-lock.json

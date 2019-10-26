@@ -9,7 +9,7 @@ const {Text, Title, Paragraph} = Typography;
 
 function Override({setReload}){
     const [port, setPort] = useState();
-    const [ip, setIp] = useState('127.0.0.1');
+    const [ip, setIp] = useState();
 
     useEffect(() => {
         localStorage.setItem('port', port);
@@ -17,11 +17,12 @@ function Override({setReload}){
 
     },[port, ip]);
 
-    function addIp(ip){
+
+
+    function submit() {
         if(isIP(ip)) {
-            setIp(ip)
-        }
-        message.error("Not a valid IP address")
+            setReload()
+        } else message.error("Not a valid IP address");
     }
 
 
@@ -35,13 +36,13 @@ function Override({setReload}){
 
                 <Styles.Form>
                     <Text>IP Address:</Text>
-                    <Input onChange={(e) => addIp(e)} defaultValue={ip} />
+                    <Input onChange={(e) => setIp(e.target.value)} defaultValue={ip} />
 
                     <Text>Port Number:</Text>
                     <InputNumber onChange={(e) => setPort(e) } defaultValue={port} />
 
                     <div></div>
-                    <Button onClick={() => setReload()} type={"primary"}>
+                    <Button onClick={() => submit()} type={"primary"}>
                         Save
                     </Button>
                 </Styles.Form>
