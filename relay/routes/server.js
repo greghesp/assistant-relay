@@ -76,6 +76,7 @@ router.post('/getConfig', async(req, res, next) => {
     data.muteStartup = db.get('muteStartup').value();
     data.quietHours = db.get('quietHours').value();
     data.devices = db.get('devices').value();
+    data.language = db.get('conversation.lang').value();
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e.message)
@@ -88,7 +89,6 @@ router.post('/updateConfig', async(req, res) => {
     const promises = [];
     Object.entries(req.body).forEach(([key, val]) => {
       promises.push(db.set(key, val).write());
-
     });
     await Promise.all(promises);
     res.status(200).json({success: true})

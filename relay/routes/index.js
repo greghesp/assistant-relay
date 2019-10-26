@@ -110,7 +110,8 @@ router.post('/assistant', async(req, res) => {
         })
         .on('error', error => {
           response.success = false;
-          response.error = error;
+          response.error = error.message;
+          res.status(500).json(response);
           console.error(error)
         });
 

@@ -13,6 +13,7 @@ function Configuration(){
     const [initGet, setInitGet] = useState(true);
     const [startupSound, setStartupSound] = useState();
     const [users, setUsers] = useState([]);
+    const [language, setLanguage] = useState([]);
     const [port, setPort] = useState();
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ function Configuration(){
             updateConfig()
         }
         //eslint-disable-next-line
-    }, [startupSound, port, quietHours, devices]);
+    }, [startupSound, port, quietHours, devices, language]);
 
     async function updateConfig() {
         try {
@@ -36,7 +37,8 @@ function Configuration(){
                 muteStartup: startupSound,
                 port,
                 quietHours,
-                devices
+                devices,
+                "conversation.lang": language
             };
             await post(obj, 'updateConfig');
             if(forceReboot) {
@@ -55,7 +57,8 @@ function Configuration(){
             setStartupSound(data.muteStartup);
             setPort(data.port);
             setQuietHours(data.quietHours);
-            setDevices(data.devices)
+            setDevices(data.devices);
+            setLanguage(data.language);
             setInitGet(false);
             setLoading(false);
         } catch (e) {
@@ -124,6 +127,9 @@ function Configuration(){
 
                 <div></div>
                 {quietHours.enabled ? <QuietHours/> : <div></div>}
+
+                <Text>Conversation Language:</Text>
+                <Input onChange={(e) => setLanguage(e.target.value) } defaultValue={language} />
 
                 {/*<Text>Users:</Text>*/}
                 {/*<Users />*/}
