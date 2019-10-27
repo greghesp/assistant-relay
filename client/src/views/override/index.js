@@ -39,7 +39,7 @@ function Override({setReload}){
                     <Input onChange={(e) => setIp(e.target.value)} defaultValue={ip} />
 
                     <Text>Port Number:</Text>
-                    <InputNumber onChange={(e) => setPort(e) } defaultValue={port} />
+                    <InputNumber onChange={(e) => setPort(e)} defaultValue={port} />
 
                     <div></div>
                     <Button onClick={() => submit()} type={"primary"}>

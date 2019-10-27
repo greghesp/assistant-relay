@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {withRouter} from 'react-router-dom'
-import {Input, InputNumber, Switch, message, TimePicker, Button, Icon} from "antd";
+import {Input, InputNumber, Switch, message, TimePicker, Button, Icon, Select} from "antd";
 import {post} from '~/helpers/api';
 import * as Styles from './styles';
 import LoadingAnimation from "~/components/LoadingAnimation";
@@ -9,6 +9,7 @@ import Users from "./Users";
 import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
+const {Option} = Select;
 
 function Configuration({history}){
     const [initGet, setInitGet] = useState(true);
@@ -25,13 +26,6 @@ function Configuration({history}){
         getConfig()
     }, []);
 
-    useEffect(() => {
-        if(!initGet) {
-            updateConfig()
-        }
-        //eslint-disable-next-line
-    }, [startupSound, port, quietHours, devices, language]);
-
     async function updateConfig() {
         try {
             const obj = {
@@ -45,8 +39,7 @@ function Configuration({history}){
             if(forceReboot) {
                 message.success("Assistant Relay restarting");
                 await post({}, 'restart');
-                console.log(`${window.location.hostname}:${port}`)
-                window.location.href(`http://${window.location.hostname}:${port}`)
+                message.success(`Restart Successful - Visit http://${window.location.hostname}:${port} to continue`)
             }
         } catch (e) {
             message.error(e.message);
@@ -131,7 +124,25 @@ function Configuration({history}){
                 {quietHours.enabled ? <QuietHours/> : <div></div>}
 
                 <Text>Conversation Language:</Text>
-                <Input onChange={(e) => setLanguage(e.target.value) } defaultValue={language} />
+                <Select defaultValue="en-US	" style={{ width: 220 }} onChange={(e) => setLanguage(e)}>
+                    <Option value="de-DE">German (Germany)</Option>
+                    <Option value="en-AU">English (Australia)</Option>
+                    <Option value="en-CA">English (Canada)</Option>
+                    <Option value="en-GB">English (United Kingdom)</Option>
+                    <Option value="en-IN">English (India)</Option>
+                    <Option value="en-US">English (United States)</Option>
+                    <Option value="fr-CA">French (Canada)</Option>
+                    <Option value="fr-FR">French (France)</Option>
+                    <Option value="it-IT">Italian (Italy)</Option>
+                    <Option value="ja-JP">Japanese (Japan)</Option>
+                    <Option value="es-ES">Spanish (Spain)</Option>
+                    <Option value="es-MX">Spanish (Mexico)</Option>
+                    <Option value="ko-KR">Korean (South Korea)</Option>
+                    <Option value="pt-BR">Portuguese (Brazil)</Option>
+                </Select>
+
+                <div></div>
+                <Button type="primary" onClick={() => updateConfig()}>Save</Button>
 
                 {/*<Text>Users:</Text>*/}
                 {/*<Users />*/}

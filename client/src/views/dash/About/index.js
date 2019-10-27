@@ -40,7 +40,7 @@ function About(){
                 <Title level={3}>Found an issue?</Title>
                 <Paragraph>
                     <Text>
-                        If you find an issue, you can check existing issues or submit a new issue here: https://github.com/greghesp/assistant-relay/issues
+                        If you find an issue, you can check existing issues or submit a new issue here: <a href="https://github.com/greghesp/assistant-relay/issues" target="_blank">Github Issues</a>
                     </Text>
                 </Paragraph>
 
