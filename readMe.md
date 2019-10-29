@@ -1,4 +1,4 @@
-# Assistant Relay v3.0.1!
+# Assistant Relay v3!
 
 Assistant Relay is a Node.js server that exposes the Google Assistant as a REST API.
 
@@ -6,12 +6,16 @@ Send Assistant Relay any query you would send the Google Assistant SDK, and get 
 
 It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
-## New in V3.0.1
+## New in V3.0.3
+- Fixed audio URL in response file
+- Moved from Beta to Release
+
+## New in V3.0.1b
 - Added in converse option
 - Fixed quiet hours bug (again...)
 
 
-## New in V3.0
+## New in V3.0b
 
 - Removed reliance on console commands
 - Completely configurable from a dashboard

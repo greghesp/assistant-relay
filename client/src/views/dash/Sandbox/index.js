@@ -29,6 +29,7 @@ function Sandbox() {
                 <Icon type="check-circle"  style={{ color: '#26a63e' }}/>
         );
         } catch (e) {
+            console.log(e);
             message.error(e.response.data.error)
         }
     }

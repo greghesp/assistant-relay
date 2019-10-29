@@ -17,8 +17,6 @@ function Override({setReload}){
 
     },[port, ip]);
 
-
-
     function submit() {
         if(isIP(ip)) {
             setReload()
@@ -29,7 +27,7 @@ function Override({setReload}){
     return (
         <Styles.Container>
             <div>
-                <Title level={3}>Whoops! We lost your server connection</Title>
+                <Title level={3}>We need your server details</Title>
                 <Paragraph>
                     Did you manually change your port or are you access this remotely?  Not to worry, add your server information below to continue
                 </Paragraph>

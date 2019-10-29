@@ -124,7 +124,7 @@ function Configuration({history}){
                 {quietHours.enabled ? <QuietHours/> : <div></div>}
 
                 <Text>Conversation Language:</Text>
-                <Select defaultValue="en-US	" style={{ width: 220 }} onChange={(e) => setLanguage(e)}>
+                <Select defaultValue={language} style={{ width: 220 }} onChange={(e) => setLanguage(e)}>
                     <Option value="de-DE">German (Germany)</Option>
                     <Option value="en-AU">English (Australia)</Option>
                     <Option value="en-CA">English (Canada)</Option>

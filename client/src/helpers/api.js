@@ -7,6 +7,8 @@ export const post = async function(data, url) {
     const port = p ? p : '3000';
     const ip = i ? i : '127.0.0.1';
 
+    const w = window.location;
+
     return axios({
         method: "post",
         url: `http://${ip}:${port}/server/${url}`,

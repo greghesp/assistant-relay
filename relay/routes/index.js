@@ -1,5 +1,6 @@
 const express = require('express');
 const low = require('lowdb');
+const ip = require('ip');
 
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
@@ -8,7 +9,6 @@ const {sendTextInput} = require('../helpers/assistant.js');
 const {outputFileStream, isQuietHour, updateResponses} = require('../helpers/server.js');
 
 const router = express.Router();
-
 
 router.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, '../views', 'index.html'));
@@ -79,7 +79,7 @@ router.post('/assistant', async(req, res) => {
     conversation
         .on('audio-data',async(data) => {
           fileStream.write(data);
-          response.audio = `http://localhost:${port}/server/audio?v=${timestamp}`
+          response.audio = `http://${ip.address()}:${port}/server/audio?v=${timestamp}`
         })
         .on('response', (text) => {
           response.response = text;
