@@ -26,7 +26,9 @@ It also supports the Google Home Broadcast command so you can send audio notific
 
 # Installation
 
-Download a copy of the latest release from https://github.com/greghesp/assistant-relay/releases and then use `npm run setup` to get started. 
+- Make sure you have Node installed from https://nodejs.org/en/
+- Install PM2 as a pre-requisite if not already installed `npm i pm2 -g`
+- Download a copy of the latest release from https://github.com/greghesp/assistant-relay/releases and then use `npm i` to get started. 
 Once setup, run `npm run start`.  You do NOT want the source files:
 
 Note: If you cloned this repo or downloaded the source files, you will need to execute the command in both the relay and client folder as the interface is not packaged

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "setup": "npm i -g pm2 && npm i",
-    "start": "pm2 start -f ./bin/www && pm2 log www",
+    "start": "pm2 start ./bin/www && pm2 log www",
     "dev": "node ./bin/www"
   },
   "dependencies": {
