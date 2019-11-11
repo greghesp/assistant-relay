@@ -55,8 +55,6 @@ function Sandbox() {
         }
     }
 
-    console.log(json)
-
     return (
         <Styles.Container>
             <Styles.Form>
