@@ -1,7 +1,21 @@
 {
-  "name": "relay",
-  "version": "0.0.0",
-  "private": true,
+  "name": "assistant-relay",
+  "version": "3.0.4",
+  "description": "Middleman server to allow custom integration with Google Home/Assistant",
+  "keywords": [
+    "google",
+    "assistant",
+    "google",
+    "home",
+    "assistant",
+    "voice",
+    "control",
+    "broadcast",
+    "iot",
+    "node"
+  ],
+  "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
+  "license": "GPL-3.0",
   "scripts": {
     "setup": "npm i -g pm2 && npm i",
     "start": "pm2 start ./bin/www && pm2 log www",

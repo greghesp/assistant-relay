@@ -1,7 +1,21 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
+  "name": "assistant-relay-client",
+  "version": "3.0.4",
+  "description": "Middleman server to allow custom integration with Google Home/Assistant",
+  "keywords": [
+    "google",
+    "assistant",
+    "google",
+    "home",
+    "assistant",
+    "voice",
+    "control",
+    "broadcast",
+    "iot",
+    "node"
+  ],
+  "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
+  "license": "GPL-3.0",
   "dependencies": {
     "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",

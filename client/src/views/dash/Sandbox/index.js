@@ -55,15 +55,17 @@ function Sandbox() {
         }
     }
 
+    console.log(json)
+
     return (
         <Styles.Container>
             <Styles.Form>
-                <Text>Name:</Text>
+                <Text>User:</Text>
                 <Input
                     onChange={
                         (e) => {
                             e.persist();
-                            setJson($ => ({...$, name: e.target.value}))
+                            setJson($ => ({...$, user: e.target.value}))
                         }
                     } />
                 <Text>Preset:</Text>

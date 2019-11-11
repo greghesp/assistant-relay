@@ -6,6 +6,11 @@ Send Assistant Relay any query you would send the Google Assistant SDK, and get 
 
 It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
+## New in V3.0.4
+- Bug fixed in Sandbox JSON creation
+- Fixed naming convention in Sandbox
+- Fixed typos in Readme
+
 ## New in V3.0.3
 - Fixed audio URL in response file
 - Moved from Beta to Release
@@ -38,7 +43,7 @@ Note: If you cloned this repo or downloaded the source files, you will need to e
 ### Creating Users
 
 Assistant Relay requires you to download an OAuth2 JSON file from Google.  
-Follow the instructions from step one of the Setup Wizard
+Follow the instructions from step one of the Setup Wizard, and continue until you have finished.
 
 ### Configuring the Relay
 
@@ -69,7 +74,7 @@ To send a Broadcast command, simply send a HTTP POST request with the following 
 
 The full request would be:
 
-    curl -d '{"command":"hello world", "user":"greg", "broadcast":"true"}' -H "Content-Type: application/json" -X POST http://<ip_address>:<port>/assistant
+    curl -d '{"command":"hello world", "user":"greg", "broadcast":true}' -H "Content-Type: application/json" -X POST http://<ip_address>:<port>/assistant
 
 
 The Google Home device will now play an audio alert, and say `Hello World`
@@ -110,6 +115,14 @@ To make use of these presets, send a request with the following json-encoded bod
   - bedtime
 
 *Note: Some of these preconfigured commands also say who triggered the command, such as the 'on the way' command. Make sure you pass the correct username in the user parameter, otherwise it will use the first user you setup*
+
+## Schema
+
+    user: string
+    preset: string
+    command: string
+    broadcast: boolean
+    converse: boolean
 
 ---
 
