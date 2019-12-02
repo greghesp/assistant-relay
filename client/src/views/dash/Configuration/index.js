@@ -77,13 +77,19 @@ function Configuration({history}){
                     <TimePicker
                         defaultValue={moment(quietHours.start, 'HH:mm')}
                         format={'HH:mm'}
-                        onChange={(t,s) => setQuietHours({enabled: true, start: s, end: quietHours.end})}/>
+                        onChange={(t,s) => {
+                            if(!s) s = "00:00";
+                            setQuietHours({enabled: true, start: s, end: quietHours.end})
+                        }}/>
 
                     <Text>End Time:</Text>
                     <TimePicker
                         defaultValue={moment(quietHours.end, 'HH:mm')}
                         format={'HH:mm'}
-                        onChange={(t,s) => setQuietHours({enabled: true, start: quietHours.start, end: s})}/>
+                        onChange={(t,s) => {
+                            if(!s) s = "00:00";
+                            setQuietHours({enabled: true, start: quietHours.start, end: s})
+                        }}/>
                 </Styles.QuietHours>
             )
         }
