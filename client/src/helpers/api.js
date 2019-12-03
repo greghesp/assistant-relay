@@ -1,31 +1,25 @@
 import axios from 'axios';
 
 export const post = async function(data, url) {
-    const p = await localStorage.getItem('port');
-    const i = await localStorage.getItem('ip');
+    if(process.env.REACT_APP_DEV_SERVER) {
+        return axios.post(`${process.env.REACT_APP_DEV_SERVER}/server/${url}`, {
+            data
+        });
+    }
 
-    const port = p ? p : '3000';
-    const ip = i ? i : '127.0.0.1';
-
-    const w = window.location;
-
-    return axios({
-        method: "post",
-        url: `http://${ip}:${port}/server/${url}`,
+    return axios.post(`/server/${url}`, {
         data
     });
 };
 
 export const sandbox = async function(data) {
-    const p = await localStorage.getItem('port');
-    const i = await localStorage.getItem('ip');
+    if(process.env.REACT_APP_DEV_SERVER) {
+        return axios.post(`${process.env.REACT_APP_DEV_SERVER}/assistant`, {
+            data
+        });
+    }
 
-    const port = p ? p : '3000';
-    const ip = i ? i : '127.0.0.1';
-
-    return axios({
-        method: "post",
-        url: `http://${ip}:${port}/assistant`,
+    return axios.post('/assistant', {
         data
     });
 };

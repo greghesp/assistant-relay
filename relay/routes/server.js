@@ -87,7 +87,8 @@ router.post('/updateConfig', async(req, res) => {
   try {
     const db = await low(adapter);
     const promises = [];
-    Object.entries(req.body).forEach(([key, val]) => {
+    Object.entries(req.body.data).forEach(([key, val]) => {
+      console.log(key, val);
       promises.push(db.set(key, val).write());
     });
     await Promise.all(promises);

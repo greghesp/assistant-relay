@@ -6,6 +6,10 @@ Send Assistant Relay any query you would send the Google Assistant SDK, and get 
 
 It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
+## New in V3.1.0
+- Fixed a bug that prevented the configuration being saved
+- Removed the need for the user to enter the server IP and port
+
 ## New in V3.0.6
 - Fixed a [bug](https://github.com/greghesp/assistant-relay/issues/135) that set invalid date when clearing quiet hours times
 

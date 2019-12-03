@@ -35,25 +35,25 @@ function App({history}) {
             setUserCount(response.data.size);
             setLoading(false)
         } catch (e) {
-            if(e.message === "Network Error" ||
-                e.message === "Failed to execute 'open' on 'XMLHttpRequest': Invalid URL" ||
-                e.response.status === 404) {
-                return setOverride(true)
-            }
+            // if(e.message === "Network Error" ||
+            //     e.message === "Failed to execute 'open' on 'XMLHttpRequest': Invalid URL" ||
+            //     e.response.status === 404) {
+            //     return setOverride(true)
+            // }
             message.error(e.message);
         }
     }
 
-    function OverrideReload() {
-        getUserCount();
-        setOverride($ => !$);
-    }
-
-    if(override) return (
-        <Setup>
-            <Override setReload={() => OverrideReload()} />
-        </Setup>
-    );
+    // function OverrideReload() {
+    //     getUserCount();
+    //     setOverride($ => !$);
+    // }
+    //
+    // if(override) return (
+    //     <Setup>
+    //         <Override setReload={() => OverrideReload()} />
+    //     </Setup>
+    // );
 
     if(loading) return <Loading/>;
 
