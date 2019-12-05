@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const app = require('../app');
+//const socket = require('../socket');
 const debug = require('debug')('relay:server');
 const http = require('http');
 const low = require('lowdb');

@@ -23,9 +23,8 @@ app.use(express.static(path.join(__dirname, './views')));
 global.assistants = {};
 
 cron.schedule("0 1 * * *", function() {
-  if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
+  if(isUpdateAvailable) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
 });
-
 
 (async function () {
   try {
@@ -48,7 +47,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   console.log(req.body, req.query)
   console.log(err)
-  // res.render('error');
 });
 
 module.exports = app;
