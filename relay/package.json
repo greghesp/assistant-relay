@@ -1,6 +1,6 @@
 {
   "name": "assistant-relay",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "keywords": [
     "google",
@@ -37,6 +37,7 @@
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
     "multicast-dns": "^7.2.0",
+    "node-cron": "^2.0.3",
     "node-dns-sd": "^0.4.0",
     "pm2": "^4.1.2",
     "rss-parser": "^3.7.3",

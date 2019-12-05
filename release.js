@@ -3,6 +3,7 @@ const dir = './release';
 const ncp = require('ncp').ncp;
 ncp.limit = 16;
 
+console.log("Did you remember to change the version number in /bin/version.json and /relay/package.json?!");
 
 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 ncp('./relay/bin/', './release/bin');

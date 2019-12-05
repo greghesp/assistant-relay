@@ -6,6 +6,12 @@ Send Assistant Relay any query you would send the Google Assistant SDK, and get 
 
 It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
+## New in V3.1.1
+**Note: Please run `npm i` after updating**
+- Fixed a bug that stopped commands from working (sorry, not sure where this one came from)
+- Fixed the update checker
+- Added a feature to check for updates every day
+
 ## New in V3.1.0
 - Fixed a bug that prevented the configuration being saved
 - Removed the need for the user to enter the server IP and port

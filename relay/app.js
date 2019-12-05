@@ -1,11 +1,12 @@
 const createError = require('http-errors');
+const cron = require("node-cron");
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const {initializeServer} = require('./helpers/server');
+const {initializeServer, isUpdateAvailable} = require('./helpers/server');
 
 const serverRouter = require('./routes/server');
 const indexRouter = require('./routes/index');
@@ -20,6 +21,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './views')));
 
 global.assistants = {};
+
+cron.schedule("0 1 * * *", function() {
+  if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
+});
+
 
 (async function () {
   try {

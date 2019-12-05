@@ -8,6 +8,7 @@ const parser = new Parser();
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const {sendTextInput} = require('../helpers/assistant.js');
+const version = require('../bin/version.json');
 
 const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
@@ -42,7 +43,6 @@ exports.initializeServer = function (text) {
             users: [],
             responses: [],
             devices: [],
-            lastCheck: moment().format()
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();
@@ -122,13 +122,15 @@ exports.isStartupMuted = function() {
 };
 
 
-exports.isUpdateAvailable = function() {
+    exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
-        const db = await low(adapter);
-        const lastCheck = db.get('lastCheck').value();
         const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');
-        const latestTime = feed.items[0].pubDate;
-        return res(moment(lastCheck).isBefore(latestTime));
+        const latestVersion = feed.items[0].title;
+        if(latestVersion !== version.version) {
+            return res(true)
+        } else {
+            return res(false)
+        }
     })
 };
 

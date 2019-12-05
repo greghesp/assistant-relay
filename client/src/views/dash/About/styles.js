@@ -25,3 +25,7 @@ export const Form = styled.div`
     justify-content: center;
 `;
 
+export const Alert = styled.div`
+  margin: 10px 0;
+`;
+

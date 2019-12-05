@@ -1,13 +1,31 @@
-import React from "react";
-import {Typography} from "antd";
+import React, {useEffect, useState} from "react";
+import {message, Typography, Alert} from "antd";
+import {post} from '~/helpers/api';
+
 import * as Styles from './styles';
 
 const {Text, Paragraph, Title} = Typography;
 
 function About(){
+    const [isUpdate, setIsUpdate] = useState(false);
+
+    useEffect(() => {
+        checkUpdate();
+    },[]);
+
+    async function checkUpdate() {
+        try {
+            const resp = await post({}, 'checkUpdate');
+            setIsUpdate(resp.data)
+        } catch (e) {
+            message.error(e.message);
+        }
+    }
+
     return (
         <Styles.Container>
             <Styles.Text>
+                <AlertBox update={isUpdate}/>
                 <Title level={3}>About Assistant Relay</Title>
                 <Paragraph>
                     <Text>
@@ -47,12 +65,12 @@ function About(){
                 <Title level={3}>Want to buy me a coffee?</Title>
                 <Text>Any donations are greatly appreciated, but certainly not required!</Text>
                 <Styles.Form>
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-                            <input type="hidden" name="cmd" value="_s-xclick" />
-                            <input type="hidden" name="hosted_button_id" value="YK2LXAHNTSVLC" />
-                            <input width="200" type="image" src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-                            <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
-                        </form>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                        <input type="hidden" name="cmd" value="_s-xclick" />
+                        <input type="hidden" name="hosted_button_id" value="YK2LXAHNTSVLC" />
+                        <input width="200" type="image" src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                        <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
+                    </form>
 
                 </Styles.Form>
 
@@ -60,6 +78,20 @@ function About(){
 
 
         </Styles.Container>
+    )
+}
+
+function AlertBox({update}) {
+    if(!update.update) return null;
+    return (
+        <Styles.Alert>
+            <Alert
+                message={`Version ${update.details.title} is available`}
+                description={<span>To download the latest update, please visit <a>{update.details.link}</a></span>}
+                type="info"
+                showIcon
+            />
+        </Styles.Alert>
     )
 }
 
