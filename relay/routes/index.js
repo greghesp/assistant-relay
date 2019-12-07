@@ -22,9 +22,8 @@ router.post('/assistant', async(req, res) => {
     const timestamp = Date.now();
     const fileStream = outputFileStream(convoData, timestamp);
     const isQH = await isQuietHour();
-    const {user, converse = false, preset} = req.body.data;
-    let {command, broadcast = false} = req.body.data;
-
+    const {user, converse = false, preset} = req.body;
+    let {command, broadcast = false} = req.body;
     // console.log(user, converse, preset, command, broadcast)
 
     const response = {};

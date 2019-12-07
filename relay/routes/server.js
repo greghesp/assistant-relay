@@ -17,7 +17,6 @@ const router = express.Router();
 router.post('/checkUpdate', async(req, res) => {
   try {
     const update = await isUpdateAvailable();
-    console.log(update)
     const data = {};
     if(update) {
       const details = await updateDetails();
@@ -26,7 +25,6 @@ router.post('/checkUpdate', async(req, res) => {
     } else {
       data.update = false
     }
-    console.log(data)
     res.status(200).json(data);
   } catch (e) {
     res.status(500).send(e.message)
@@ -89,7 +87,7 @@ router.post('/updateConfig', async(req, res) => {
   try {
     const db = await low(adapter);
     const promises = [];
-    Object.entries(req.body.data).forEach(([key, val]) => {
+    Object.entries(req.body).forEach(([key, val]) => {
       promises.push(db.set(key, val).write());
     });
     await Promise.all(promises);
