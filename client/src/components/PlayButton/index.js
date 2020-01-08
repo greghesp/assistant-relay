@@ -34,7 +34,7 @@ function PlayButton({timestamp, url}) {
     return (
         <div>
             <Sound
-                url={url ? url : `http://${ip}:${port}/server/audio?v=${timestamp}`}
+                url={url ? url : `/server/audio?v=${timestamp}`}
                 onFinishedPlaying={() => PlayStop()}
                 playStatus={status}
             />

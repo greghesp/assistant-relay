@@ -81,7 +81,7 @@ router.post('/assistant', async(req, res) => {
     conversation
         .on('audio-data',async(data) => {
           fileStream.write(data);
-          response.audio = `http://${ip.address()}:${port}/server/audio?v=${timestamp}`
+          response.audio = `/server/audio?v=${timestamp}`
         })
         .on('response', (text) => {
           response.response = text;
