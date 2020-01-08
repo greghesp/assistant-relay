@@ -1,6 +1,6 @@
 {
   "name": "assistant-relay",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "keywords": [
     "google",
