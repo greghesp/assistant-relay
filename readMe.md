@@ -1,5 +1,11 @@
 # Assistant Relay v3!
 
+##Discord
+There is now a Discord Server where all can join and discuss any Assistant Relay issues or features live:
+https://discord.gg/87FsaGa
+
+##About
+
 Assistant Relay is a Node.js server that exposes the Google Assistant as a REST API.
 
 Send Assistant Relay any query you would send the Google Assistant SDK, and get a response back.
