@@ -13,8 +13,8 @@ import MenuNav from '~/views/dash/Menu';
 import Home from '~/views/dash/Home';
 import Configuration from '~/views/dash/Configuration';
 import AddUser from '~/views/dash/AddUser';
+import RemoveUser from '~/views/dash/RemoveUser';
 import Sandbox from '~/views/dash/Sandbox';
-import Override from '~/views/override';
 import About from '~/views/dash/About';
 
 import {post} from '~/helpers/api';
@@ -31,29 +31,13 @@ function App({history}) {
     async function getUserCount() {
         try {
             const response = await post({}, 'userCount');
-           // if(response.data.size <= 0) await post({}, 'init');
             setUserCount(response.data.size);
             setLoading(false)
         } catch (e) {
-            // if(e.message === "Network Error" ||
-            //     e.message === "Failed to execute 'open' on 'XMLHttpRequest': Invalid URL" ||
-            //     e.response.status === 404) {
-            //     return setOverride(true)
-            // }
             message.error(e.message);
         }
     }
 
-    // function OverrideReload() {
-    //     getUserCount();
-    //     setOverride($ => !$);
-    // }
-    //
-    // if(override) return (
-    //     <Setup>
-    //         <Override setReload={() => OverrideReload()} />
-    //     </Setup>
-    // );
 
     if(loading) return <Loading/>;
 
@@ -65,6 +49,7 @@ function App({history}) {
                     <Route path="/home" component={Home}/>
                     <Route path="/configuration" component={Configuration}/>
                     <Route path="/addUser" component={AddUser}/>
+                    <Route path="/removeUser" component={RemoveUser}/>
                     <Route path="/sandbox" component={Sandbox}/>
                     <Route path="/about" component={About}/>
                     <Redirect to="/home" />

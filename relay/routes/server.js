@@ -6,6 +6,7 @@ const Conversation = require('google-assistant/components/conversation');
 
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
+const versionAdapter = new FileSync('./bin/version.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
 const {isUpdateAvailable, updateDetails} = require('../helpers/server');
@@ -115,6 +116,42 @@ router.post('/getResponses', async(req, res) => {
 
 router.get('/audio', async(req, res) => {
   res.sendFile(path.resolve(__dirname, `../bin/audio-responses/${req.query.v}.wav`));
+});
+
+router.get('/users', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    const users =  await db.get('users').value();
+    const sendUsers = [];
+    users.forEach(u => {
+      sendUsers.push(u.name)
+    });
+    res.status(200).send({users: sendUsers});
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
+router.get('/version', async(req, res) => {
+  try {
+    const db = await low(versionAdapter);
+    const v = await db.get('version').value();
+    console.log(v)
+    res.status(200).send({version: v});
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
+
+router.post('/deleteUser', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    await db.get('users').remove({name: req.body.name}).write();
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
 });
 
 module.exports = router;

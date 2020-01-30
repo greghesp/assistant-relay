@@ -20,8 +20,12 @@ function MenuContainer({history, location}) {
                 Configuration
             </Menu.Item>
             <Menu.Item key="addUser">
-                <Icon type="user-add" />
+                <Icon type="user-delete" />
                 Add New User
+            </Menu.Item>
+            <Menu.Item key="removeUser">
+                <Icon type="user-add" />
+                Remove User
             </Menu.Item>
             <Menu.Item key="sandbox">
                 <Icon type="code" />

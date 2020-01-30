@@ -40,7 +40,7 @@ function Home(){
 }
 
 function Responses({data}) {
-    if(data.length === 0) return <p>No responses yet</p>
+    if(data.length === 0) return <p>No responses yet</p>;
     return (
         data.map(r => {
             return (

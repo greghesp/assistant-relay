@@ -12,6 +12,11 @@ Send Assistant Relay any query you would send the Google Assistant SDK, and get 
 
 It also supports the Google Home Broadcast command so you can send audio notifications to your Google Home devices, without interrupting music.
 
+## New in V3.2.0
+- Added the ability to [delete a user](https://github.com/greghesp/assistant-relay/issues/142)
+- Added version information to About page
+- Updated About page
+
 ## New in V3.1.4
 - Merged [Pull Request](https://github.com/greghesp/assistant-relay/pull/149) to fix play button not working remotely
 
