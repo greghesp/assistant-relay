@@ -43,6 +43,10 @@ exports.initializeServer = function (text) {
             users: [],
             responses: [],
             devices: [],
+            authentication: {
+                enabled: false,
+                users: []
+            }
         }).write();
         const size = db.get('users').size().value();
         const users = db.get('users').value();

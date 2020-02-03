@@ -17,57 +17,6 @@ It also supports the Google Home Broadcast command so you can send audio notific
 - Added version information to About page
 - Updated About page
 
-## New in V3.1.4
-- Merged [Pull Request](https://github.com/greghesp/assistant-relay/pull/149) to fix play button not working remotely
-
-## New in V3.1.3
-**Note: Please run `npm i` after updating**
-- Fixed another bug that stopped `/assistant` from working
-
-## New in V3.1.2
-**Note: Please run `npm i` after updating**
-- Fixed a bug that prevented OAuth from working
-
-## New in V3.1.1
-**Note: Please run `npm i` after updating**
-- Fixed a bug that stopped commands from working (sorry, not sure where this one came from)
-- Fixed the update checker
-- Added a feature to check for updates every day
-
-## New in V3.1.0
-- Fixed a bug that prevented the configuration being saved
-- Removed the need for the user to enter the server IP and port
-
-## New in V3.0.6
-- Fixed a [bug](https://github.com/greghesp/assistant-relay/issues/135) that set invalid date when clearing quiet hours times
-
-## New in V3.0.5
-- Fixed a [bug](https://github.com/greghesp/assistant-relay/issues/128) preventing remote configuration that was found in v3.0.4 (Sorry!)
-- [Removed playback of Emojis](https://github.com/greghesp/assistant-relay/issues/127) when using the converse parameter
-
-## New in V3.0.4
-- Bug fixed in Sandbox JSON creation
-- Fixed naming convention in Sandbox
-- Fixed typos in Readme
-
-## New in V3.0.3
-- Fixed audio URL in response file
-- Moved from Beta to Release
-
-## New in V3.0.1b
-- Added in converse option
-- Fixed quiet hours bug (again...)
-
-
-## New in V3.0b
-
-- Removed reliance on console commands
-- Completely configurable from a dashboard
-- Access to Google Assistant audio Responses
-- See your Assistant Relay commands on the dashboard
-- Listen to your history of audio responses
-- Sandbox mode to test requests from dashboard
-
 # Installation
 
 - Make sure you have Node installed from https://nodejs.org/en/
@@ -162,6 +111,12 @@ To make use of these presets, send a request with the following json-encoded bod
     command: string
     broadcast: boolean
     converse: boolean
+
+---
+
+# WebCore Usage
+
+![WebCore Piston](https://i.imgur.com/GN3sMeo.png)
 
 ---
 

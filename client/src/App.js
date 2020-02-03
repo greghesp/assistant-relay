@@ -28,6 +28,7 @@ function App({history}) {
         getUserCount();
     }, []);
 
+
     async function getUserCount() {
         try {
             const response = await post({}, 'userCount');
@@ -37,7 +38,6 @@ function App({history}) {
             message.error(e.message);
         }
     }
-
 
     if(loading) return <Loading/>;
 
