@@ -125,7 +125,6 @@ exports.isStartupMuted = function() {
     })
 };
 
-
 exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
         const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');

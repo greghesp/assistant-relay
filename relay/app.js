@@ -9,6 +9,7 @@ const cors = require('cors');
 const {initializeServer, isUpdateAvailable} = require('./helpers/server');
 
 const serverRouter = require('./routes/server');
+const castRouter = require('./routes/cast');
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -36,6 +37,7 @@ cron.schedule("0 1 * * *", function() {
 
 
 app.use('/server', serverRouter);
+app.use('/cast', castRouter);
 app.use('/', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));

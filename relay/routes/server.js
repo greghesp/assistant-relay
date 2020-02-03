@@ -118,6 +118,10 @@ router.get('/audio', async(req, res) => {
   res.sendFile(path.resolve(__dirname, `../bin/audio-responses/${req.query.v}.wav`));
 });
 
+router.get('/sounds', async(req, res) => {
+  res.sendFile(path.resolve(__dirname, `../bin/sounds/${req.query.v}`));
+});
+
 router.get('/users', async(req, res) => {
   try {
     const db = await low(adapter);
@@ -142,7 +146,6 @@ router.get('/version', async(req, res) => {
     res.status(500).send(e.message)
   }
 });
-
 
 router.post('/deleteUser', async(req, res) => {
   try {

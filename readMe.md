@@ -146,10 +146,38 @@ For example, if I wanted to broadcast only to my Living Room Home, I would setup
 
 ---
 
+# FAQ
+
+### How do I disable "Incoming broadcast from [name]"
+Unfortunately you can't.  The best thing to do is send Google some feedback asking them to change it or make it optional.  To do this, open Google Assistant on your phone, and say "Send Feedback".  It'll let you type in your feedback to the product team
+
+### How do I get this to cast media?
+This is not something supported by the Google Assistant SDK.  There are apparently other Google Assistant implementations out there that have managed to do this.  I have yet to find them, or get them working.  I've also tried to get this working with Assistant Relay, but have had no such luck so far.
+
+With that in mind, you can cast Nest Cameras to a Smart Display.  Simply send a command `cast driveway camera to the kitchen hub`
+
+---
+
 # Credit
 This project uses the google-assistant repository from endoplasmic
 https://github.com/endoplasmic/google-assistant
 
+Sounds:
+- http://www.orangefreesounds.com/
+
 ## Donations
 Whilst donations are appreciated, they are not expected, nor required.  If you want to buy me a drink, you can do so here:
 https://monzo.me/greghesp
+
+
+##To Do
+Windows users, install https://www.softpedia.com/get/Programming/SDK-DDK/Bonjour-SDK.shtml
+Installed the Bonjour SDK? Check your control panel > installed programs (or wherever MS moved in in Win10)
+Installed build tools from an admin shell ‘npm install -g windows-build-tools’
+Check control panel > installed programs for: Python 2.7.xx and MS Visual C++ Build Tools
+Try running npm install mdns from an admin shell
+
+npm install --global --production windows-build-tools
+
+
+'
