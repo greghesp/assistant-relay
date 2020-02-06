@@ -31,7 +31,8 @@ cron.schedule("0 1 * * *", function() {
   try {
     await initializeServer();
   } catch (e) {
-    console.error(e)
+    console.error("ERROR: ", e);
+    process.exit();
   }
 })();
 

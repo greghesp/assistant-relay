@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "castv2-client": "^1.2.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -34,9 +33,7 @@
     "google-auth-library": "^5.9.2",
     "http-errors": "~1.6.3",
     "ip": "^1.1.5",
-    "jade": "~1.11.0",
     "lowdb": "^1.0.0",
-    "mdns": "^2.5.1",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
     "node-cron": "^2.0.3",
@@ -45,7 +42,6 @@
     "q": "^1.5.1",
     "rss-parser": "^3.7.4",
     "socket.io": "^2.3.0",
-    "wav": "^1.0.2",
-    "youtube-castv2-client": "0.0.1"
+    "wav": "^1.0.2"
   }
 }

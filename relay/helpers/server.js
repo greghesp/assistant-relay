@@ -8,6 +8,7 @@ const parser = new Parser();
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const {sendTextInput} = require('../helpers/assistant.js');
+const {install} = require('../helpers/cast.js');
 const version = require('../bin/version.json');
 
 const FileWriter = require('wav').FileWriter;
@@ -18,61 +19,68 @@ const Assistant = require('google-assistant/components/assistant');
 
 exports.initializeServer = function (text) {
     return new Promise(async(res, rej) => {
-        const db = await low(adapter);
-        await db.defaults({
-            port: 3000,
-            muteStartup: false,
-            quietHours: {
-                enabled: false,
-                start: "22:00",
-                end: "08:00"
-            },
-            maxResponses: 5,
-            conversation: {
-                audio: {
-                    encodingIn: 'LINEAR16',
-                    sampleRateIn: 16000,
-                    encodingOut: 'LINEAR16',
-                    sampleRateOut: 24000,
+        try {
+            console.log("Installing dependencies for casting...");
+            await install();
+
+            const db = await low(adapter);
+            await db.defaults({
+                port: 3000,
+                muteStartup: false,
+                quietHours: {
+                    enabled: false,
+                    start: "22:00",
+                    end: "08:00"
                 },
-                lang: 'en-US',
-                screen: {
-                    isOn: false,
+                maxResponses: 5,
+                conversation: {
+                    audio: {
+                        encodingIn: 'LINEAR16',
+                        sampleRateIn: 16000,
+                        encodingOut: 'LINEAR16',
+                        sampleRateOut: 24000,
+                    },
+                    lang: 'en-US',
+                    screen: {
+                        isOn: false,
+                    }
+                },
+                users: [],
+                responses: [],
+                devices: [],
+                authentication: {
+                    enabled: false,
+                    users: []
                 }
-            },
-            users: [],
-            responses: [],
-            devices: [],
-            authentication: {
-                enabled: false,
-                users: []
+            }).write();
+            const size = db.get('users').size().value();
+            const users = db.get('users').value();
+            const port = db.get('port').value();
+
+            const muted = await exports.isStartupMuted();
+            const updateAvail = await exports.isUpdateAvailable();
+            const isQH = await exports.isQuietHour();
+            const promises = [];
+
+            if(size > 0 ) {
+                users.forEach(user => {
+                    promises.push(new Promise(async(resolve,rej) => {
+                        const client = await setCredentials(user.name);
+                        global.assistants[user.name] = new Assistant(client);
+                        resolve();
+                    }));
+                });
+                await Promise.all(promises);
             }
-        }).write();
-        const size = db.get('users').size().value();
-        const users = db.get('users').value();
-        const port = db.get('port').value();
+            if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
 
-
-        const muted = await exports.isStartupMuted();
-        const updateAvail = await exports.isUpdateAvailable();
-        const isQH = await exports.isQuietHour();
-        const promises = [];
-
-        if(size > 0 ) {
-            users.forEach(user => {
-                promises.push(new Promise(async(resolve,rej) => {
-                    const client = await setCredentials(user.name);
-                    global.assistants[user.name] = new Assistant(client);
-                    resolve();
-                }));
-            });
-            await Promise.all(promises);
+            console.log("Assistant Relay Server Initialized");
+            console.log(`Visit http://${ip.address()}:${port} in a browser to configure`);
+            if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
+            return res();
+        } catch (e) {
+            rej(e)
         }
-        if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
-        console.log("Assistant Relay Server Initialized");
-        console.log(`Visit http://${ip.address()}:${port} in a browser to configure`);
-        if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
-        return res();
     })
 };
 

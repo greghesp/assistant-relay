@@ -119,7 +119,8 @@ router.get('/audio', async(req, res) => {
 });
 
 router.get('/sounds', async(req, res) => {
-  res.sendFile(path.resolve(__dirname, `../bin/sounds/${req.query.v}`));
+  res.sendFile(path.resolve(__dirname, `../bin/sounds/doorbell.mp3`));
+  //res.sendFile(path.resolve(__dirname, `../bin/sounds/${req.query.v}`));
 });
 
 router.get('/users', async(req, res) => {

@@ -1,64 +1,59 @@
-const Youtube = require('youtube-castv2-client').Youtube;
-const DefaultMediaReceiver  = require('castv2-client').DefaultMediaReceiver;
-const Client = require('castv2-client').Client;
+const s = require('shelljs');
+const { spawn } = require('child_process');
+const path = require('path')
 
+let catt;
 
-exports.launch = function (host) {
-    return new Promise(async(res, rej) => {
-        var client = new Client();
+exports.install =  async function() {
+    return new Promise((res, rej) => {
+        if(!s.which('pip3')){
+            return rej("This is only compatible with Python 3. Please install Python3");
+        }
 
-        client.connect(host, function() {
-            console.log('connected, launching app ...');
-            client.launch(DefaultMediaReceiver, function(err, player) {
-                var media = {
-
-                    // Here you can plug an URL to any mp4, webm, mp3 or jpg file with the proper contentType.
-                    contentId: 'http://192.168.1.174:3000/server/sounds?v=doorbell.mp3',
-                    contentType: 'audio/mp3',
-                    streamType: 'LIVE', // or LIVE
-
-                    // Title and cover displayed while buffering
-                    // metadata: {
-                    //     type: 0,
-                    //     metadataType: 0,
-                    //     title: "Big Buck Bunny",
-                    //     images: [
-                    //         { url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg' }
-                    //     ]
-                    //}
-                };
-
-                player.on('status', function(status) {
-                    console.log('status broadcast playerState=%s', status.playerState);
-                    if(status.playerState === "IDLE") client.close();
-                });
-
-                player.load(media, { autoplay: true }, function(err, status) {
-                    console.log('media loaded playerState=%s', status.playerState);
-                });
-
-            });
-
-        });
-
-        client.on('error', function(err) {
-            console.log('Error: %s', err.message);
-            client.close();
-        });
+        if(!s.which('catt')) {
+            console.log("Installing CATT");
+            if(s.exec('pip3 install catt').code !== 0) {
+                return rej("Unable to install CATT");
+            }
+        }
+        console.log("Dependencies installed");
+        return res();
     })
 };
 
-exports.yt = function(host) {
-    var client = new Client();
-    client.connect(host, function() {
-        console.log('connected, launching app ...');
-        client.launch(Youtube, function(err, player) {
-            player.load('69V__a49xtw');
+exports.search = async function() {
+    return new Promise((res, rej) => {
+        const scan = s.exec('catt scan', { silent:true });
+        if(scan.code !== 0) return rej("CATT scan failed");
+        const devices = scan.stdout.split("\r\n");
+        const newDevices = [];
+        devices.shift();
+        devices.pop();
+        devices.forEach(d => {
+            const i = d.split(" - ");
+            newDevices.push({ address : i[0], name: i[1]})
         });
-    });
+        return res(newDevices);
+    })
+};
 
-    client.on('error', function(err) {
-        console.log('Error: %s', err.message);
-        client.close();
-    });
-}
+exports.cast = async function(d) {
+    return new Promise((res, rej) => {
+        let p;
+        if(catt && catt.kill) catt.kill();
+
+        switch (d.type) {
+            case "localSound":
+                p = `${path.dirname(require.main.filename)}\\sounds\\${d.source}`;
+                break;
+            default:
+                p = d.source;
+        }
+
+        catt = spawn('catt', ['-d', d.device, 'cast', p]);
+        catt.on('close', () => {
+            catt.kill();
+            return res();
+        })
+    })
+};
