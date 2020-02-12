@@ -1,6 +1,8 @@
 ---
 id: contributing
 title: Contributing
+sidebar_label: Contributing
+description: Contributing to Assistant Relay
 ---
 
 Assistant Relay is in active development, and welcomes contributions to assist with bug fixes and feature enhancements.

@@ -1,6 +1,7 @@
 ---
 id: broadcast
 title: Sending Broadcasts
+description: Sending Broadcasts with Assistant Relay
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,7 +14,7 @@ Passing commands to Assistant Relay is as simple as calling the `/assistant` end
 
 A broadcast sends a message to everyone in your home, by broadcasting a message on all of your Google Home devices
 
-To send a broadcast command, simply send a HTTP POST request with the following json-encoded body parameter:
+To send a broadcast command, simply send a HTTP POST request to `/assistant` with the following json-encoded body parameter:
 
 <Tabs
   defaultValue="json"

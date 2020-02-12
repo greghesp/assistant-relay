@@ -1,6 +1,7 @@
 ---
 id: configuration
 title: Configuration
+description: How to configure Assistant Relay
 ---
 
 ## Configuring Credentials

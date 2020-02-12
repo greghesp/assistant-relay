@@ -10,6 +10,7 @@ module.exports = {
     "Assistant Relay": ['introduction', 'contributing'],
     "Getting Started": ['getting-started/installation', 'getting-started/configuration'],
     "Commands": ['commands/broadcast', 'commands/presets', 'commands/custom-commands'],
+    "Casting": ['cast/search', 'cast/casting', 'cast/stop'],
     "Smart Home Integration": ['integration/webcore'],
     "FAQ": ['faq/faq']
   },

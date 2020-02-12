@@ -1,6 +1,7 @@
 ---
 id: faq
 title: Frequently Asked Questions
+description: Assistant Relay Frequently Asked Questions
 ---
 
 ## How do I disable "Incoming broadcast from [name]"?

@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/search', async(req, res) => {
     try {
         const devices = await search();
-        res.status(200).json({success: true});
+        res.status(200).json(devices);
     } catch (e) {
         res.status(500).send(e.message)
     }

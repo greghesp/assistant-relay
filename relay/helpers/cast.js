@@ -33,12 +33,15 @@ exports.search = async function() {
         const scan = s.exec('catt scan', { silent:true });
         if(scan.code !== 0) return rej("CATT scan failed");
         const devices = scan.stdout.split("\r\n");
-        const newDevices = [];
+        const newDevices = {
+            success: true,
+            devices: []
+        };
         devices.shift();
         devices.pop();
         devices.forEach(d => {
             const i = d.split(" - ");
-            newDevices.push({ address : i[0], name: i[1]})
+            newDevices.devices.push({ address : i[0], name: i[1]})
         });
         return res(newDevices);
     })
@@ -46,20 +49,26 @@ exports.search = async function() {
 
 exports.cast = async function(d) {
     return new Promise((res, rej) => {
-        let p;
+        let p, t;
         let i = {
             messages: []
-        }
+        };
+
         if(catt && catt.kill) catt.kill();
 
         switch (d.type) {
-            case "localSound":
-                p = `${path.dirname(require.main.filename)}\\sounds\\${d.source}`;
+            case "local":
+                p = `${path.dirname(require.main.filename)}\\media\\${d.source}`;
+                t = 'cast';
                 break;
+            case "website":
+                p = d.source;
+                t = 'cast_site';
             default:
                 p = d.source;
+                t = 'cast';
         }
-        catt = spawn('catt', ['-d', d.device, 'cast', p]);
+        catt = spawn('catt', ['-d', d.device, t, p]);
 
         catt.stdout.on('data', (data) => {
             i.messages.push(Buffer.from(data).toString());

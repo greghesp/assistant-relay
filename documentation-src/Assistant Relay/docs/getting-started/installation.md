@@ -1,6 +1,7 @@
 ---
 id: installation
 title: Installation
+description: How to install Assistant Relay
 ---
 
 At its core, Assistant Relay is powered by Node.js
