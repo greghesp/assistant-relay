@@ -11,7 +11,7 @@ module.exports = {
     "Getting Started": ['getting-started/installation', 'getting-started/configuration'],
     "Commands": ['commands/broadcast', 'commands/presets', 'commands/custom-commands'],
     "Casting": ['cast/search', 'cast/casting', 'cast/stop'],
-    "Smart Home Integration": ['integration/webcore'],
+    "Smart Home Integration": ['integration/webcore', 'integration/hass'],
     "FAQ": ['faq/faq']
   },
 };
