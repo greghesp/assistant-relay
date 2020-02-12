@@ -30,7 +30,7 @@ const features = [
     imageUrl: 'img/XPM_BADGING_GoogleAssistant_VER.png',
     description: (
       <>
-        Assistant Relay integrates directly with the Office Google Assistant Service
+        Assistant Relay integrates directly with the Official Google Assistant Service
       </>
     ),
   },
@@ -57,7 +57,7 @@ function Home() {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="Exposing the Google Assistant Service as a REST API">
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>

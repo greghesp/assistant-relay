@@ -135,7 +135,8 @@ exports.isStartupMuted = function() {
 exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
         const response = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases/latest');
-        if(response.data.tag_name !== version.version) {
+        const latest = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases');
+        if(response.data.tag_name !== version.version || latest.data[0].tag_name !== version.version) {
             return res(true)
         } else {
             return res(false)

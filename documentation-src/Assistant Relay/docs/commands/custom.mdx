@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 Assistant Relay lets you send any command to Google Assistant that would normally follow the `OK Google` commmand.
 
-## Sending a broadcast command
+## Sending a custom command
 
 To send a custom command, simply send a HTTP POST request to `/assistant` with the following json-encoded body parameter:
 
@@ -67,4 +67,49 @@ As Assistant Relay uses the Google Assistant Service, there are some restriction
 
 * Google does not allow media commands to work, so sending a command such as `Play John Mayer in the Office` will not work
 
+## Casting back audio responses
 
+Assistant Relay now supports Casting (in v3.3.0b and above).
+In the above custom command example, the response is populated with an audio field.
+
+It is possible to pass this URL back to the `/cast` endpoint for it to play as per the following json-encoded body parameter:
+
+
+<Tabs
+  defaultValue="json"
+  values={[
+    { label: 'JSON', value: 'json', },
+    { label: 'Schema', value: 'schema', },
+    { label: 'Response', value: 'response', }
+  ]
+}>
+<TabItem value="json">
+
+```json
+{
+	"device": "Office Hub",
+	"source": "http://192.168.1.174:3000/server/audio?v=1581510182698",
+	"type": "remote"
+}
+```
+
+</TabItem>
+<TabItem value="schema">
+
+```
+device: STRING
+source: STRING
+type: STRING
+```
+
+</TabItem>
+<TabItem value="response">
+
+```json
+// No response.....yet
+```
+
+</TabItem>
+</Tabs>
+
+For more information, please see [Casting Media](../cast/casting)
