@@ -1,6 +1,6 @@
 {
   "name": "assistant-relay",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "keywords": [
     "google",
@@ -15,7 +15,7 @@
     "node"
   ],
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
-  "license": "GPL-3.0",
+  "license": "GPL-2.0-only",
   "scripts": {
     "setup": "npm i -g pm2 && npm i",
     "start": "pm2 start ./bin/www && pm2 log www",
@@ -26,21 +26,22 @@
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "delay": "^4.3.0",
     "express": "~4.16.1",
     "express-fileupload": "^1.1.6",
     "google-assistant": "^0.6.2",
-    "google-auth-library": "^5.9.1",
+    "google-auth-library": "^5.9.2",
     "http-errors": "~1.6.3",
     "ip": "^1.1.5",
-    "jade": "~1.11.0",
     "lowdb": "^1.0.0",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
-    "multicast-dns": "^7.2.0",
     "node-cron": "^2.0.3",
     "node-dns-sd": "^0.4.0",
     "pm2": "^4.2.3",
-    "rss-parser": "^3.7.3",
+    "q": "^1.5.1",
+    "range-parser": "^1.2.1",
+    "rss-parser": "^3.7.4",
     "socket.io": "^2.3.0",
     "wav": "^1.0.2"
   }

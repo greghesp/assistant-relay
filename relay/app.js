@@ -9,13 +9,14 @@ const cors = require('cors');
 const {initializeServer, isUpdateAvailable} = require('./helpers/server');
 
 const serverRouter = require('./routes/server');
+const castRouter = require('./routes/cast');
 const indexRouter = require('./routes/index');
 
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cors());
+app.use(cors({optionsSuccessStatus: 200}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './views')));
@@ -30,12 +31,14 @@ cron.schedule("0 1 * * *", function() {
   try {
     await initializeServer();
   } catch (e) {
-    console.error(e)
+    console.error("ERROR: ", e);
+    process.exit();
   }
 })();
 
 
 app.use('/server', serverRouter);
+app.use('/cast', castRouter);
 app.use('/', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));

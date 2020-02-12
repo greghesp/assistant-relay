@@ -15,6 +15,7 @@ import Configuration from '~/views/dash/Configuration';
 import AddUser from '~/views/dash/AddUser';
 import RemoveUser from '~/views/dash/RemoveUser';
 import Sandbox from '~/views/dash/Sandbox';
+import CastSandbox from '~/views/dash/CastSandbox';
 import About from '~/views/dash/About';
 
 import {post} from '~/helpers/api';
@@ -51,6 +52,7 @@ function App({history}) {
                     <Route path="/addUser" component={AddUser}/>
                     <Route path="/removeUser" component={RemoveUser}/>
                     <Route path="/sandbox" component={Sandbox}/>
+                    <Route path="/castsandbox" component={CastSandbox}/>
                     <Route path="/about" component={About}/>
                     <Redirect to="/home" />
                 </Switch>

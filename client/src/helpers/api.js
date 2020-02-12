@@ -21,3 +21,10 @@ export const sandbox = async function(data) {
 
     return axios.post('/assistant', data);
 };
+
+export const cast = async function(data, url) {
+    if(process.env.REACT_APP_DEV_SERVER) {
+        return axios.post(`${process.env.REACT_APP_DEV_SERVER}/cast/${url}`, data);
+    }
+    return axios.post(`/cast/${url}`, data);
+};
