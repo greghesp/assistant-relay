@@ -15,7 +15,7 @@
     "node"
   ],
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
-  "license": "GPL-3.0",
+  "license": "GPL-2.0-only",
   "scripts": {
     "setup": "npm i -g pm2 && npm i",
     "start": "pm2 start ./bin/www && pm2 log www",
@@ -40,6 +40,7 @@
     "node-dns-sd": "^0.4.0",
     "pm2": "^4.2.3",
     "q": "^1.5.1",
+    "range-parser": "^1.2.1",
     "rss-parser": "^3.7.4",
     "socket.io": "^2.3.0",
     "wav": "^1.0.2"

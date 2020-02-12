@@ -1,6 +1,6 @@
 const s = require('shelljs');
 const { spawn } = require('child_process');
-const path = require('path')
+const path = require('path');
 
 let catt;
 
@@ -9,6 +9,13 @@ exports.install =  async function() {
         if(!s.which('pip3')){
             return rej("This is only compatible with Python 3. Please install Python3");
         }
+
+        // if(!s.which('requests')) {
+        //     console.log("Installing Requests");
+        //     if(s.exec('pip3 install requests').code !== 0) {
+        //         return rej("Unable to install Requests");
+        //     }
+        // }
 
         if(!s.which('catt')) {
             console.log("Installing CATT");
@@ -40,6 +47,9 @@ exports.search = async function() {
 exports.cast = async function(d) {
     return new Promise((res, rej) => {
         let p;
+        let i = {
+            messages: []
+        }
         if(catt && catt.kill) catt.kill();
 
         switch (d.type) {
@@ -49,11 +59,40 @@ exports.cast = async function(d) {
             default:
                 p = d.source;
         }
-
         catt = spawn('catt', ['-d', d.device, 'cast', p]);
-        catt.on('close', () => {
-            catt.kill();
-            return res();
-        })
+
+        catt.stdout.on('data', (data) => {
+            i.messages.push(Buffer.from(data).toString());
+            console.log(`stdout: ${data}`)
+        });
+
+        catt.stderr.on('data', (data) => {
+            console.log(`stderr: ${data}`)
+        });
+
+       return catt.on('close', (code) => {
+            return res(i);
+        });
     })
 };
+
+exports.stop = async function(d) {
+    return new Promise((res, rej) => {
+        if(catt && catt.kill) catt.kill();
+
+        catt = spawn('catt', ['-d', d.device, 'stop']);
+
+        catt.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`)
+        });
+
+        catt.stderr.on('data', (data) => {
+            console.log(`stderr: ${data}`)
+        });
+
+        return catt.on('close', (code) => {
+            console.log(`close: ${code}`);
+            return res();
+        });
+    })
+}

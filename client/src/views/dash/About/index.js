@@ -60,7 +60,7 @@ function About(){
                         height="300" allowTransparency="true" frameBorder="0"/></Styles.Frame>
 
                 <Styles.Title>License</Styles.Title>
-                <p>Assistant Relay is distributed with the GNU General Public License v3.0</p>
+                <p>Assistant Relay is distributed with the GNU General Public License v2.0</p>
 
                 <Styles.Title>Version</Styles.Title>
                 <p>You are running version {v ? v : "...Fetching..."}</p>

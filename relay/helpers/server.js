@@ -2,8 +2,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
 const ip = require('ip');
-const Parser = require('rss-parser');
-const parser = new Parser();
+const axios = require('axios');
 
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
@@ -135,10 +134,8 @@ exports.isStartupMuted = function() {
 
 exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
-        const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');
-        const latestVersion = feed.items[0].id.split("/")[feed.items[0].id.split("/").length-1];
-
-        if(latestVersion !== version.version) {
+        const response = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases/latest');
+        if(response.data.tag_name !== version.version) {
             return res(true)
         } else {
             return res(false)
@@ -148,9 +145,11 @@ exports.isUpdateAvailable = function() {
 
 exports.updateDetails = function() {
     return new Promise(async(res, rej) => {
-        const db = await low(adapter);
-        const feed = await parser.parseURL('https://github.com/greghesp/assistant-relay/releases.atom');
-        const latestUpdate = feed.items[0];
-        return res(latestUpdate);
+        const response = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases/latest');
+        const data = {
+            title: response.data.name,
+            link: response.data.assets[0].browser_download_url
+        };
+        return res(data);
     })
 };

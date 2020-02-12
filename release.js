@@ -6,6 +6,7 @@ ncp.limit = 16;
 console.log("Did you remember to change the version number in /bin/version.json and /relay/package.json?!");
 
 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+ncp('./documentation-src/Assistant Relay/build/', './docs');
 ncp('./relay/bin/', './release/bin');
 ncp('./relay/helpers/', './release/helpers');
 ncp('./relay/routes/', './release/routes');

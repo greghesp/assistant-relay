@@ -1,4 +1,6 @@
 const path = require('path');
+const fs = require('fs');
+const parseRange = require('range-parser');
 const express = require('express');
 const low = require('lowdb');
 const Assistant = require('google-assistant/components/assistant');
@@ -118,9 +120,50 @@ router.get('/audio', async(req, res) => {
   res.sendFile(path.resolve(__dirname, `../bin/audio-responses/${req.query.v}.wav`));
 });
 
-router.get('/sounds', async(req, res) => {
-  res.sendFile(path.resolve(__dirname, `../bin/sounds/doorbell.mp3`));
-  //res.sendFile(path.resolve(__dirname, `../bin/sounds/${req.query.v}`));
+router.get('/sounds/*', async(req, res) => {
+  const file = path.resolve(__dirname, `../bin/sounds/${req.params[0]}`);
+  fs.stat(file, (err, stats) => {
+    if(err) {
+      if(err.code === 'ENOENT') return res.sendStatus(404);
+      res.end(err)
+    }
+
+    const total = stats.size;
+    let last = total -1;
+    let start = 0;
+    let responseType = 200;
+    const chunksize = last - start + 1;
+
+    const headers = {
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunksize,
+      "Content-Type": "audio/mp3",
+      "Access-Control-Allow-Origin": "*",
+      "Last-Modified": new Date()
+    };
+
+    if(!req.headers.range) {
+      start = 0;
+      last = total;
+    } else {
+      const range = parseRange(10, req.headers.range, { combine: true });
+      first = range[0].start;
+      last = range[0].end;
+    }
+
+    if(last === 0 || last >= total) {
+      last = total - 1;
+    }
+
+    if(!req.headers.range) responseType = 200;
+    else {
+      responseType = 206;
+      headers["Content-Range"] =  "bytes " + first + "-" + last + "/" + total
+    }
+    console.log(headers)
+    res.writeHead(responseType, headers);
+    fs.createReadStream(file, {autoClose: true}).pipe(res);
+  })
 });
 
 router.get('/users', async(req, res) => {
