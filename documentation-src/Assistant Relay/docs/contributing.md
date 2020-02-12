@@ -35,6 +35,8 @@ If you wish to request a new feature, please complete the [Feature Request](http
 
 Assistant Relay uses Express to power the REST API and connection to the Google Assistant SDK, and React to power the web dashboard.  When a new release is issued, React is bundled and included in the Express server.
 
+> **IF YOU ARE NOT DEVELOPING ASSISTANT RELAY, PLEASE FOLLOW THE INSTALLATION INSTRUCTIONS UNDER [GETTING STARTED](getting-started/installation) INSTEAD**
+
 ### Installation
 1. Ensure that you have [Node.js](https://nodejs.org/en/) installed
 2. After cloning the repository, run `npm i` in both the `relay` and `client` directories
