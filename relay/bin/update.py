@@ -1,5 +1,21 @@
+import zipfile
+import io
+import os
 import requests
 
-response = requests.get("http://api.github.com/repos/greghesp/assistant-relay/releases/latest")
-print(response.status_code)
+url = 'https://github.com/greghesp/assistant-relay/releases/latest/download/release.zip'
 
+
+
+def download_extract_zip(url):
+        response = requests.get(url)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as zip:
+            # zip.printdir()
+
+            print("Extracting files")
+
+            zip.extractall(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
+            print("Done")
+
+
+download_extract_zip(url)
