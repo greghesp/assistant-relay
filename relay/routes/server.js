@@ -11,7 +11,7 @@ const adapter = new FileSync('./bin/config.json');
 const versionAdapter = new FileSync('./bin/version.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
-const {isUpdateAvailable, updateDetails} = require('../helpers/server');
+const {isUpdateAvailable, updateDetails, updateServer} = require('../helpers/server');
 const {delay} = require('../helpers/misc');
 
 
@@ -199,6 +199,11 @@ router.post('/deleteUser', async(req, res) => {
   } catch (e) {
     res.status(500).send(e.message)
   }
+});
+
+router.post('/startUpdate', (req, res) => {
+  res.sendStatus(200);
+  updateServer()
 });
 
 module.exports = router;

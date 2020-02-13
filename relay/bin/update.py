@@ -14,7 +14,7 @@ def download_extract_zip(url):
 
             print("Extracting files")
 
-            zip.extractall(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
+            # zip.extractall(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
             print("Done")
 
 

@@ -3,6 +3,8 @@ const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
 const ip = require('ip');
 const axios = require('axios');
+const { spawn } = require('child_process');
+
 
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
@@ -154,3 +156,20 @@ exports.updateDetails = function() {
         return res(data);
     })
 };
+
+exports.updateServer = function() {
+    const updater = (path.resolve(__dirname, '..') + "/bin/update.py");
+    const u = spawn('py', [updater]);
+    u.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`)
+    });
+
+    u.stderr.on('data', (data) => {
+        console.log(`stderr: ${data}`)
+    });
+
+    u.on('close', (code) => {
+        process.exit();
+    });
+
+}
