@@ -33,7 +33,7 @@ exports.search = async function() {
         //const scan = s.exec('catt scan', { silent:true });
         const scan = s.exec('catt scan');
         if(scan.code !== 0) return rej("CATT scan failed");
-        const devices = scan.stdout.split("\r\n");
+        const devices = scan.stdout.split("\n");
         const newDevices = {
             success: true,
             devices: []
