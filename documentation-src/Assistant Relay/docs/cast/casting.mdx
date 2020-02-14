@@ -11,6 +11,8 @@ import TabItem from '@theme/TabItem';
 
 ## Casting Remote Media
 
+> If you want to cast a local file on your system that is outside of the `/bin/media` folder. You can pass the system path to the file as the source using the below body
+
 It is possible to cast media from [several hundred](https://ytdl-org.github.io/youtube-dl/supportedsites.html) sites
 
 To start casting, send a HTTP POST request to `/cast` with the following json-encoded body parameter:
@@ -57,6 +59,8 @@ type: STRING
 Once the media has finished playing, the cast will automatically close
 
 ## Casting Local Media
+
+> Local files must be placed into the `/bin/media` folder of Assistant Relay.  If you want to cast a local file that is not within the Assistant Relay directory, use the type `remote` and pass the system path of the file as the source
 
 Having the ability to cast local media, means that it is now possible to have Assistant Relay trigger a ringing sound when your doorbell is pressed, an alarm if someone
 breaks into your house, or anything else you could think of.

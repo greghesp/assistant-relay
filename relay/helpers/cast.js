@@ -30,7 +30,8 @@ exports.install =  async function() {
 
 exports.search = async function() {
     return new Promise((res, rej) => {
-        const scan = s.exec('catt scan', { silent:true });
+        //const scan = s.exec('catt scan', { silent:true });
+        const scan = s.exec('catt scan');
         if(scan.code !== 0) return rej("CATT scan failed");
         const devices = scan.stdout.split("\r\n");
         const newDevices = {
