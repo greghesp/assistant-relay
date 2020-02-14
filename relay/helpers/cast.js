@@ -33,7 +33,7 @@ exports.search = async function() {
         //const scan = s.exec('catt scan', { silent:true });
         const scan = s.exec('catt scan');
         if(scan.code !== 0) return rej("CATT scan failed");
-        const devices = scan.stdout.split("\r\n");
+        const devices = scan.stdout.split("\n");
         const newDevices = {
             success: true,
             devices: []
@@ -56,7 +56,7 @@ exports.cast = async function(d) {
         };
 
         if(catt && catt.kill) catt.kill();
-
+        console.log(d)
         switch (d.type) {
             case "local":
                 p = `${path.dirname(require.main.filename)}\\media\\${d.source}`;
@@ -65,10 +65,12 @@ exports.cast = async function(d) {
             case "website":
                 p = d.source;
                 t = 'cast_site';
+                break;
             default:
                 p = d.source;
                 t = 'cast';
         }
+        console.log(d.device, t, p)
         catt = spawn('catt', ['-d', d.device, t, p]);
 
         catt.stdout.on('data', (data) => {

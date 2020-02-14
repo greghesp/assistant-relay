@@ -1,0 +1,35 @@
+{
+  "name": "assistant-relay",
+  "version": "3.0.3",
+  "description": "Middleman server to allow custom integration with Google Home/Assistant",
+  "main": "./relay/bin/www",
+  "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
+  "dependencies": {
+    "ncp": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ./relay/bin/www && node /client/scripts/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greghesp/assistant-relay.git"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/greghesp/assistant-relay/issues"
+  },
+  "homepage": "https://github.com/greghesp/assistant-relay#readme",
+  "keywords": [
+    "google",
+    "assistant",
+    "google",
+    "home",
+    "assistant",
+    "voice",
+    "control",
+    "broadcast",
+    "iot",
+    "node"
+  ]
+}
