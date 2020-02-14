@@ -30,7 +30,7 @@ To start casting, send a HTTP POST request to `/cast` with the following json-en
 ```json
 {
 	"device": "192.168.1.11", // IP address or name
-	"source": "https://www.youtube.com/watch?v=6xSxXiHwMrg" // URL to media
+	"source": "https://www.youtube.com/watch?v=6xSxXiHwMrg", // URL to media
 	"type": "remote" // Not needed for remote files
 }
 ```
@@ -82,7 +82,7 @@ To cast a local file, send a HTTP POST request to `/cast` with the following jso
 ```json
 {
 	"device": "192.168.1.11", // Device name or IP
-	"source": "doorbell.mp3" // Name of the file in bin/media/
+	"source": "doorbell.mp3", // Name of the file in bin/media/
 	"type": "local"
 }
 ```
@@ -127,7 +127,7 @@ To cast a website, send a HTTP POST request to `/cast` with the following json-e
 ```json
 {
 	"device": "192.168.1.11", // Device name or IP
-	"source": "www.facebook.com"
+	"source": "www.facebook.com",
 	"type": "website"
 }
 ```
