@@ -40,3 +40,6 @@ export const Alert = styled.div`
   margin: 10px 0;
 `;
 
+export const Optin = styled.span`
+  margin-right: 10px;
+`

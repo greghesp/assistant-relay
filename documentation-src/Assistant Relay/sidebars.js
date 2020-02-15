@@ -12,6 +12,6 @@ module.exports = {
     "Commands": ['commands/broadcast', 'commands/presets', 'commands/custom-commands'],
     "Casting": ['cast/search', 'cast/casting', 'cast/stop'],
     "Smart Home Integration": ['integration/webcore', 'integration/hass'],
-    "FAQ": ['faq/faq']
+    "Other Information": ['other/faq', 'other/changes', 'other/contributors']
   },
 };

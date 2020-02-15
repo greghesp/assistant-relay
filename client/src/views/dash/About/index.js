@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {message, Typography, Alert} from "antd";
+import {message, Typography, Alert, Radio} from "antd";
 import {post, get} from '~/helpers/api';
 
 import * as Styles from './styles';
@@ -9,6 +9,7 @@ const {Text, Paragraph, Title} = Typography;
 function About(){
     const [isUpdate, setIsUpdate] = useState(false);
     const [v, setV] = useState(null);
+    const [releaseChannel, setRC] = useState(null);
 
     useEffect(() => {
         checkUpdate();
@@ -18,8 +19,19 @@ function About(){
         try {
             const resp = await post({}, 'checkUpdate');
             const v = await get({}, 'version');
+            const c = await get({}, 'releaseChannel');
             setIsUpdate(resp.data);
-            setV(v.data.version)
+            setV(v.data.version);
+            setRC(c.data.releaseChannel);
+        } catch (e) {
+            message.error(e.message);
+        }
+    }
+
+    async function updateChannel(e){
+        try {
+            const channel = e.target.value;
+            await post({channel}, 'changeChannel')
         } catch (e) {
             message.error(e.message);
         }
@@ -57,14 +69,25 @@ function About(){
             <div>
                 <Styles.Title>Want to chat?</Styles.Title>
                 <Styles.Frame><iframe src="https://discordapp.com/widget?id=671664792896798720&theme=dark" width="350"
-                        height="300" allowTransparency="true" frameBorder="0"/></Styles.Frame>
+                                      height="300" allowTransparency="true" frameBorder="0"/></Styles.Frame>
 
                 <Styles.Title>License</Styles.Title>
                 <p>Assistant Relay is distributed with the GNU General Public License v2.0</p>
 
                 <Styles.Title>Version</Styles.Title>
                 <p>You are running version {v ? v : "...Fetching..."}</p>
+                <Styles.Optin>Version Notification Channel:</Styles.Optin>
+                <span>
+                    {
+                        releaseChannel ?
+                            <Radio.Group defaultValue={releaseChannel} buttonStyle="solid" onChange={updateChannel}>
+                                <Radio.Button value="beta">Beta</Radio.Button>
+                                <Radio.Button value="stable">Stable</Radio.Button>
+                            </Radio.Group>:
+                            '...Loading...'
+                    }
 
+                </span>
             </div>
         </Styles.Container>
     )
@@ -80,6 +103,7 @@ function AlertBox({update}) {
                 type="info"
                 showIcon
             />
+
         </Styles.Alert>
     )
 }

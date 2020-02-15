@@ -53,7 +53,7 @@ module.exports = {
             },
             {
               label: 'F.A.Q',
-              to: 'docs/faq/faq',
+              to: 'docs/other/faq',
             },
           ],
         },

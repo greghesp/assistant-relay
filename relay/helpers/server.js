@@ -48,11 +48,7 @@ exports.initializeServer = function (text) {
                 },
                 users: [],
                 responses: [],
-                devices: [],
-                authentication: {
-                    enabled: false,
-                    users: []
-                }
+                releaseChannel: 'stable'
             }).write();
             const size = db.get('users').size().value();
             const users = db.get('users').value();
@@ -136,13 +132,31 @@ exports.isStartupMuted = function() {
 
 exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
-        const response = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases/latest');
-        const latest = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases');
-        if(response.data.tag_name !== version.version || latest.data[0].tag_name !== version.version) {
-            return res(true)
-        } else {
-            return res(false)
+        const db = await low(adapter);
+        const channel = await db.get('releaseChannel').value();
+        let url = 'https://api.github.com/repos/greghesp/assistant-relay/releases/latest';
+
+        if(channel === "beta") url = 'https://api.github.com/repos/greghesp/assistant-relay/releases';
+        try {
+            const response = await axios.get(url);
+            if(channel === "stable") {
+                if(response.data[0].tag_name !== version.version) {
+                    return res(true)
+                } else {
+                    return res(false)
+                }
+            }
+
+            if(response.data.tag_name !== version.version) {
+                return res(true)
+            } else {
+                return res(false)
+            }
+        } catch(e) {
+            console.error("Update check failed. You've probably been rate limited by GitHub");
+            return res();
         }
+
     })
 };
 

@@ -206,4 +206,24 @@ router.post('/startUpdate', (req, res) => {
   updateServer()
 });
 
+router.post('/changeChannel', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    await db.set('releaseChannel', req.body.channel).write();
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
+router.get('/releaseChannel', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    const v = await db.get('releaseChannel').value();
+    res.status(200).send({releaseChannel: v});
+  } catch (e) {
+    res.status(500).send(e.message)
+  }
+});
+
 module.exports = router;
