@@ -17,7 +17,7 @@ To install Assistant Relay, unzip the contents of `release.zip` to a folder of y
 
 In the `assistant-relay` folder, open a terminal/command window and run the below command to install the required dependencies
 ```
-npm run i
+npm i
 ``` 
 
 
