@@ -108,6 +108,57 @@ type: STRING
 
 > **NOTE**:  There is a bug with Smart Speakers and Displays where the cast session stays in progress after local media has been played.  This can be seen by the black screen with the cast icon inside it.  With the latest version of CATT, there is a workaround that will kill the Cast session once finished. You may hear the cast sound again whilst the session is being killed.
 
+## Casting Custom Media
+
+> Custom Media files are those that live within the `/bin/media/` folder inside Assistant Relay.
+
+Having the ability to cast custom media, means that it is now possible to have Assistant Relay trigger a ringing sound when your doorbell is pressed, an alarm if someone
+breaks into your house, or anything else you could think of.
+
+To cast a custom media file, send a HTTP POST request to `/cast` with the following json-encoded body:
+
+<Tabs
+  defaultValue="json"
+  values={[
+    { label: 'JSON', value: 'json', },
+    { label: 'Schema', value: 'schema', },
+    { label: 'Response', value: 'response', },
+  ]
+}>
+<TabItem value="json">
+
+```json
+{
+	"device": "192.168.1.11", // Device name or IP
+	"source": "doorbell.mp3", // Name of the file within /bin/media folder
+	"type": "custom"
+}
+```
+
+</TabItem>
+<TabItem value="schema">
+
+```
+device: STRING
+source: STRING
+type: STRING
+```
+
+</TabItem>
+<TabItem value="response">
+
+```json
+{
+    "success": true
+}
+```
+
+</TabItem>
+</Tabs>
+
+> **NOTE**:  There is a bug with Smart Speakers and Displays where the cast session stays in progress after local media has been played.  This can be seen by the black screen with the cast icon inside it.  With the latest version of CATT, there is a workaround that will kill the Cast session once finished. You may hear the cast sound again whilst the session is being killed.
+
+
 ## Casting Websites
 
 `CATT` also allows you to cast websites straight to your Chromecasts or Smart Displays

@@ -26,6 +26,7 @@ To stop a cast in progress, send a HTTP POST request to `/cast/stop` with a json
 ```json
 {
 	"device": "Office Hub" // Name or IP address of device
+	"force": true // Force stop a cast with the new CATT version. Workaround if locally casted files get stuck with an open cast session
 }
 ```
 
@@ -34,13 +35,16 @@ To stop a cast in progress, send a HTTP POST request to `/cast/stop` with a json
 
 ```
 device: STRING
+force: BOOLEAN
 ```
 
 </TabItem>
 <TabItem value="response">
 
 ```json
-// No response...yet
+{
+    "success": true
+}
 ```
 
 </TabItem>

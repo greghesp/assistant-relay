@@ -106,7 +106,7 @@ exports.stop = async function(d) {
     return new Promise((res, rej) => {
         if(catt && catt.kill) catt.kill();
 
-        if(d.force) catt = spawn('catt', ['-d', d.device, 'stop -f']);
+        if(d.force) catt = spawn('catt', ['-d', d.device, 'stop' ,'-f']);
         else catt = spawn('catt', ['-d', d.device, 'stop']);
 
         catt.stdout.on('data', (data) => {

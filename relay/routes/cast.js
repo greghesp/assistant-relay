@@ -31,7 +31,7 @@ router.post('/', async(req, res) => {
 router.post('/stop', async(req, res) => {
     try {
         const data = await stop(req.body);
-        res.status(200).json(data);
+        res.status(200).json({success: true});
     } catch (e) {
         res.status(500).send(e.message)
     }

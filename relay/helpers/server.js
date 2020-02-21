@@ -139,15 +139,16 @@ exports.isUpdateAvailable = function() {
         if(channel === "beta") url = 'https://api.github.com/repos/greghesp/assistant-relay/releases';
         try {
             const response = await axios.get(url);
+
             if(channel === "stable") {
-                if(response.data[0].tag_name !== version.version) {
+                if(response.data.tag_name !== version.version) {
                     return res(true)
                 } else {
                     return res(false)
                 }
             }
 
-            if(response.data.tag_name !== version.version) {
+            if(response.data[0].tag_name !== version.version) {
                 return res(true)
             } else {
                 return res(false)
