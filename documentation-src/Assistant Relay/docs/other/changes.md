@@ -8,7 +8,7 @@ description: Assistant Relay Release Notes
 
 ## Version 3.3
 
-### v3.3.1
+### v3.3.1 Beta
 > Please make sure to run npm i after extracting and that you are running the latest version of CATT
 - Fixed Cast device scanning issue on Linux
 - Changed Cast Sandbox icon
