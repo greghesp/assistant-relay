@@ -41,7 +41,7 @@ exports.search = async function() {
 
         Object.entries(devices).forEach(([key, val]) => {
             newDevices.devices.push({
-                host: key,
+                name: key,
                 address: val.host,
                 model: val.model_name,
                 uuid: val.uuid
@@ -62,8 +62,12 @@ exports.cast = async function(d) {
         if(catt && catt.kill) catt.kill();
 
         switch (d.type) {
-            case "local":
+            case "custom":
                 p = `${path.dirname(require.main.filename)}/media/${d.source}`;
+                t = 'cast';
+                break;
+            case "local":
+                p = d.source;
                 t = 'cast';
                 break;
             case "website":
@@ -87,6 +91,12 @@ exports.cast = async function(d) {
         });
 
        return catt.on('close', (code) => {
+           if(d.type === "custom" || d.type === "local") {
+               cattkill = spawn('catt', ['-d', d.device, 'stop', '-f']);
+               cattkill.on('close', (code) => {
+                   return res();
+               });
+           }
             return res(i);
         });
     })
@@ -96,7 +106,8 @@ exports.stop = async function(d) {
     return new Promise((res, rej) => {
         if(catt && catt.kill) catt.kill();
 
-        catt = spawn('catt', ['-d', d.device, 'stop']);
+        if(d.force) catt = spawn('catt', ['-d', d.device, 'stop -f']);
+        else catt = spawn('catt', ['-d', d.device, 'stop']);
 
         catt.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`)

@@ -58,7 +58,7 @@ function Sandbox() {
             <Styles.Form>
                 <Text>Device:</Text>
                 <Select
-                    placeholder="Select a preset"
+                    placeholder="Select a device"
                     loading={loading}
                     allowClear
                     onChange={
@@ -89,6 +89,7 @@ function Sandbox() {
                         }
                     }
                 >
+                    <Select.Option value="custom">Custom</Select.Option>
                     <Select.Option value="local">Local</Select.Option>
                     <Select.Option value="website">Website</Select.Option>
                     <Select.Option value="remote">Remote</Select.Option>
