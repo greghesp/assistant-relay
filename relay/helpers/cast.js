@@ -63,7 +63,7 @@ exports.cast = async function(d) {
 
         switch (d.type) {
             case "local":
-                p = `${path.dirname(require.main.filename)}\\media\\${d.source}`;
+                p = `${path.dirname(require.main.filename)}/media/${d.source}`;
                 t = 'cast';
                 break;
             case "website":
@@ -74,15 +74,16 @@ exports.cast = async function(d) {
                 p = d.source;
                 t = 'cast';
         }
+
         catt = spawn('catt', ['-d', d.device, t, p]);
 
         catt.stdout.on('data', (data) => {
             i.messages.push(Buffer.from(data).toString());
-            console.log(`stdout: ${data}`)
+            console.log(`${data}`)
         });
 
         catt.stderr.on('data', (data) => {
-            console.log(`stderr: ${data}`)
+            console.log(`${data}`)
         });
 
        return catt.on('close', (code) => {
