@@ -30,20 +30,24 @@ exports.install =  async function() {
 
 exports.search = async function() {
     return new Promise((res, rej) => {
-        //const scan = s.exec('catt scan', { silent:true });
-        const scan = s.exec('catt scan');
+        //const scan = s.exec('catt scan --json-output');
+        const scan = s.exec('catt scan --json-output', { silent:true });
         if(scan.code !== 0) return rej("CATT scan failed");
-        const devices = scan.stdout.split("\n");
+        const devices = JSON.parse(scan.stdout);
         const newDevices = {
             success: true,
             devices: []
         };
-        devices.shift();
-        devices.pop();
-        devices.forEach(d => {
-            const i = d.split(" - ");
-            newDevices.devices.push({ address : i[0], name: i[1]})
+
+        Object.entries(devices).forEach(([key, val]) => {
+            newDevices.devices.push({
+                host: key,
+                address: val.host,
+                model: val.model_name,
+                uuid: val.uuid
+            });
         });
+
         return res(newDevices);
     })
 };
