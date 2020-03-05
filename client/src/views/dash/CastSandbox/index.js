@@ -49,7 +49,7 @@ function Sandbox() {
             setDevices(response.data.devices);
             setLoading(false);
         } catch (e) {
-            message.error(e.message)
+            message.error(e.response.data.error)
         }
     }
 

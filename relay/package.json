@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "bonjour": "^3.5.0",
+    "chalk": "^3.0.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

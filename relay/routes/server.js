@@ -5,6 +5,9 @@ const express = require('express');
 const low = require('lowdb');
 const Assistant = require('google-assistant/components/assistant');
 const Conversation = require('google-assistant/components/conversation');
+const chalk = require('chalk');
+const {install} = require('../helpers/cast.js');
+
 
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./bin/config.json');
@@ -80,6 +83,7 @@ router.post('/getConfig', async(req, res, next) => {
     data.quietHours = db.get('quietHours').value();
     data.devices = db.get('devices').value();
     data.language = db.get('conversation.lang').value();
+    data.castEnabled = db.get('castEnabled').value();
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e.message)
@@ -223,6 +227,18 @@ router.get('/releaseChannel', async(req, res) => {
     res.status(200).send({releaseChannel: v});
   } catch (e) {
     res.status(500).send(e.message)
+  }
+});
+
+router.post('/installCast', async(req, res) => {
+  try {
+    const db = await low(adapter);
+    console.log(chalk.yellow("Checking dependencies for casting..."));
+    await install();
+    await db.set('castEnabled', true).write();
+    res.status(200).send({success: true});
+  } catch (e) {
+    res.status(500).send({success: false, message: e})
   }
 });
 

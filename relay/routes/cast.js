@@ -15,7 +15,7 @@ router.post('/search', async(req, res) => {
         const devices = await search();
         res.status(200).json(devices);
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send({success: false, error: e})
     }
 });
 
@@ -24,7 +24,7 @@ router.post('/', async(req, res) => {
         const data = await cast(req.body);
         res.status(200).json({success: true});
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send({success: false, error: e})
     }
 });
 
@@ -33,7 +33,7 @@ router.post('/stop', async(req, res) => {
         const data = await stop(req.body);
         res.status(200).json({success: true});
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send({success: false, error: e})
     }
 });
 

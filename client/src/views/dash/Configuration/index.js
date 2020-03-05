@@ -4,8 +4,6 @@ import {Input, InputNumber, Switch, message, TimePicker, Button, Icon, Select} f
 import {post} from '~/helpers/api';
 import * as Styles from './styles';
 import LoadingAnimation from "~/components/LoadingAnimation";
-import GoogleDevices from "./GoogleDevices";
-import Users from "./Users";
 import moment from 'moment';
 import Text from "antd/es/typography/Text";
 
@@ -20,6 +18,8 @@ function Configuration({history}){
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
     const [devices, setDevices] = useState([]);
+    const [casting, setCasting] = useState();
+    const [defaultCast, setDefaultCast] = useState();
     const [forceReboot, setForceReboot] = useState(false);
 
     useEffect(() => {
@@ -33,14 +33,28 @@ function Configuration({history}){
                 port,
                 quietHours,
                 devices,
-                "conversation.lang": language
+                "conversation.lang": language,
+                castEnabled: casting
             };
             await post(obj, 'updateConfig');
-            if(forceReboot) {
-                message.success("Assistant Relay restarting");
-                await post({}, 'restart');
-                message.success(`Restart Successful - Visit http://${window.location.hostname}:${port} to continue`)
+            if(casting && !defaultCast) {
+                message.info("Please Wait - Installing Cast Dependencies");
+                await post({}, 'installCast');
+                message.success("Casting Enabled");
+                return rebootServer();
             }
+            if(forceReboot) rebootServer();
+        } catch (e) {
+            console.log(e.response);
+            message.error(e.response.data.message);
+        }
+    }
+
+    async function rebootServer() {
+        try {
+            message.success("Assistant Relay restarting");
+            await post({}, 'restart');
+            message.success(`Restart Successful - Visit http://${window.location.hostname}:${port} to continue`)
         } catch (e) {
             message.error(e.message);
         }
@@ -54,6 +68,8 @@ function Configuration({history}){
             setQuietHours(data.quietHours);
             setDevices(data.devices);
             setLanguage(data.language);
+            setCasting(data.castEnabled);
+            setDefaultCast(data.castEnabled);
             setInitGet(false);
             setLoading(false);
         } catch (e) {
@@ -96,8 +112,6 @@ function Configuration({history}){
         return null;
     }
 
-
-
     return (
         <Styles.Container>
             <Styles.Form>
@@ -106,10 +120,7 @@ function Configuration({history}){
                     <Switch checkedChildren="On"
                             unCheckedChildren="Off"
                             defaultChecked={startupSound}
-                            onChange={(e) => {
-                                console.log(e)
-                                setStartupSound(e)
-                            } } />
+                            onChange={(e) => {setStartupSound(e)} } />
                 </Styles.Switch>
 
                 <Text>Port Number:</Text>
@@ -147,14 +158,20 @@ function Configuration({history}){
                     <Option value="pt-BR">Portuguese (Brazil)</Option>
                 </Select>
 
+                <Text>Casting Enabled:</Text>
+                <Styles.Switch>
+                    <Switch checkedChildren="On"
+                            unCheckedChildren="Off"
+                            checked={casting}
+                            onChange={(e) => {
+                                setCasting(e);
+                                setForceReboot(true);
+                            }} />
+                </Styles.Switch>
+
                 <div></div>
                 <Button type="primary" onClick={() => updateConfig()}>Save</Button>
 
-                {/*<Text>Users:</Text>*/}
-                {/*<Users />*/}
-
-                {/*<Text>Google Devices:</Text>*/}
-                {/*<GoogleDevices devices={devices} setDevices={(e) => setDevices(e)}/>*/}
             </Styles.Form>
         </Styles.Container>)
 }

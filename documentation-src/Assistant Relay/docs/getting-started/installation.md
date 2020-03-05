@@ -17,8 +17,17 @@ To install Assistant Relay, unzip the contents of `release.zip` to a folder of y
 
 In the `assistant-relay` folder, open a terminal/command window and run the below command to install the required dependencies
 ```
-npm i
+npm run setup
 ``` 
+
+Once setup is complete, you can run the below command to start Assistant Relay using PM2.
+
+```
+npm run start
+```
+
+> Note: If you don't want to run this with PM2, you can use `npm run dev` which will run Assistant Relay in its own instance.  It won't restart though if it crashes, or if it forces a restart when you do something such as changing the port
+
 
 
 

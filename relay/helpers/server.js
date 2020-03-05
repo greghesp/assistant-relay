@@ -1,15 +1,15 @@
 const low = require('lowdb');
+const chalk = require('chalk');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
+const bonjour = require('bonjour')();
 const ip = require('ip');
 const axios = require('axios');
 const { spawn } = require('child_process');
 
-
 const adapter = new FileSync('./bin/config.json');
 const {setCredentials} = require('../helpers/auth');
 const {sendTextInput} = require('../helpers/assistant.js');
-const {install} = require('../helpers/cast.js');
 const version = require('../bin/version.json');
 
 const FileWriter = require('wav').FileWriter;
@@ -21,9 +21,6 @@ const Assistant = require('google-assistant/components/assistant');
 exports.initializeServer = function (text) {
     return new Promise(async(res, rej) => {
         try {
-            console.log("Installing dependencies for casting...");
-            await install();
-
             const db = await low(adapter);
             await db.defaults({
                 port: 3000,
@@ -48,7 +45,8 @@ exports.initializeServer = function (text) {
                 },
                 users: [],
                 responses: [],
-                releaseChannel: 'stable'
+                releaseChannel: 'stable',
+                castEnabled: false
             }).write();
             const size = db.get('users').size().value();
             const users = db.get('users').value();
@@ -71,9 +69,17 @@ exports.initializeServer = function (text) {
             }
             if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
 
-            console.log("Assistant Relay Server Initialized");
-            console.log(`Visit http://${ip.address()}:${port} in a browser to configure`);
-            if(updateAvail) console.log(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`);
+            const service = bonjour.publish({
+                name: 'Assistant Relay',
+                host: 'ar.local',
+                type: 'http',
+                port: port
+            });
+
+            console.log(chalk.green("Assistant Relay Server Initialized"));
+            console.log(chalk.green.bold(`Visit http://${ip.address()}:${port} or http://${service.host}:${port} in a browser to configure`));
+            if(updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
+
             return res();
         } catch (e) {
             rej(e)
