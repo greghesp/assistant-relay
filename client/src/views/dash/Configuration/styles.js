@@ -29,6 +29,14 @@ export const QuietHours = styled.div`
   grid-row-gap: 20px
 `
 
+export const Cast = styled.div`
+  width: 250px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-row-gap: 20px
+`
+
 export const Switch = styled.div`
   width: 200px
 `;

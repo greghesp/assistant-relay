@@ -75,7 +75,6 @@ function Sandbox() {
                 <Input
                     onChange={
                         (e) => {
-                            e.persist();
                             setJson($ => ({...$, source: e.target.value}));
                         }
                     } />

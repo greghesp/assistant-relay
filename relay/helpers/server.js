@@ -46,7 +46,8 @@ exports.initializeServer = function (text) {
                 users: [],
                 responses: [],
                 releaseChannel: 'stable',
-                castEnabled: false
+                castEnabled: false,
+                pipCommand: 'pip3'
             }).write();
             const size = db.get('users').size().value();
             const users = db.get('users').value();
@@ -138,6 +139,7 @@ exports.isStartupMuted = function() {
 
 exports.isUpdateAvailable = function() {
     return new Promise(async(res, rej) => {
+        console.log("Checking for update...");
         const db = await low(adapter);
         const channel = await db.get('releaseChannel').value();
         let url = 'https://api.github.com/repos/greghesp/assistant-relay/releases/latest';
@@ -145,7 +147,6 @@ exports.isUpdateAvailable = function() {
         if(channel === "beta") url = 'https://api.github.com/repos/greghesp/assistant-relay/releases';
         try {
             const response = await axios.get(url);
-
             if(channel === "stable") {
                 if(response.data.tag_name !== version.version) {
                     return res(true)
@@ -194,3 +195,100 @@ exports.updateServer = function() {
     });
 
 }
+
+exports.registerDevice = function() {
+    return new Promise(async(res, rej) => {
+        try {
+            const db = await low(adapter);
+            const users = await db.get('users').value();
+            const projectid = users[0].secret.installed.project_id;
+            const accesstoken = users[0].tokens.access_token;
+            const modelid = `${projectid}-assistant-relay`;
+            const deviceid = "my_assistant_relay";
+
+            const convo = db.get('conversation').value();
+
+            if (convo.deviceModelId !== null && convo.deviceId !== null){
+                await axios({
+                    method: 'post',
+                    url: `https://embeddedassistant.googleapis.com/v1alpha2/projects/${projectid}/deviceModels/`,
+                    headers: {
+                        'Authorization': `Bearer ${accesstoken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        "project_id": projectid,
+                        "device_model_id": `${projectid}-assistant-relay`,
+                        "manifest": {
+                            "manufacturer": "Greg Hesp",
+                            "product_name": "Assistant Relay",
+                            "device_description": "Assistant Relay device"
+                        },
+                        "device_type": "action.devices.types.SPEAKER"
+                    }
+                });
+                await axios({
+                    method: 'post',
+                    url: `https://embeddedassistant.googleapis.com/v1alpha2/projects/${projectid}/devices/`,
+                    headers: {
+                        'Authorization': `Bearer ${accesstoken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        "id": deviceid,
+                        "model_id": modelid,
+                        "nickname": "My Assistant Relay",
+                        "client_type": "SDK_SERVICE"
+                    }
+                });
+                db.get('conversation').push({ deviceModelId: modelid, deviceId: deviceid}).write();
+                console.log("Device registered - Please assign Assistant Relay to a home in the Google Home app");
+
+                return res();
+            } else {
+                console.log("Device registration already complete");
+                return res();
+            }
+        } catch (e) {
+            console.error(e);
+            return rej();
+        }
+    })
+}
+
+exports.removeDevice = function() {
+    return new Promise(async(res, rej) => {
+        try {
+            const db = await low(adapter);
+            const users = await db.get('users').value();
+            const projectid = users[0].secret.installed.project_id;
+            const accesstoken = users[0].tokens.access_token;
+            const modelid = `${projectid}-assistant-relay`;
+            const deviceid = "my_assistant_relay";
+
+            const convo = db.get('conversation').value();
+
+            if (convo.deviceModelId !== null && convo.deviceId !== null){
+                await axios({
+                    method: 'delete',
+                    url: `https://embeddedassistant.googleapis.com/v1alpha2/projects/${projectid}/deviceModels/${modelid}`,
+                    headers: {
+                        'Authorization': `Bearer ${accesstoken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                await db.get('conversation').remove({ deviceModelId: modelid, deviceId: deviceid}).write();
+                console.log("Device deleted");
+                return res();
+            } else {
+                console.log("Device deletion already complete");
+                return res();
+            }
+        } catch (e) {
+            console.error(e);
+            return rej(e);
+        }
+    })
+}
+
+

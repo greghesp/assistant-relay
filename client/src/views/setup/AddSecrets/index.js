@@ -58,16 +58,15 @@ function AddSecrets({form, next, previous}) {
             <Paragraph>With your client secrets, you can import them into Assistant Relay below</Paragraph>
 
             <Form layout="inline" onSubmit={addUser}>
-                <Form.Item label="Users Name">
-                    {form.getFieldDecorator('name', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input a users name!',
-                                type: 'string',
-                            },
-                        ],
-                    })(<Input />)}
+                <Form.Item label="Users Name"
+                           rules={[
+                               {
+                                   required: true,
+                                   message: 'Please input a users name!',
+                                   type: 'string',
+                               },
+                           ]}>
+                    <Input />
                 </Form.Item>
                 <Form.Item>
                     <Upload {...props}>
@@ -93,4 +92,4 @@ function AddSecrets({form, next, previous}) {
     )
 }
 
-export default Form.create()(AddSecrets)
+export default AddSecrets

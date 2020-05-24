@@ -8,6 +8,7 @@ const adapter = new FileSync('./bin/config.json');
 
 
 (async() =>{
+
   const db = await low(adapter);
   const p = db.get('port').value();
 

@@ -17,10 +17,12 @@ function Configuration({history}){
     const [port, setPort] = useState();
     const [quietHours, setQuietHours] = useState();
     const [loading, setLoading] = useState(true);
+    const [deleting, setDeleting] = useState(false);
     const [devices, setDevices] = useState([]);
     const [casting, setCasting] = useState();
     const [defaultCast, setDefaultCast] = useState();
     const [forceReboot, setForceReboot] = useState(false);
+    const [pip, setPip] = useState('pip3');
 
     useEffect(() => {
         getConfig()
@@ -34,16 +36,17 @@ function Configuration({history}){
                 quietHours,
                 devices,
                 "conversation.lang": language,
-                castEnabled: casting
+                castEnabled: casting,
+                "pipCommand": pip
             };
             await post(obj, 'updateConfig');
-            if(casting && !defaultCast) {
+            if(casting) {
                 message.info("Please Wait - Installing Cast Dependencies");
                 await post({}, 'installCast');
                 message.success("Casting Enabled");
-                return rebootServer();
+                //return rebootServer();
             }
-            if(forceReboot) rebootServer();
+            //if(forceReboot) rebootServer();
         } catch (e) {
             console.log(e.response);
             message.error(e.response.data.message);
@@ -72,7 +75,19 @@ function Configuration({history}){
             setDefaultCast(data.castEnabled);
             setInitGet(false);
             setLoading(false);
+            setPip(data.pipCommand);
         } catch (e) {
+            message.error(e.message);
+        }
+    }
+
+    async function deleteDevice() {
+        try {
+            setDeleting(true);
+            await post({}, 'deleteDevice');
+            setDeleting(false);
+        } catch (e) {
+            setDeleting(false);
             message.error(e.message);
         }
     }
@@ -91,6 +106,7 @@ function Configuration({history}){
                 <Styles.QuietHours>
                     <Text>Start Time:</Text>
                     <TimePicker
+                        id="start-time"
                         defaultValue={moment(quietHours.start, 'HH:mm')}
                         format={'HH:mm'}
                         onChange={(t,s) => {
@@ -100,6 +116,7 @@ function Configuration({history}){
 
                     <Text>End Time:</Text>
                     <TimePicker
+                        id="end-time"
                         defaultValue={moment(quietHours.end, 'HH:mm')}
                         format={'HH:mm'}
                         onChange={(t,s) => {
@@ -168,6 +185,26 @@ function Configuration({history}){
                                 setForceReboot(true);
                             }} />
                 </Styles.Switch>
+
+                <div></div>
+                {casting ?
+                    <Styles.Cast>
+                        <Text>pip3 Command: </Text>
+                        <Input
+                            id="pip3"
+                            onChange={
+                                (e) => {
+                                    setPip(e.target.value)
+                                }
+                            } defaultValue={pip} />
+                    </Styles.Cast>
+                    : <div></div>}
+
+
+                <Text>Delete Registered Devices:</Text>
+                <Button
+                        danger
+                        onClick={() => deleteDevice()}>Delete Device</Button>
 
                 <div></div>
                 <Button type="primary" onClick={() => updateConfig()}>Save</Button>

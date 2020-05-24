@@ -9,8 +9,11 @@ const adapter = new FileSync('./bin/config.json');
 let catt;
 
 exports.install =  async function() {
-    return new Promise((res, rej) => {
-        if(!s.which('pip3')){
+    return new Promise(async(res, rej) => {
+        const db = await low(adapter);
+        const pip = db.get('pipCommand').value();
+
+        if(!s.which(pip)){
             return rej("This is only compatible with Python 3. Please install Python3 and ensure pip3 is available from your terminal");
         }
 
@@ -23,7 +26,7 @@ exports.install =  async function() {
 
         if(!s.which('catt')) {
             console.log(chalk.yellow("Installing CATT"));
-            if(s.exec('pip3 install catt').code !== 0) {
+            if(s.exec(`${pip} install catt`).code !== 0) {
                 return rej("Unable to install CATT");
             }
         }

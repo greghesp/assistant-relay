@@ -14,14 +14,3 @@ Whilst donations are appreciated, they are not expected, nor required.  If you w
 https://monzo.me/greghesp
 
 
-## To Do
-
-**Users ignore this for now**
-
-Windows users, install https://www.softpedia.com/get/Programming/SDK-DDK/Bonjour-SDK.shtml
-Installed the Bonjour SDK? Check your control panel > installed programs (or wherever MS moved in in Win10)
-Installed build tools from an admin shell ‘npm install -g windows-build-tools’
-Check control panel > installed programs for: Python 2.7.xx and MS Visual C++ Build Tools
-Try running npm install mdns from an admin shell
-
-npm install --global --production windows-build-tools

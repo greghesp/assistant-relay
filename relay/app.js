@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const {initializeServer, isUpdateAvailable} = require('./helpers/server');
+const {initializeServer, isUpdateAvailable, registerDevice} = require('./helpers/server');
 
 const serverRouter = require('./routes/server');
 const castRouter = require('./routes/cast');
@@ -29,6 +29,7 @@ cron.schedule("0 1 * * *", function() {
 
 (async function () {
   try {
+    //await registerDevice();
     await initializeServer();
   } catch (e) {
     console.error("ERROR: ", e);

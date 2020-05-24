@@ -29,16 +29,17 @@ function AddSecrets({form, next, previous, name, done}) {
             <Paragraph>Now that you have the client secrets downloaded, you can import them into Assistant Relay below</Paragraph>
 
             <Form layout="inline" onSubmit={addUser}>
-                <Form.Item label="Auth Code">
-                    {form.getFieldDecorator('oauthCode', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input your auth code!',
-                                type: 'string',
-                            },
-                        ],
-                    })(<Input />)}
+                <Form.Item label="Auth Code"
+                           rules={
+                               [
+                                   {
+                                       required: true,
+                                       message: 'Please input your auth code!',
+                                       type: 'string',
+                                   },
+                               ]
+                           }>
+                    <Input />
                 </Form.Item>
 
                 <Styles.Steps>
@@ -57,4 +58,4 @@ function AddSecrets({form, next, previous, name, done}) {
     )
 }
 
-export default withRouter(Form.create()(AddSecrets));
+export default withRouter(AddSecrets);

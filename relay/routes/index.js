@@ -66,6 +66,7 @@ router.post('/assistant', async(req, res) => {
       }
     }
 
+
     if(!command) return res.status(400).json({success:  false, error: "No command given"});
     if(broadcast) command = `broadcast ${command}`;
 
@@ -76,6 +77,7 @@ router.post('/assistant', async(req, res) => {
         error: "Quiet Time Enabled - Broadcast command detected"
       });
     }
+
 
     const conversation = await sendTextInput(command, user);
     conversation

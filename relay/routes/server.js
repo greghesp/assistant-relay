@@ -14,7 +14,7 @@ const adapter = new FileSync('./bin/config.json');
 const versionAdapter = new FileSync('./bin/version.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
-const {isUpdateAvailable, updateDetails, updateServer} = require('../helpers/server');
+const {isUpdateAvailable, updateDetails, updateServer, removeDevice} = require('../helpers/server');
 const {delay} = require('../helpers/misc');
 
 
@@ -84,6 +84,7 @@ router.post('/getConfig', async(req, res, next) => {
     data.devices = db.get('devices').value();
     data.language = db.get('conversation.lang').value();
     data.castEnabled = db.get('castEnabled').value();
+    data.pipCommand = db.get('pipCommand').value();
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e.message)
@@ -239,6 +240,16 @@ router.post('/installCast', async(req, res) => {
     res.status(200).send({success: true});
   } catch (e) {
     res.status(500).send({success: false, message: e})
+  }
+});
+
+router.post('/deleteDevice', async(req, res) => {
+  try {
+    await removeDevice();
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send(e.message)
   }
 });
 
