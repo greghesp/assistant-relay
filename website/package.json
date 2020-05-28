@@ -6,7 +6,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "cross-env CURRENT_BRANCH=docs GIT_USER=greghesp docusaurus deploy"
+    "deploy": "cross-env GIT_USER=greghesp docusaurus deploy"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.56",
