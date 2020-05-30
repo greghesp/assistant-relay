@@ -13,16 +13,10 @@ exports.install =  async function() {
         const db = await low(adapter);
         const pip = db.get('pipCommand').value();
 
-        if(!s.which(pip)){
-            return rej("This is only compatible with Python 3. Please install Python3 and ensure pip3 is available from your terminal");
+        if(s.exec(`${pip}`, {silent: true}).code !== 0) {
+            return rej("Could not find provided pip3 command");
         }
 
-        // if(!s.which('requests')) {
-        //     console.log("Installing Requests");
-        //     if(s.exec('pip3 install requests').code !== 0) {
-        //         return rej("Unable to install Requests");
-        //     }
-        // }
 
         if(!s.which('catt')) {
             console.log(chalk.yellow("Installing CATT"));

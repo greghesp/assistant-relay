@@ -20,11 +20,13 @@ exports.auth =  async function(keyData) {
 
 exports.processTokens = async function(oauthCode, name) {
     try {
+        console.log(oauthCode, name);
         const db = await low(adapter);
         const user = await db.get('users').find({name}).value();
         const key = user.secret.installed || user.secret.web;
         const oauthClient = new OAuth2Client(key.client_id, key.client_secret, key.redirect_uris[0]);
         const r = await oauthClient.getToken(oauthCode);
+        console.log(r)
         oauthClient.setCredentials(r.tokens);
         await db.get('users').chain().find({name: name}).assign({tokens: r.tokens}).write();
         return oauthClient;

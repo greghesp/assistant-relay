@@ -14,7 +14,7 @@ const adapter = new FileSync('./bin/config.json');
 const versionAdapter = new FileSync('./bin/version.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 const {auth, processTokens} = require('../helpers/auth');
-const {isUpdateAvailable, updateDetails, updateServer, removeDevice} = require('../helpers/server');
+const {isUpdateAvailable, updateDetails, updateServer, removeDevice, registerDevice} = require('../helpers/server');
 const {delay} = require('../helpers/misc');
 
 
@@ -246,6 +246,16 @@ router.post('/installCast', async(req, res) => {
 router.post('/deleteDevice', async(req, res) => {
   try {
     await removeDevice();
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send(e.message)
+  }
+});
+
+router.post('/registerDevice', async(req, res) => {
+  try {
+    await registerDevice();
     res.sendStatus(200);
   } catch (e) {
     console.log(e.message)

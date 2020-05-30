@@ -41,6 +41,7 @@ cron.schedule("0 1 * * *", function() {
 app.use('/server', serverRouter);
 app.use('/cast', castRouter);
 app.use('/', indexRouter);
+app.use('/?code', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });

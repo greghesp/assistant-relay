@@ -53,7 +53,7 @@ function AddSecrets({form, next, previous}) {
             <Paragraph>With your client secrets, you can import them into Assistant Relay below</Paragraph>
 
             <Form layout="inline" onFinish={addUser}>
-                <Form.Item label="Users Name"
+                <Form.Item label="Users Name" name="name"
                            rules={[
                                {
                                    required: true,
