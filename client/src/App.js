@@ -17,7 +17,6 @@ import RemoveUser from '~/views/dash/RemoveUser';
 import Sandbox from '~/views/dash/Sandbox';
 import CastSandbox from '~/views/dash/CastSandbox';
 import About from '~/views/dash/About';
-import Auth from '~/views/auth';
 
 import {post} from '~/helpers/api';
 
@@ -63,7 +62,6 @@ function App({history}) {
     return (
         <Setup>
             <Switch>
-                <Route path="/auth" component={Auth}/>
                 <Route path="/setup" exact component={() => <SetupWiz getUserCount={() => getUserCount()}/>}/>
                 <Redirect to="/setup" />
             </Switch>
