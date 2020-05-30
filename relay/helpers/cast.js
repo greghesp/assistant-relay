@@ -1,6 +1,5 @@
 const s = require('shelljs');
 const chalk = require('chalk');
-const { spawn } = require('child_process');
 const path = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -13,11 +12,12 @@ exports.install =  async function() {
         const db = await low(adapter);
         const pip = db.get('pipCommand').value();
 
+        // Test if provided pip command works
         if(s.exec(`${pip}`, {silent: true}).code !== 0) {
             return rej("Could not find provided pip3 command");
         }
 
-
+        // Test to see if catt is already installed in PATH
         if(!s.which('catt')) {
             console.log(chalk.yellow("Installing CATT"));
             if(s.exec(`${pip} install catt`).code !== 0) {
@@ -75,7 +75,7 @@ exports.cast = async function(d) {
                 messages: []
             };
 
-            if(catt && catt.kill) catt.kill();
+            if(catt) catt.kill();
 
             switch (d.type) {
                 case "custom":
@@ -95,7 +95,7 @@ exports.cast = async function(d) {
                     t = 'cast';
             }
 
-            catt = spawn('catt', ['-d', d.device, t, p]);
+            catt = s.exec(`catt -d "${d.device}" ${t} ${p}`, {async: true});
 
             catt.stdout.on('data', (data) => {
                 i.messages.push(Buffer.from(data).toString());
@@ -108,10 +108,10 @@ exports.cast = async function(d) {
 
             return catt.on('close', (code) => {
                 if(d.type === "custom" || d.type === "local") {
-                    cattkill = spawn('catt', ['-d', d.device, 'stop', '-f']);
-                    cattkill.on('close', (code) => {
-                        return res();
-                    });
+                    s.exec(`catt -d "${d.device}" stop -f`);
+                    catt.kill()
+                    catt = null;
+                    return res();
                 }
                 return res(i);
             });
@@ -131,8 +131,8 @@ exports.stop = async function(d) {
 
             if(catt && catt.kill) catt.kill();
 
-            if(d.force) catt = spawn('catt', ['-d', d.device, 'stop' ,'-f']);
-            else catt = spawn('catt', ['-d', d.device, 'stop']);
+            if(d.force)s.exec(`catt -d "${d.device}" stop -f`);
+            else catt =  s.exec(`catt -d "${d.device}" stop`);
 
             catt.stdout.on('data', (data) => {
                 console.log(`stdout: ${data}`)
@@ -143,6 +143,7 @@ exports.stop = async function(d) {
             });
 
             return catt.on('close', (code) => {
+                catt = null;
                 console.log(`close: ${code}`);
                 return res();
             });
