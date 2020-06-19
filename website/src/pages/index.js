@@ -9,31 +9,29 @@ import styles from './styles.module.css';
 const features = [
   {
     title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    imageUrl: 'img/Browser.svg',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Full browser Sandbox for easy configuration and testing
       </>
     ),
   },
   {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    title: <>Open Source</>,
+    imageUrl: 'img/opensource.svg',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Fully open source to comply with the Google Assistant SDK agreement.
+          Read our contribution guidelines to help with the project!
       </>
     ),
   },
   {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    title: <>Powered by Google Assistant SDK</>,
+    imageUrl: 'img/XPM_BADGING_GoogleAssistant_VER.png',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Utilises the Google Assistant SDK to integrate with your Google Home environment
       </>
     ),
   },

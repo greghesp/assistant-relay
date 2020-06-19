@@ -22,4 +22,16 @@ Once you have this new Google Account, continue the setup as per above and give 
 
 For example, if I wanted to broadcast only to my Living Room Home, I would setup a new Google Account and link ONLY my Living Room Home to this account. I'd download the OAuth file and then rename it to `LivingRoom.json`.  Then when sending a command to Assistant Relay, I would use the username `LivingRoom`
 
+## I tried a Broadcast, but I don't hear anything?
+
+If you're not seeing any errors in Assistant Relay when performing a broadcast, the issue may lie within your network
+
+Head over to [My Activity](https://myactivity.google.com/myactivity) and check to see if you see your command under the 
+Assistant product.
+
+If not, ensure you have used the correct OAuth Client Type from the [Configuration instructions](../getting-started/configuration)
+
+If you can see the command in My Activity, then Assistant Relay is running correctly.  The next step would be to disable
+IPV6 on your router.  Google implemented some security changes a while back, and having IPV6 enabled breaks the SDK integration
+
 

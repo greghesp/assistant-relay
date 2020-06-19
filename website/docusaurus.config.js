@@ -90,7 +90,7 @@ module.exports = {
         docs: {
           path: '../docs',
           sidebarPath: require.resolve('../docs/sidebars.js'),
-          editUrl: 'https://github.com/greghesp/assistant-relay/'
+          editUrl: 'https://github.com/greghesp/assistant-relay/edit/doc-src/',
         },
         theme: {
           customCss: require.resolve('./src/styles.css'),
