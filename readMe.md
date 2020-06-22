@@ -1,6 +1,6 @@
 # Assistant Relay v3!
 
-Please visit [https://greghesp.github.io/assistant-relay/](https://greghesp.github.io/assistant-relay/) for documentation
+Please visit [https://greghesp.github.io/assistant-relay/docs/introduction](https://greghesp.github.io/assistant-relay/docs/introduction) for documentation
 
 # Credit
 This project uses the google-assistant repository from endoplasmic
