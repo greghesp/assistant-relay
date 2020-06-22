@@ -6,7 +6,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
 const adapter = new FileSync('./bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
-const {outputFileStream, isQuietHour, updateResponses} = require('../helpers/server.js');
+const {outputFileStream, isQuietHour, updateResponses, saveHTMLFile} = require('../helpers/server.js');
 
 const router = express.Router();
 
@@ -100,6 +100,11 @@ router.post('/assistant', async(req, res) => {
         })
         .on('device-action', (action) => {
           // if you've set this device up to handle actions, you'll get that here
+        })
+        .on('screen-data', (screen) => {
+          saveHTMLFile(timestamp, screen.data)
+          response.html = `/server/html?v=${timestamp}`
+          // if the screen.isOn flag was set to true, you'll get the format and data of the output
         })
         .on('ended', async(error, continueConversation) => {
           if (error) {

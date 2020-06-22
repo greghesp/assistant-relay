@@ -55,6 +55,11 @@ function About(){
 
                 <Styles.Title>Want to buy me a coffee?</Styles.Title>
                 <p>Any donations are greatly appreciated, but certainly not required!</p>
+                <div>
+                    <a href='https://ko-fi.com/O5O41SUX6' target='_blank'>
+                        <img height='36'  src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+                    </a>
+                </div>
                 <Styles.Form>
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
                         <input type="hidden" name="cmd" value="_s-xclick" />

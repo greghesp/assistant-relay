@@ -125,6 +125,10 @@ router.get('/audio', async(req, res) => {
   res.sendFile(path.resolve(__dirname, `../bin/audio-responses/${req.query.v}.wav`));
 });
 
+router.get('/html', async(req, res) => {
+  res.sendFile(path.resolve(__dirname, `../bin/html-responses/${req.query.v}.html`));
+})
+
 router.get('/sounds/*', async(req, res) => {
   const file = path.resolve(__dirname, `../bin/sounds/${req.params[0]}`);
   fs.stat(file, (err, stats) => {

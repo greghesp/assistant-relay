@@ -112,6 +112,13 @@ exports.updateResponses = function(command, response, timestamp) {
     })
 };
 
+exports.saveHTMLFile = function(fileName, data){
+    fs.writeFile(`bin/html-responses/${fileName}.html`, data, (err) => {
+        if (err) throw err;
+        return;
+    });
+}
+
 exports.isQuietHour = function() {
     return new Promise(async(res,rej) => {
         const db = await low(adapter);
