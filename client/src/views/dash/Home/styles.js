@@ -15,7 +15,7 @@ export const Container = styled.div`
 
 export const ResponseContainer = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 2fr 3fr ;
+  grid-template-columns: 0.5fr 0.5fr 2fr 3fr ;
   grid-template-rows: 1fr;
   box-shadow: 0 0px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.12);
     border-radius: 2px;

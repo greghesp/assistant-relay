@@ -1,4 +1,5 @@
 /node_modules
 /bin/config.json
 /bin/audio-responses/*
+/bin/html-responses/*
 

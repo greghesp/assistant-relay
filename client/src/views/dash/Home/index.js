@@ -4,6 +4,8 @@ import {post} from '~/helpers/api';
 import LoadingAnimation from "~/components/LoadingAnimation";
 import PlayButton from "~/components/PlayButton";
 import {message, Button, Icon} from "antd";
+import { DashboardOutlined } from '@ant-design/icons';
+
 import Sound from 'react-sound'
 
 function Home(){
@@ -47,6 +49,9 @@ function Responses({data}) {
                 <Styles.ResponseContainer key={r.timestamp}>
                     <Styles.Play>
                         <PlayButton timestamp={r.timestamp}/>
+                    </Styles.Play>
+                    <Styles.Play>
+                        <Button type="primary" shape="circle" icon={<DashboardOutlined />} href={`/server/html?v=${r.timestamp}`}/>
                     </Styles.Play>
                     <Styles.QuoteWrapper>
                         {r.command}

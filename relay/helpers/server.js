@@ -40,7 +40,7 @@ exports.initializeServer = function (text) {
                     },
                     lang: 'en-US',
                     screen: {
-                        isOn: false,
+                        isOn: true,
                     }
                 },
                 users: [],
@@ -104,6 +104,7 @@ exports.updateResponses = function(command, response, timestamp) {
             const results = db.get('responses').sortBy('timestamp').value();
             const timestamp = results[0].timestamp;
             fs.unlinkSync(path.resolve(__dirname, `../bin/audio-responses/${timestamp}.wav`));
+            fs.unlinkSync(path.resolve(__dirname, `../bin/html-responses/${timestamp}.html`));
             const entries = db.get('responses').sortBy('timestamp').drop(1).value();
             await db.set('responses', entries).write();
         }

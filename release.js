@@ -9,12 +9,6 @@ async function copy() {
     try {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-        await fs.emptyDir(path.resolve(__dirname, 'docs'));
-        console.log("Removed old docs");
-
-        await fs.copy(path.resolve(__dirname, 'documentation-src/Assistant Relay/build/'), path.resolve(__dirname, 'docs'));
-        console.log("Built documentation");
-
         await fs.copy(path.resolve(__dirname, 'relay/bin/'), path.resolve(__dirname, 'release/bin'));
         console.log("Copied bin folder");
 
@@ -44,6 +38,9 @@ async function copy() {
 
         await fs.emptyDir(path.resolve(__dirname, 'release/bin/audio-responses'));
         console.log("Removed personal audio files");
+
+        await fs.emptyDir(path.resolve(__dirname, 'release/bin/html-responses'));
+        console.log("Removed personal HTML files");
 
         console.log("Done")
     } catch (e) {

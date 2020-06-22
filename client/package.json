@@ -1,7 +1,6 @@
 {
   "name": "assistant-relay-client",
   "version": "3.0.4",
-  "proxy": "http://localhost:3000",
   "description": "Middleman server to allow custom integration with Google Home/Assistant",
   "keywords": [
     "google",
