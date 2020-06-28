@@ -5,7 +5,7 @@ description: How to configure Assistant Relay
 ---
 
 ## Configuring Credentials
-To get started with Assistant Relay, you will first need to setup a project in the Google Cloud Console to integrate with.  You will need to repeat these steps, for every Google Account you wish to add to Assistant Rlay
+To get started with Assistant Relay, you will first need to setup a project in the Google Cloud Console to integrate with.  You will need to repeat these steps, for every Google Account you wish to add to Assistant Relay
 
 >  **Make sure you are signed into the Google Account you want this to work with!**
 
