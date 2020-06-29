@@ -4,6 +4,23 @@ title: Contributors
 description: Assistant Relay Contributors
 ---
 
+## Donations
+
+A huge thanks to everyone that has donated, it's much appreciated.
+If you'd rather you weren't listed below, ping me in Discord, raise a GitHub issue or submit a PR :)
+
+- K.Correia
+- W.Roemhild
+- A.Renfang
+- D.Karpantschof
+- MPPS International
+- R.Huska
+- A.Galetto
+- A. Hoover
+
+> If you're on Discord, drop me a message and I will add your Donator role.
+
+
 ## Contributors
 
 A full list of contributors and their commits can be found at [GitHub](https://github.com/greghesp/assistant-relay/graphs/contributors)
