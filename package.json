@@ -1,0 +1,45 @@
+{
+  "name": "assistant-relay",
+  "version": "4.0.0",
+  "description": "Middleman server to allow custom integration with Google Home/Assistant",
+  "keywords": [
+    "google",
+    "assistant",
+    "google",
+    "home",
+    "assistant",
+    "voice",
+    "control",
+    "broadcast",
+    "iot",
+    "node"
+  ],
+  "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
+  "license": "GPL-2.0-only",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server/index.js",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "bonjour": "^3.5.0",
+    "chalk": "^4.1.0",
+    "express": "^4.17.1",
+    "google-assistant": "^0.6.2",
+    "google-auth-library": "^6.0.2",
+    "ip": "^1.1.5",
+    "lowdb": "^1.0.0",
+    "moment": "^2.27.0",
+    "next": "^9.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "wav": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel-plugin-root-import": "^6.5.0"
+  }
+}
