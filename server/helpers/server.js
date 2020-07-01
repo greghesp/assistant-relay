@@ -6,9 +6,9 @@ const bonjour = require('bonjour')();
 const ip = require('ip');
 const axios = require('axios');
 const {spawn} = require('child_process');
-const adapter = new FileSync('server/bin/config.json');
+const configAdapter = new FileSync(path.resolve(__dirname,'../bin/config.json'));
+const dbAdapter = new FileSync(path.resolve(__dirname,'../bin/db.json'));
 const {sendTextInput} = require('../helpers/assistant.js');
-//const version = require('../bin/version.json');
 
 const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
@@ -19,8 +19,11 @@ const Assistant = require('google-assistant/components/assistant');
 exports.initializeServer = function(text) {
     return new Promise(async (res, rej) => {
         try {
-            const db = await low(adapter);
-            await db.defaults({
+            const configDb = await low(configAdapter);
+            const db = await low(dbAdapter);
+
+            // Generate default databases
+            await configDb.defaults({
                 port: 3000,
                 muteStartup: false,
                 quietHours: {
@@ -41,43 +44,47 @@ exports.initializeServer = function(text) {
                         isOn: true,
                     }
                 },
-                users: [],
-                responses: [],
                 releaseChannel: 'stable',
                 castEnabled: false,
                 pipCommand: 'pip3'
             }).write();
-            const size = db.get('users').size().value();
-            const users = db.get('users').value();
-            const port = db.get('port').value();
+            await db.defaults({
+                users: [],
+                responses: []
+            }).write();
 
-            const muted = await exports.isStartupMuted();
-            const updateAvail = await exports.isUpdateAvailable();
-            const isQH = await exports.isQuietHour();
-            const promises = [];
 
-            if (size > 0) {
-                users.forEach(user => {
-                    promises.push(new Promise(async (resolve, rej) => {
-                        const client = await setCredentials(user.name);
-                        global.assistants[user.name] = new Assistant(client);
-                        resolve();
-                    }));
-                });
-                await Promise.all(promises);
-            }
-            if (!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
-
-            const service = bonjour.publish({
-                name: 'Assistant Relay',
-                host: 'ar.local',
-                type: 'http',
-                port: port
-            });
+            // const size = db.get('users').size().value();
+            // const users = db.get('users').value();
+            // const port = db.get('port').value();
+            //
+            // const muted = await exports.isStartupMuted();
+            // const updateAvail = await exports.isUpdateAvailable();
+            // const isQH = await exports.isQuietHour();
+            // const promises = [];
+            //
+            // if (size > 0) {
+            //     users.forEach(user => {
+            //         promises.push(new Promise(async (resolve, rej) => {
+            //             const client = await setCredentials(user.name);
+            //             global.assistants[user.name] = new Assistant(client);
+            //             resolve();
+            //         }));
+            //     });
+            //     await Promise.all(promises);
+            // }
+            // if (!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
+            //
+            // const service = bonjour.publish({
+            //     name: 'Assistant Relay',
+            //     host: 'ar.local',
+            //     type: 'http',
+            //     port: port
+            // });
 
             console.log(chalk.green("Assistant Relay Server Initialized"));
-            console.log(chalk.green.bold(`Visit http://${ip.address()}:${port} or http://${service.host}:${port} in a browser to configure`));
-            if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
+            //console.log(chalk.green.bold(`Visit http://${ip.address()}:${port} or http://${service.host}:${port} in a browser to configure`));
+            //if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
 
             return res();
         } catch (e) {

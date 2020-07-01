@@ -40,6 +40,6 @@
     "wav": "^1.0.2"
   },
   "devDependencies": {
-    "babel-plugin-root-import": "^6.5.0"
+    "babel-plugin-root-import": "^6.5.0",
   }
 }

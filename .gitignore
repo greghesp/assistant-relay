@@ -1,5 +1,7 @@
 /node_modules
 .next
+.idea
 server/bin/config.json
+server/bin/db.json
 server/bin/audio-responses/*
 server/bin/html-responses/*
