@@ -35,7 +35,7 @@ exports.processTokens = async function(oauthCode, name) {
     }
 };
 
-exports.setCredentials = async function (name) {
+export async function setCredentials(name){
     try {
         const db = await low(adapter);
         const user = await db.get('users').find({name}).value();

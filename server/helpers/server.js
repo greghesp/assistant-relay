@@ -5,10 +5,8 @@ const path = require('path');
 const bonjour = require('bonjour')();
 const ip = require('ip');
 const axios = require('axios');
-const { spawn } = require('child_process');
-
-const adapter = new FileSync('../bin/config.json');
-const {setCredentials} = require('../helpers/auth');
+const {spawn} = require('child_process');
+const adapter = new FileSync('server/bin/config.json');
 const {sendTextInput} = require('../helpers/assistant.js');
 //const version = require('../bin/version.json');
 
@@ -18,8 +16,8 @@ const fs = require("fs");
 
 const Assistant = require('google-assistant/components/assistant');
 
-exports.initializeServer = function (text) {
-    return new Promise(async(res, rej) => {
+exports.initializeServer = function(text) {
+    return new Promise(async (res, rej) => {
         try {
             const db = await low(adapter);
             await db.defaults({
@@ -58,9 +56,9 @@ exports.initializeServer = function (text) {
             const isQH = await exports.isQuietHour();
             const promises = [];
 
-            if(size > 0 ) {
+            if (size > 0) {
                 users.forEach(user => {
-                    promises.push(new Promise(async(resolve,rej) => {
+                    promises.push(new Promise(async (resolve, rej) => {
                         const client = await setCredentials(user.name);
                         global.assistants[user.name] = new Assistant(client);
                         resolve();
@@ -68,7 +66,7 @@ exports.initializeServer = function (text) {
                 });
                 await Promise.all(promises);
             }
-            if(!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
+            if (!muted && !isQH) await sendTextInput(`broadcast Assistant Relay initialised`);
 
             const service = bonjour.publish({
                 name: 'Assistant Relay',
@@ -79,7 +77,7 @@ exports.initializeServer = function (text) {
 
             console.log(chalk.green("Assistant Relay Server Initialized"));
             console.log(chalk.green.bold(`Visit http://${ip.address()}:${port} or http://${service.host}:${port} in a browser to configure`));
-            if(updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
+            if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
 
             return res();
         } catch (e) {
@@ -88,19 +86,19 @@ exports.initializeServer = function (text) {
     })
 };
 
-exports.outputFileStream = function(conversation, fileName) {
+exports.outputFileStream = function (conversation, fileName) {
     return new FileWriter(`bin/audio-responses/${fileName}.wav`, {
         sampleRate: conversation.audio.sampleRateOut,
         channels: 1
     });
 };
 
-exports.updateResponses = function(command, response, timestamp) {
-    return new Promise(async(res, rej) => {
+exports.updateResponses = function (command, response, timestamp) {
+    return new Promise(async (res, rej) => {
         const db = await low(adapter);
         const size = db.get('responses').size().value();
         const maxResponse = db.get('maxResponses').value();
-        if(size >= maxResponse) {
+        if (size >= maxResponse) {
             const results = db.get('responses').sortBy('timestamp').value();
             const timestamp = results[0].timestamp;
             try {
@@ -117,31 +115,31 @@ exports.updateResponses = function(command, response, timestamp) {
     })
 };
 
-exports.saveHTMLFile = function(fileName, data){
+exports.saveHTMLFile = function (fileName, data) {
     fs.writeFile(`bin/html-responses/${fileName}.html`, data, (err) => {
         if (err) throw err;
         return;
     });
 }
 
-exports.isQuietHour = function() {
-    return new Promise(async(res,rej) => {
+exports.isQuietHour = function () {
+    return new Promise(async (res, rej) => {
         const db = await low(adapter);
         const quietHours = db.get('quietHours').value();
 
-        if(!quietHours.enabled) return res(false);
+        if (!quietHours.enabled) return res(false);
 
         const start = moment(quietHours.start, "HH:mm");
         const until = moment(quietHours.end, "HH:mm");
-        let diff  = moment.duration(until.diff(start)).asMinutes();
+        let diff = moment.duration(until.diff(start)).asMinutes();
 
-        if(diff < 0) until.add(1, 'days');
+        if (diff < 0) until.add(1, 'days');
         return res(moment().isBetween(start, until));
     })
 };
 
-exports.isStartupMuted = function() {
-    return new Promise(async(res, rej) => {
+exports.isStartupMuted = function () {
+    return new Promise(async (res, rej) => {
         const db = await low(adapter);
         const muteStartup = db.get('muteStartup').value();
         if (muteStartup) return res(true);
@@ -149,14 +147,14 @@ exports.isStartupMuted = function() {
     })
 };
 
-exports.isUpdateAvailable = function() {
-    return new Promise(async(res, rej) => {
+exports.isUpdateAvailable = function () {
+    return new Promise(async (res, rej) => {
         console.log("Checking for update...");
         const db = await low(adapter);
         const channel = await db.get('releaseChannel').value();
         let url = 'https://api.github.com/repos/greghesp/assistant-relay/releases/latest';
 
-        if(channel === "beta") url = 'https://api.github.com/repos/greghesp/assistant-relay/releases';
+        if (channel === "beta") url = 'https://api.github.com/repos/greghesp/assistant-relay/releases';
         try {
             const response = await axios.get(url);
             res(false);
@@ -168,12 +166,12 @@ exports.isUpdateAvailable = function() {
             //     }
             // }
 
-            if(response.data[0].tag_name !== version.version) {
+            if (response.data[0].tag_name !== version.version) {
                 return res(true)
             } else {
                 return res(false)
             }
-        } catch(e) {
+        } catch (e) {
             console.error("Update check failed. You've probably been rate limited by GitHub");
             return res();
         }
@@ -181,8 +179,8 @@ exports.isUpdateAvailable = function() {
     })
 };
 
-exports.updateDetails = function() {
-    return new Promise(async(res, rej) => {
+exports.updateDetails = function () {
+    return new Promise(async (res, rej) => {
         const response = await axios.get('https://api.github.com/repos/greghesp/assistant-relay/releases/latest');
         const data = {
             title: response.data.name,
@@ -192,7 +190,7 @@ exports.updateDetails = function() {
     })
 };
 
-exports.updateServer = function() {
+exports.updateServer = function () {
     const updater = (path.resolve(__dirname, '..') + "/bin/update.py");
     const u = spawn('py', [updater]);
     u.stdout.on('data', (data) => {
@@ -209,8 +207,8 @@ exports.updateServer = function() {
 
 }
 
-exports.registerDevice = function() {
-    return new Promise(async(res, rej) => {
+exports.registerDevice = function () {
+    return new Promise(async (res, rej) => {
         try {
             const db = await low(adapter);
             const users = await db.get('users').value();
@@ -221,7 +219,7 @@ exports.registerDevice = function() {
 
             const convo = db.get('conversation').value();
 
-            if (convo.deviceModelId !== null && convo.deviceId !== null){
+            if (convo.deviceModelId !== null && convo.deviceId !== null) {
                 await axios({
                     method: 'post',
                     url: `https://embeddedassistant.googleapis.com/v1alpha2/projects/${projectid}/deviceModels/`,
@@ -254,7 +252,7 @@ exports.registerDevice = function() {
                         "client_type": "SDK_SERVICE"
                     }
                 });
-                db.get('conversation').push({ deviceModelId: modelid, deviceId: deviceid}).write();
+                db.get('conversation').push({deviceModelId: modelid, deviceId: deviceid}).write();
                 console.log("Device registered - Please assign Assistant Relay to a home in the Google Home app");
 
                 return res();
@@ -269,8 +267,8 @@ exports.registerDevice = function() {
     })
 }
 
-exports.removeDevice = function() {
-    return new Promise(async(res, rej) => {
+exports.removeDevice = function () {
+    return new Promise(async (res, rej) => {
         try {
             const db = await low(adapter);
             const users = await db.get('users').value();
@@ -281,7 +279,7 @@ exports.removeDevice = function() {
 
             const convo = db.get('conversation').value();
 
-            if (convo.deviceModelId !== null && convo.deviceId !== null){
+            if (convo.deviceModelId !== null && convo.deviceId !== null) {
                 await axios({
                     method: 'delete',
                     url: `https://embeddedassistant.googleapis.com/v1alpha2/projects/${projectid}/deviceModels/${modelid}`,
@@ -290,7 +288,7 @@ exports.removeDevice = function() {
                         'Content-Type': 'application/json'
                     }
                 });
-                await db.get('conversation').remove({ deviceModelId: modelid, deviceId: deviceid}).write();
+                await db.get('conversation').remove({deviceModelId: modelid, deviceId: deviceid}).write();
                 console.log("Device deleted");
                 return res();
             } else {
