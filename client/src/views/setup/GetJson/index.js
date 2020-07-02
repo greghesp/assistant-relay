@@ -21,7 +21,7 @@ function GetJson({next}) {
                     <li>Follow <Text code><a href="https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account" target="_blank" rel="noopener noreferrer"> this guide</a></Text> and come back once Step 5 is complete</li>
                     <li>Now the Assistant API is enabled, click <Text code>Credentials</Text> in the left hand menu</li>
                     <li>On this page, select <Text code>Create Credentials</Text>, and choose <Text code>OAuth client ID</Text></li>
-                    <li>Select <Text code>Other</Text> as the application type and give it a name such as <Text code>Assistant Relay Client</Text>. Then click create</li>
+                    <li>Select <Text code>TVs and Limited Input devices</Text> as the application type and give it a name such as <Text code>Assistant Relay Client</Text>. Then click create</li>
                     <li>You'll get a popup, but just click OK to close this</li>
                     <li>Back on the Credentials page, click the download icon next to the new credential you made. Save it somewhere safe</li>
                     <li>Now click <Text code>Configure Consent Screen</Text></li>
