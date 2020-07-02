@@ -1,26 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Divider } from 'antd';
 
 import SetupLayout from '~/layouts/Setup';
-
 import SetupTutorial from '~/components/SetupTutorial';
-import AddSecrets from '~/components/AddSecrets';
-// import EnterToken from '~/views/setup/EnterToken';
 
-function Setup({ getUserCount }) {
-  const [current, setCurrent] = useState(0);
-  const [name, setName] = useState();
-
-  function next() {
-    const c = current + 1;
-    setCurrent(c);
-  }
-
-  function prev() {
-    const c = current - 1;
-    setCurrent(c);
-  }
-
+function Setup() {
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">

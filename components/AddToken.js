@@ -23,7 +23,7 @@ function AddToken({ user }) {
     try {
       await axios.post(`/api/processOAuth`, {
         name: user,
-        oauthCode: values.oauthCode,
+        oauthCode: values.oauthcode,
       });
 
       Router.push({

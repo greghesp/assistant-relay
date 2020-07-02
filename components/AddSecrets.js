@@ -18,20 +18,17 @@ const tailLayout = {
   wrapperCol: { span: 24 },
 };
 
-function AddSecrets() {
+function AddSecrets({ track }) {
   const [fileList, setFileList] = useState();
   const [fileData, setFileData] = useState();
-  let fileReader;
 
-  useEffect(() => {
-    fileReader = new FileReader();
+  const fileReader = new FileReader();
 
-    fileReader.onload = event => {
-      setFileData(JSON.parse(event.target.result));
-    };
-  }, []);
+  fileReader.onload = event => {
+    setFileData(JSON.parse(event.target.result));
+  };
 
-  const props = {
+  let props = {
     multiple: false,
     onRemove: file => {
       const index = fileList.indexOf(file);
@@ -58,6 +55,7 @@ function AddSecrets() {
     try {
       if (fileData) {
         const response = await axios.post(`/api/addUser`, {
+          track,
           name: values.name,
           secret: fileData,
         });

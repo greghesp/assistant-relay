@@ -12,7 +12,7 @@ function Authorisation() {
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
-        <h1 class="text-xl font-semibold">Provide Auth Token</h1>
+        <h1 className="text-xl font-semibold">Provide Auth Token</h1>
         <Divider />
         <AddToken user={router.query.name} />
       </div>

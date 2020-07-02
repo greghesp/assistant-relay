@@ -1,30 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
+import dynamic from 'next/dynamic';
 import { Divider } from 'antd';
+import { useRouter } from 'next/router';
 
 import SetupLayout from '~/layouts/Setup';
 
-import AddSecrets from '~/components/AddSecrets';
+const AddSecrets = dynamic(() => import('~/components/AddSecrets'), { ssr: false });
 
-function Configuration({ getUserCount }) {
-  const [current, setCurrent] = useState(0);
-  const [name, setName] = useState();
-
-  function next() {
-    const c = current + 1;
-    setCurrent(c);
-  }
-
-  function prev() {
-    const c = current - 1;
-    setCurrent(c);
-  }
+function Configuration() {
+  const router = useRouter();
 
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
-        <h1 class="text-xl font-semibold">Install Credentials</h1>
+        <h1 className="text-xl font-semibold">Install Credentials</h1>
         <Divider />
-        <AddSecrets />
+        <AddSecrets track={router.query.track} />
       </div>
     </SetupLayout>
   );
