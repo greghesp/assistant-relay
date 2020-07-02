@@ -19,7 +19,7 @@ exports.initializeServer = function () {
 
       const users = db.get('users').value();
       const muteStartup = db.get('muteStartup').value();
-      const isQH = await exports.isQuietHour();
+      //const isQH = await exports.isQuietHour();
       const promises = [];
       let firstLoad = true;
 
@@ -83,8 +83,8 @@ exports.initializeServer = function () {
       await Promise.all(promises);
 
       //  Announce Assistant Relay has started up if muteStartup is false, not inside quiet hours and not first load
-      if (!muteStartup && !isQH && !firstLoad)
-        await sendTextInput(`broadcast Assistant Relay initialised`);
+      // if (!muteStartup && !isQH && !firstLoad)
+      //   await sendTextInput(`broadcast Assistant Relay initialised`);
 
       // const updateAvail = await exports.isUpdateAvailable();
       //if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));

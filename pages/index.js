@@ -1,5 +1,7 @@
+import Dashboard from '~/layouts/Dashboard';
+
 function Index() {
-  return <div>Hi</div>;
+  return <Dashboard>Hi</Dashboard>;
 }
 
 export default Index;
