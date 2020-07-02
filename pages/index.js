@@ -1,6 +1,5 @@
-
-function Index(){
-    return (<p>Hi</p>)
+function Index() {
+  return <div>Hi</div>;
 }
 
 export default Index;

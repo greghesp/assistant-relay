@@ -1,6 +1,4 @@
-
-
 export default (req, res) => {
-    console.log('Assistant JS')
-    res.sendStatus(200);
-}
+  console.log("Assistant JS");
+  res.sendStatus(200);
+};
