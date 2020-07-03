@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'React';
+import { useState } from 'react';
 import Transition from '../helpers/Transition';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {
@@ -11,14 +10,10 @@ import {
 } from '@ant-design/icons';
 
 function Dashboard() {
-  const [isOpen, setIsOpen] = useState(false);
-  //const isOpen = true;
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
-      {
-        //  Off-canvas menu for mobile
-      }
       <div className="md:hidden">
         <div className="fixed inset-0 flex z-40">
           {
@@ -70,6 +65,7 @@ function Dashboard() {
                 <button
                   className="flex items-center justify-center h-12 w-12 rounded-full focus:outline-none focus:bg-gray-600"
                   aria-label="Close sidebar"
+                  onClick={() => setIsOpen(false)}
                 >
                   <svg
                     className="h-6 w-6 text-white"
@@ -399,6 +395,7 @@ function Dashboard() {
           <button
             className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
             aria-label="Open sidebar"
+            onClick={() => setIsOpen(true)}
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
