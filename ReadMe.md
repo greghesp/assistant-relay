@@ -9,6 +9,7 @@ A rework of Assistant Relay to use [Next.js](https://nextjs.org/), to allow for 
 - [x] Add initial setup process
   - [ ] Add install and version tracker (Firebase api)
 - [x] Add history page
+  - [ ] Fix stop audio bug
 - [ ] Add sandbox
   - [ ] Add `/assistant` api
   - [ ] Add request type and user to saved response
