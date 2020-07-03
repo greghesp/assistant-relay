@@ -1,7 +1,7 @@
 const low = require('lowdb');
 const { OAuth2Client } = require('google-auth-library');
 const path = require('path');
-const { auth } = require('../../server/helpers/auth');
+const { auth } = require('../../../server/helpers/auth');
 
 const FileSync = require('lowdb/adapters/FileSync');
 const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
