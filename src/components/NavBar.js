@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 function NavBar() {
   const router = useRouter();
-  const [activeItem, setActiveItem] = useState(router.route);
   const active = 'text-white bg-gray-900';
   const inActive = 'text-gray-300 hover:text-white hover:bg-gray-700 focus:text-white';
 
@@ -32,24 +30,24 @@ function NavBar() {
           Dashboard
         </a>
       </Link>
-      <Link href="/responses">
+      <Link href="/history">
         <a
           className={`mt-1 group flex items-center px-2 py-2 text-sm leading-5 font-medium rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150 ${
-            router.route === '/responses' ? active : inActive
+            router.route === '/history' ? active : inActive
           }`}
         >
           <svg
             className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300 group-focus:text-gray-300 transition ease-in-out duration-150"
             fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
           </svg>
-          Responses
+          History
         </a>
       </Link>
       <Link href="/sandbox">

@@ -92,28 +92,32 @@ function Dashboard({ children, title }) {
           <div className="h-0 flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
               <img className="h-8 w-auto" src="/images/logo.svg" alt="Assistant Relay" />
+              <span className="text-white ml-5 font-medium text-lg">Assistant Relay</span>
             </div>
             <NavBar />
           </div>
-          {/*<div className="flex-shrink-0 flex border-t border-gray-700 p-4">*/}
-          {/*  <a href="#" className="flex-shrink-0 w-full group block">*/}
-          {/*    <div className="flex items-center">*/}
-          {/*      <div>*/}
-          {/*        <img*/}
-          {/*          className="inline-block h-9 w-9 rounded-full"*/}
-          {/*          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
-          {/*          alt=""*/}
-          {/*        />*/}
-          {/*      </div>*/}
-          {/*      <div className="ml-3">*/}
-          {/*        <p className="text-sm leading-5 font-medium text-white">Tom Cook</p>*/}
-          {/*        <p className="text-xs leading-4 font-medium text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">*/}
-          {/*          View profile*/}
-          {/*        </p>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </a>*/}
-          {/*</div>*/}
+          <div className="flex-shrink-0 flex p-4">
+            <p className="text-xs leading-4 font-medium text-center text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">
+              Copyright © 2020 Assistant Relay
+            </p>
+            {/*<a href="#" className="flex-shrink-0 w-full group block">*/}
+            {/*  <div className="flex items-center">*/}
+            {/*    <div>*/}
+            {/*      <img*/}
+            {/*        className="inline-block h-9 w-9 rounded-full"*/}
+            {/*        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
+            {/*        alt=""*/}
+            {/*      />*/}
+            {/*    </div>*/}
+            {/*    <div className="ml-3">*/}
+            {/*      <p className="text-sm leading-5 font-medium text-white">Tom Cook</p>*/}
+            {/*      <p className="text-xs leading-4 font-medium text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">*/}
+            {/*        View profile*/}
+            {/*      </p>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</a>*/}
+          </div>
         </div>
       </div>
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
