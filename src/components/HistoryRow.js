@@ -11,7 +11,6 @@ function HistoryRow({ data }) {
   };
 
   audio.onpause = function () {
-    console.log('paused');
     setPlaying(false);
   };
 
@@ -64,7 +63,7 @@ function HistoryRow({ data }) {
             className="text-base flex leading-5 font-medium text-blue-600 truncate"
             onClick={() => execute()}
           >
-            {playing ? stopSvg : playSvg}
+            {data.type === 'command' ? (playing ? stopSvg : playSvg) : null}
             <span>{data.command}</span>
           </div>
           <div className="ml-2 flex-shrink-0 flex">

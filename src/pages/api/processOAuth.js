@@ -29,7 +29,7 @@ export default async (req, res) => {
 
     global.assistants[name] = new Assistant(oauthClient);
 
-    //await sendTextInput(`broadcast Assistant Relay is setup and running for ${name}`, name);
+    await sendTextInput(`broadcast Assistant Relay is setup and running for ${name}`, name);
 
     res.status(200);
   } catch (e) {

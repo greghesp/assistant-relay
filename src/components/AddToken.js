@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Upload, Button, Icon, message, Form, Input } from 'antd';
+import { Button, message, Form, Input } from 'antd';
 import axios from 'axios';
 import Router from 'next/router';
 

@@ -1,12 +1,12 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
-const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
 
 const configAdapter = new FileSync(path.resolve(__dirname, '../bin/config.json'));
 const dbAdapter = new FileSync(path.resolve(__dirname, '../bin/db.json'));
 const { sendTextInput } = require('../helpers/assistant.js');
+const { logger } = require('../helpers/logger');
 const packageFile = require('../../package.json');
 
 const Assistant = require('google-assistant/components/assistant');
@@ -59,6 +59,8 @@ exports.initializeServer = function () {
         })
         .write();
 
+      logger.log('info', 'Initialised configuration and database', { service: 'server' });
+
       if (db.get('users').size().value() > 0) {
         users.forEach(user => {
           promises.push(
@@ -81,13 +83,16 @@ exports.initializeServer = function () {
 
       // Create Assistant Instances in memory
       await Promise.all(promises);
+      logger.log('info', 'Created Assistant instance', { service: 'server' });
 
       //  Announce Assistant Relay has started up if muteStartup is false, not inside quiet hours and not first load
-      // if (!muteStartup && !isQH && !firstLoad)
-      //   await sendTextInput(`broadcast Assistant Relay initialised`);
+      // if (!muteStartup && !isQH && !firstLoad) {
+      //     await sendTextInput(`broadcast Assistant Relay initialised`);
+      // }
 
       // const updateAvail = await exports.isUpdateAvailable();
       //if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
+      logger.log('info', 'Assistant Relay is ready', { service: 'server' });
 
       return res();
     } catch (e) {

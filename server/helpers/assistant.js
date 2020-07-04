@@ -4,6 +4,7 @@ const path = require('path');
 const FileSync = require('lowdb/adapters/FileSync');
 const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
 const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
+const { logger } = require('../helpers/logger');
 
 const Conversation = require('google-assistant/components/conversation');
 
@@ -22,8 +23,14 @@ exports.sendTextInput = function (text, name) {
         if (!name) nameToUse = users[0].name;
         else nameToUse = name;
         const conversation = new Conversation(global.assistants[nameToUse], convo);
-        res(conversation);
+        logger.log('info', `Assistant conversation from ${nameToUse}: ${text}`, {
+          service: 'assistant',
+        });
+        return res(conversation);
       }
+      logger.log('error', 'Attempted Assistant Conversation. No users found', {
+        service: 'assistant',
+      });
       res();
     } catch (e) {
       rej(e);

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import axios from 'axios';
+
 import Dashboard from '~/src/layouts/Dashboard';
 import path from 'path';
 import low from 'lowdb';
@@ -49,9 +51,22 @@ const presets = [
 function Sandbox({ users }) {
   const [json, setJSON] = useState({ broadcast: true, converse: false });
   const [disabled, setDisabled] = useState([]);
+  const [response, setResponse] = useState();
+
+  async function sendRequest(e) {
+    e.preventDefault();
+    try {
+      const r = await axios.post(`/api/assistant`, json);
+      setResponse(r.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
 
   return (
     <Dashboard title="Sandbox">
+      <AudioPlayback/>
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">
           <form>
@@ -244,7 +259,7 @@ function Sandbox({ users }) {
               <div className="flex justify-end">
                 <span className="ml-3 inline-flex rounded-md shadow-sm">
                   <button
-                    type="submit"
+                    onClick={e => sendRequest(e)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out"
                   >
                     Execute
@@ -287,10 +302,7 @@ function Sandbox({ users }) {
           <div className=" pt-5">
             <div className="flex justify-end">
               <span className="ml-3 inline-flex rounded-md shadow-sm">
-                <button
-                  type="submit"
-                  className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out"
-                >
+                <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out">
                   Copy JSON
                 </button>
               </span>
