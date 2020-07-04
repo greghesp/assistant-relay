@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import Dashboard from '~/src/layouts/Dashboard';
+import ResponseBlock from '../components/ResponseBlock';
 import path from 'path';
 import low from 'lowdb';
 
@@ -57,16 +58,16 @@ function Sandbox({ users }) {
     e.preventDefault();
     try {
       const r = await axios.post(`/api/assistant`, json);
+      console.log(r.data);
       setResponse(r.data);
     } catch (e) {
       console.log(e);
     }
   }
 
-
   return (
     <Dashboard title="Sandbox">
-      <AudioPlayback/>
+      <ResponseBlock response={response} />
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">
           <form>
@@ -94,7 +95,7 @@ function Sandbox({ users }) {
                         id="user"
                         className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         onChange={e => {
-                          const u = document.getElementById('user').value;
+                          const u = e.target.value;
                           if (u.length === 0) {
                             return setJSON($ => {
                               delete $.user;
@@ -128,8 +129,8 @@ function Sandbox({ users }) {
                         id="command"
                         rows="3"
                         className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                        onKeyUp={() => {
-                          const c = document.getElementById('command').value;
+                        onKeyUp={e => {
+                          const c = e.target.value;
 
                           if (c.length === 0) {
                             setDisabled($ => {
@@ -168,7 +169,7 @@ function Sandbox({ users }) {
                         className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         value={json.preset ? json.preset : 'none'}
                         onChange={e => {
-                          const u = document.getElementById('preset').value;
+                          const u = e.target.value;
                           if (u.length === 0) {
                             return setJSON($ => {
                               delete $.preset;
@@ -201,8 +202,8 @@ function Sandbox({ users }) {
                         type="checkbox"
                         className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         defaultChecked={json.broadcast}
-                        onChange={() => {
-                          const u = document.getElementById('broadcast').checked;
+                        onChange={e => {
+                          const u = e.target.checked;
                           setJSON($ => ({ ...$, broadcast: u }));
                         }}
                       />
@@ -225,8 +226,8 @@ function Sandbox({ users }) {
                         defaultChecked={json.converse}
                         type="checkbox"
                         className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                        onChange={() => {
-                          const u = document.getElementById('converse').checked;
+                        onChange={e => {
+                          const u = e.target.checked;
 
                           if (u) {
                             setDisabled($ => [...$, 'preset']);
