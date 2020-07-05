@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import dynamic from 'next/dynamic';
 import path from 'path';
 import low from 'lowdb';

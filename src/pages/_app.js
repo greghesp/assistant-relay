@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import LoadingBar from '../components/LoadingBar';
 
 import stylesheet from 'antd/dist/antd.min.css';
 import '../styles/index.css';
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
         <meta name="msapplication-TileColor" content="#ffffff" />
       </Head>
+      <LoadingBar color="#FABD05" />
       <Component {...pageProps} />
     </React.Fragment>
   );

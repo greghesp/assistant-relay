@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 
 function NavBar() {
@@ -90,10 +91,10 @@ function NavBar() {
           Casting
         </a>
       </Link>
-      <Link href="/settings">
+      <Link href="/access-control">
         <a
           className={`mt-1 group flex items-center px-2 py-2 text-sm leading-5 font-medium rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150 ${
-            router.route === '/settings' ? active : inActive
+            router.route === '/access-control' ? active : inActive
           }`}
         >
           <svg
@@ -136,10 +137,10 @@ function NavBar() {
         </a>
       </Link>
 
-      <Link href="/settings">
+      <Link href="/logging">
         <a
           className={`mt-1 group flex items-center px-2 py-2 text-sm leading-5 font-medium rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150 ${
-            router.route === '/settings' ? active : inActive
+            router.route === '/logging' ? active : inActive
           }`}
         >
           <svg

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import Router from 'next/router';
 import Transition from '../helpers/Transition';
 import NavBar from '../components/NavBar';
+import path from 'path';
 
-function Dashboard({ children, title }) {
+function Dashboard({ children, title, userCount }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
