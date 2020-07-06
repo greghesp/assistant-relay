@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import Transition from '../helpers/Transition';
+import RouteRedirect from '../helpers/RouteRedirect';
 import NavBar from '../components/NavBar';
 import path from 'path';
 
@@ -153,4 +154,4 @@ function Dashboard({ children, title, userCount }) {
   );
 }
 
-export default Dashboard;
+export default RouteRedirect(Dashboard);
