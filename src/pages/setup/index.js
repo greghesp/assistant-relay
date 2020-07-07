@@ -1,8 +1,8 @@
 import React from 'react';
 import { Divider } from 'antd';
 
-import SetupLayout from '~/layouts/Setup';
-import SetupTutorial from '~/components/SetupTutorial';
+import SetupLayout from '~/src/layouts/Setup';
+import SetupTutorial from '~/src/components/SetupTutorial';
 
 function Setup() {
   return (

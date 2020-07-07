@@ -1,6 +1,6 @@
 import Dashboard from '~/src/layouts/Dashboard';
 
-function Index({ userCount }) {
+function Index() {
   return (
     <Dashboard title="Dashboard">
       <p>Hi</p>

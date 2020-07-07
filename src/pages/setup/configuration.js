@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic';
 import { Divider } from 'antd';
 import { useRouter } from 'next/router';
 
-import SetupLayout from '~/layouts/Setup';
+import SetupLayout from '~/src/layouts/Setup';
 
-const AddSecrets = dynamic(() => import('~/components/AddSecrets'), { ssr: false });
+const AddSecrets = dynamic(() => import('~/src/components/AddSecrets'), { ssr: false });
 
 function Configuration() {
   const router = useRouter();

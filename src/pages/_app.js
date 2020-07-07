@@ -3,7 +3,6 @@ import LoadingBar from '../components/LoadingBar';
 
 import stylesheet from 'antd/dist/antd.min.css';
 import '../styles/index.css';
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import Transition from '../helpers/Transition';
-import RouteRedirect from '../helpers/RouteRedirect';
+import routeRedirect from '../helpers/routeRedirect';
 import NavBar from '../components/NavBar';
 import path from 'path';
 
-function Dashboard({ children, title, userCount }) {
+function Dashboard({ children, title, secretToLife }) {
   const [isOpen, setIsOpen] = useState(true);
-
+  console.log(secretToLife);
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
       <div className="md:hidden">
@@ -154,4 +154,4 @@ function Dashboard({ children, title, userCount }) {
   );
 }
 
-export default RouteRedirect(Dashboard);
+export default routeRedirect(Dashboard);

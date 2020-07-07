@@ -2,9 +2,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Divider } from 'antd';
 
-import SetupLayout from '~/layouts/Setup';
+import SetupLayout from '~/src/layouts/Setup';
 
-import AddToken from '~/components/AddToken';
+import AddToken from '~/src/components/AddToken';
 
 function Authorisation() {
   const router = useRouter();
