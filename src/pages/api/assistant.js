@@ -84,7 +84,6 @@ export default async (req, res) => {
         if (!broadcast) {
           fileStream.write(data);
           response.audio = `/audio-responses/${timestamp}.wav`;
-          logger.log('info', 'Command not broadcast - write audio file', { service: 'assistant' });
         }
       })
       .on('response', text => {
@@ -114,9 +113,6 @@ export default async (req, res) => {
         if (!broadcast) {
           saveHTMLFile(timestamp, screen.data);
           response.html = `/html-responses/${timestamp}.html`;
-          logger.log('info', 'Command not a broadcast, writing html file', {
-            service: 'assistant',
-          });
         }
       })
       .on('ended', async (error, continueConversation) => {
@@ -129,7 +125,16 @@ export default async (req, res) => {
           logger.log('info', `Conversation completed successfully`, { service: 'assistant' });
           response.success = true;
         }
-        if (!broadcast) fileStream.end();
+        if (!broadcast) {
+          logger.log('info', 'Command not a broadcast, html file written', {
+            service: 'assistant',
+          });
+          logger.log('info', 'Command not a broadcast, audio file written', {
+            service: 'assistant',
+          });
+
+          fileStream.end();
+        }
         conversation.end();
         await updateResponses(command, response.response, timestamp, type, user);
         res.status(200).json(response);

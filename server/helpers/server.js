@@ -50,12 +50,16 @@ exports.initializeServer = function () {
           castEnabled: false,
           track: false,
           pipCommand: 'pip3',
+          accessControl: false,
         })
         .write();
       await db
         .defaults({
           users: [],
           responses: [],
+          accessControl: [],
+          broadcastCount: 0,
+          commandCount: 0,
         })
         .write();
 

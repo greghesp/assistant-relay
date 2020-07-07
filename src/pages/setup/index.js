@@ -8,7 +8,7 @@ function Setup() {
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
-        <h1 class="text-xl font-semibold">Setup Assistant Relay</h1>
+        <h1 className="text-xl font-semibold">Setup Assistant Relay</h1>
         <Divider />
         <SetupTutorial />
       </div>

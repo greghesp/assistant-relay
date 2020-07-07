@@ -50,7 +50,7 @@ const presets = [
 ];
 
 function Sandbox({ users }) {
-  const [json, setJSON] = useState({ broadcast: true, converse: false });
+  const [json, setJSON] = useState({ broadcast: false, converse: false });
   const [disabled, setDisabled] = useState([]);
   const [response, setResponse] = useState();
 
@@ -129,6 +129,7 @@ function Sandbox({ users }) {
                         id="command"
                         rows="3"
                         className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        placeholder="How much wood could a woodchuck chuck, if a woodchuck could chuck wood?"
                         onKeyUp={e => {
                           const c = e.target.value;
 
@@ -152,7 +153,7 @@ function Sandbox({ users }) {
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
-                      Tell Google Assistant what you want it to do.
+                      Ask the Google Assistant a question or tell it a command.
                     </p>
                   </div>
                   <div className="sm:col-span-3">
@@ -200,7 +201,7 @@ function Sandbox({ users }) {
                         id="broadcast"
                         disabled={disabled.includes('broadcast')}
                         type="checkbox"
-                        className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                        className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
                         defaultChecked={json.broadcast}
                         onChange={e => {
                           const u = e.target.checked;
@@ -225,7 +226,7 @@ function Sandbox({ users }) {
                         disabled={disabled.includes('converse')}
                         defaultChecked={json.converse}
                         type="checkbox"
-                        className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                        className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
                         onChange={e => {
                           const u = e.target.checked;
 
@@ -261,7 +262,7 @@ function Sandbox({ users }) {
                 <span className="ml-3 inline-flex rounded-md shadow-sm">
                   <button
                     onClick={e => sendRequest(e)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
                   >
                     Execute
                   </button>
@@ -303,7 +304,7 @@ function Sandbox({ users }) {
           <div className=" pt-5">
             <div className="flex justify-end">
               <span className="ml-3 inline-flex rounded-md shadow-sm">
-                <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out">
+                <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out">
                   Copy JSON
                 </button>
               </span>

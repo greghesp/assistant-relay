@@ -1,9 +1,66 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import Link from 'next/link';
 
 function AccessControl() {
   return (
     <Dashboard title="Access Control">
-      <p>Settings</p>
+      <p className="mt-5">
+        Here you can set API keys for the endpoints, as well as set a password for the dashboard
+      </p>
+      <p className="mt-1">
+        If you're setting a API key because you plan to expose the endpoints publicly, it's highly
+        recommended that you set a dashboard password to prevent the API keys being replaced or
+        accessed.
+      </p>
+      <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
+        <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+          <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-no-wrap">
+            <div className="ml-4 mt-2">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Access Keys</h3>
+            </div>
+            <div className="ml-4 mt-2 flex-shrink-0">
+              <span className="inline-flex rounded-md shadow-sm">
+                <Link href="/sandbox">
+                  <button
+                    type="button"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700"
+                  >
+                    Add API Key
+                  </button>
+                </Link>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div></div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
+        <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+          <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-no-wrap">
+            <div className="ml-4 mt-2">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Dashboard Authentication
+              </h3>
+            </div>
+            <div className="ml-4 mt-2 flex-shrink-0">
+              <span className="inline-flex rounded-md shadow-sm">
+                <Link href="/sandbox">
+                  <button
+                    type="button"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700"
+                  >
+                    Add Password
+                  </button>
+                </Link>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div></div>
+      </div>
     </Dashboard>
   );
 }

@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import Router from 'next/router';
+import LowFetcher from '../helpers/LowFetcher';
 import Transition from '../helpers/Transition';
-import routeRedirect from '../helpers/routeRedirect';
 import NavBar from '../components/NavBar';
-import path from 'path';
+import useSWR from 'swr';
+import LoadingAnimation from '../components/LoadingAnimation';
 
-function Dashboard({ children, title, secretToLife }) {
+function Dashboard({ children, title }) {
+  const { data, error } = useSWR('/api/getUsers', LowFetcher);
   const [isOpen, setIsOpen] = useState(true);
-  console.log(secretToLife);
+
+  if (!data) return <LoadingAnimation />;
+
+  if (data.size < 1) {
+    Router.push('/setup');
+  }
+
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
       <div className="md:hidden">
@@ -141,7 +149,7 @@ function Dashboard({ children, title, secretToLife }) {
           </button>
         </div>
         <main
-          className="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6"
+          className="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6 setupBg bg-gray-100"
           tabIndex="0"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -154,4 +162,4 @@ function Dashboard({ children, title, secretToLife }) {
   );
 }
 
-export default routeRedirect(Dashboard);
+export default Dashboard;
