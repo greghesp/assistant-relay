@@ -20,7 +20,7 @@ const tailLayout = {
 function AddToken({ user }) {
   async function addUser(values) {
     try {
-      await axios.post(`/api/processOAuth`, {
+      await axios.post(`/api/server/processOAuth`, {
         name: user,
         oauthCode: values.oauthcode,
       });

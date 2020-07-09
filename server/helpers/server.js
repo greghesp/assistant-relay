@@ -51,6 +51,7 @@ exports.initializeServer = function () {
           track: false,
           pipCommand: 'pip3',
           accessControl: false,
+          password: null,
         })
         .write();
       await db

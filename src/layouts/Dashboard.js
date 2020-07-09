@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import LoadingAnimation from '../components/LoadingAnimation';
 
 function Dashboard({ children, title }) {
-  const { data, error } = useSWR('/api/getUsers', LowFetcher);
+  const { data, error } = useSWR('/api/server/getUsers', LowFetcher);
   const [isOpen, setIsOpen] = useState(true);
 
   if (!data) return <LoadingAnimation />;

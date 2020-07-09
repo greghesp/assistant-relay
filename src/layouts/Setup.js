@@ -5,13 +5,13 @@ import Router from 'next/router';
 import useSWR from 'swr';
 
 function SetupLayout({ children }) {
-  const { data, error } = useSWR('/api/getUsers', LowFetcher);
+  const { data, error } = useSWR('/api/server/getUsers', LowFetcher);
 
-  if (!data) return <LoadingAnimation />;
-
-  if (data.size >= 1) {
-    Router.push('/');
-  }
+  // if (!data) return <LoadingAnimation />;
+  //
+  // if (data.size >= 1) {
+  //   Router.push('/');
+  // }
 
   return (
     <div className="w-screen h-screen setupBg bg-gray-200">
