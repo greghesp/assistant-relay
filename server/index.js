@@ -6,8 +6,6 @@ const low = require('lowdb');
 const chalk = require('chalk');
 const ip = require('ip');
 const bonjour = require('bonjour')();
-const passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 
 const FileSync = require('lowdb/adapters/FileSync');
 const configAdapter = new FileSync(path.resolve(__dirname, '../server/bin/config.json'));
@@ -28,31 +26,6 @@ app.prepare().then(async () => {
   const port = db.get('port').value();
 
   await initializeServer();
-
-  passport.serializeUser(function (user, done) {
-    //In serialize user you decide what to store in the session. Here I'm storing the user id only.
-    done(null, '');
-  });
-
-  passport.deserializeUser(function (id, done) {
-    //Here you retrieve all the info of the user from the session storage using the user id stored in the session earlier using serialize user.
-    done(null, '');
-  });
-
-  passport.use(
-    new LocalStrategy({}, function (username, password, done) {
-      console.log(username, password);
-      done();
-    }),
-  );
-
-  server.use(passport.initialize());
-  server.use(passport.session());
-
-  server.all('/api/server/login', passport.authenticate('local'), function (req, res, next) {
-    const parsedUrl = parse(req.url, true);
-    return next(handle(req, res, parsedUrl));
-  });
 
   //Handle all get requests in Next
   server.all('*', (req, res) => {

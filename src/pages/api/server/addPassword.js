@@ -14,7 +14,7 @@ export default async (req, res) => {
 
     if (pwExist) return res.status(401).send('Password already exists, cannot set.');
 
-    await config.set('password', passwordHash.generate(password)).write();
+    await config.set('password', password).write();
     res.sendStatus(200);
   } catch (e) {
     console.error(e);
