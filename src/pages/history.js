@@ -1,19 +1,38 @@
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-
+import axios from 'axios';
 import dynamic from 'next/dynamic';
-import path from 'path';
-import low from 'lowdb';
 
 import Dashboard from '~/src/layouts/Dashboard';
 
 const HistoryRow = dynamic(() => import('../components/HistoryRow'), { ssr: false });
 
-function History({ responses }) {
+function History() {
+  const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getHistory() {
+      try {
+        const r = await axios.post('/api/server/getHistory');
+        console.log(r);
+        setHistory(r.data.responses);
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getHistory();
+  }, []);
+
+  console.log(history);
+
   function Responses() {
-    if (responses.length > 0) {
+    if (history.length > 0) {
       return (
         <ul>
-          {responses.map((r, i) => {
+          {history.map((r, i) => {
             return <HistoryRow data={r} key={i} />;
           })}
         </ul>
@@ -28,6 +47,8 @@ function History({ responses }) {
       </div>
     );
   }
+
+  if (loading) return null;
 
   return (
     <Dashboard title="History">
@@ -60,19 +81,6 @@ function History({ responses }) {
       </div>
     </Dashboard>
   );
-}
-
-export async function getStaticProps(context) {
-  const FileSync = require('lowdb/adapters/FileSync');
-  const dbAdapter = new FileSync(path.resolve(process.cwd(), 'server/bin', 'db.json'));
-  const db = await low(dbAdapter);
-  const responses = await db.get('responses').orderBy('timestamp', 'desc').value();
-
-  return {
-    props: {
-      responses,
-    },
-  };
 }
 
 export default History;

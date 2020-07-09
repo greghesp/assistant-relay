@@ -11,7 +11,7 @@ function SetupTutorial() {
 
   async function next(e) {
     try {
-      await axios.post(`/api/setTracking`, {
+      await axios.post(`/api/server/setTracking`, {
         password,
       });
       Router.push({
