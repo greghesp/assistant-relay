@@ -59,7 +59,6 @@ function Sandbox({ users }) {
     e.preventDefault();
     try {
       const r = await axios.post(`/api/assistant`, json);
-      console.log(r.data);
       setResponse(r.data);
     } catch (e) {
       console.log(e);
@@ -68,6 +67,9 @@ function Sandbox({ users }) {
 
   return (
     <Dashboard title="Sandbox">
+      {response?.rawHtml ? (
+        <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />
+      ) : null}
       <ResponseBlock response={response} />
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">

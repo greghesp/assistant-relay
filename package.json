@@ -33,6 +33,7 @@
     "express": "^4.17.1",
     "google-assistant": "^0.6.2",
     "google-auth-library": "^6.0.2",
+    "html-react-parser": "^0.13.0",
     "ip": "^1.1.5",
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.5.1",

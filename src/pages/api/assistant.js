@@ -113,6 +113,7 @@ export default async (req, res) => {
         if (!broadcast) {
           saveHTMLFile(timestamp, screen.data);
           response.html = `/html-responses/${timestamp}.html`;
+          response.rawHtml = screen.data.toString();
         }
       })
       .on('ended', async (error, continueConversation) => {
