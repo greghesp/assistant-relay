@@ -1,11 +1,20 @@
 import Logo from '~/src/components/Logo';
 import LoadingAnimation from '../components/LoadingAnimation';
-import LowFetcher from '../helpers/LowFetcher';
 import Router from 'next/router';
-import useSWR from 'swr';
+import { post } from '../helpers/api';
+import { useEffect, useState } from 'react';
 
 function SetupLayout({ children }) {
-  const { data, error } = useSWR('/api/server/getUsers', LowFetcher);
+  const [users, setUsers] = useState();
+
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const response = await post('/api/server/getUsers');
+        console.log(response);
+      } catch (e) {}
+    }
+  });
 
   // if (!data) return <LoadingAnimation />;
   //

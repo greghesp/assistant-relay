@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import SetupLayout from '~/src/layouts/Setup';
-import axios from 'axios';
+import { post } from '../../helpers/api';
 import Router from 'next/router';
 
 function Setup() {
@@ -13,7 +13,7 @@ function Setup() {
 
   useEffect(() => {
     async function checkPW() {
-      const pw = await axios.post('/api/server/getConfig', {
+      const pw = await post('/api/server/getConfig', {
         item: 'password',
       });
       if (pw) {

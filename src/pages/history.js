@@ -2,19 +2,23 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+import { Cookies } from 'react-cookie';
+import { post } from '../helpers/api';
 
 import Dashboard from '~/src/layouts/Dashboard';
 
 const HistoryRow = dynamic(() => import('../components/HistoryRow'), { ssr: false });
 
 function History() {
+  const cookies = new Cookies();
+
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getHistory() {
       try {
-        const r = await axios.post('/api/server/getHistory');
+        const r = await post('/api/server/getHistory');
         console.log(r);
         setHistory(r.data.responses);
         setLoading(false);

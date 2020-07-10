@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Button, Icon, message, Form, Input } from 'antd';
 import axios from 'axios';
+import { post } from '../helpers/api';
 import Router from 'next/router';
 
 const formItemLayout = {
@@ -54,7 +55,7 @@ function AddSecrets({ track }) {
   async function addUser(values) {
     try {
       if (fileData) {
-        const response = await axios.post(`/api/addUser`, {
+        const response = await post(`/api/server/addUser`, {
           track,
           name: values.name,
           secret: fileData,
@@ -64,7 +65,8 @@ function AddSecrets({ track }) {
         return next(values.name);
       }
     } catch (e) {
-      message.error(e.response.data);
+      console.log(e);
+      //message.error(e.response.data);
     }
   }
 

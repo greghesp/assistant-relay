@@ -5,7 +5,7 @@ const path = require('path');
 const FileSync = require('lowdb/adapters/FileSync');
 const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
 const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
-const { logger } = require('../../../server/helpers/logger');
+const { logger } = require('../../../../server/helpers/logger');
 
 export default async (req, res) => {
   try {

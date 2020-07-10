@@ -1,5 +1,6 @@
 import { Button, message, Form, Input } from 'antd';
 import axios from 'axios';
+import { post } from '../helpers/api';
 import Router from 'next/router';
 
 const formItemLayout = {
@@ -20,7 +21,7 @@ const tailLayout = {
 function AddToken({ user }) {
   async function addUser(values) {
     try {
-      await axios.post(`/api/server/processOAuth`, {
+      await post(`/api/server/processOAuth`, {
         name: user,
         oauthCode: values.oauthcode,
       });
