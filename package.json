@@ -44,9 +44,9 @@
     "password-hash": "^1.2.2",
     "react": "^16.13.1",
     "react-cookie": "^4.0.3",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-transition-group": "^4.4.1",
-    "swr": "^0.2.3",
     "wav": "^1.0.2",
     "winston": "^3.3.3"
   },

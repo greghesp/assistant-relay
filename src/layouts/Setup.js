@@ -5,22 +5,27 @@ import { post } from '../helpers/api';
 import { useEffect, useState } from 'react';
 
 function SetupLayout({ children }) {
-  const [users, setUsers] = useState();
+  const [data, setData] = useState();
 
   useEffect(() => {
     async function getUsers() {
       try {
         const response = await post('/api/server/getUsers');
-        console.log(response);
-      } catch (e) {}
+        setData(response.data);
+      } catch (e) {
+        if (e.response.status === 401) {
+          Router.push('/login');
+        }
+      }
     }
+    getUsers();
   });
 
-  // if (!data) return <LoadingAnimation />;
-  //
-  // if (data.size >= 1) {
-  //   Router.push('/');
-  // }
+  if (!data) return <LoadingAnimation />;
+
+  if (data.size >= 1) {
+    Router.push('/');
+  }
 
   return (
     <div className="w-screen h-screen setupBg bg-gray-200">

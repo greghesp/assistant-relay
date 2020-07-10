@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Dashboard from '~/src/layouts/Dashboard';
 import ResponseBlock from '../components/ResponseBlock';
@@ -304,9 +305,11 @@ function Sandbox({ users }) {
           <div className=" pt-5">
             <div className="flex justify-end">
               <span className="ml-3 inline-flex rounded-md shadow-sm">
-                <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out">
-                  Copy JSON
-                </button>
+                <CopyToClipboard text={JSON.stringify(json, null, 4)}>
+                  <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out">
+                    Copy JSON
+                  </button>
+                </CopyToClipboard>
               </span>
             </div>
           </div>

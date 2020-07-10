@@ -1,13 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
-import LowFetcher from '../helpers/LowFetcher';
 import Transition from '../helpers/Transition';
 import NavBar from '../components/NavBar';
-import useSWR from 'swr';
 import LoadingAnimation from '../components/LoadingAnimation';
+import { post } from '../helpers/api';
 
 function Dashboard({ children, title }) {
-  const { data, error } = useSWR('/api/server/getUsers', LowFetcher);
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const response = await post('/api/server/getUsers');
+        setData(response.data);
+      } catch (e) {
+        if (e.response.status === 401) {
+          Router.push('/login');
+        }
+      }
+    }
+    getUsers();
+  });
+
   const [isOpen, setIsOpen] = useState(true);
 
   if (!data) return <LoadingAnimation />;
