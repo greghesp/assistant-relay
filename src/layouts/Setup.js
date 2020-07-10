@@ -21,11 +21,11 @@ function SetupLayout({ children }) {
     getUsers();
   });
 
-  if (!data) return <LoadingAnimation />;
-
-  if (data.size >= 1) {
-    Router.push('/');
-  }
+  // if (!data) return <LoadingAnimation />;
+  //
+  // if (data.size >= 1 && data.users[0]) {
+  //   Router.push('/');
+  // }
 
   return (
     <div className="w-screen h-screen setupBg bg-gray-200">

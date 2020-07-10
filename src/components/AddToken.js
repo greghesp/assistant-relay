@@ -27,11 +27,11 @@ function AddToken({ user }) {
       });
 
       Router.push({
-        pathname: '/setup/authorisation',
-        query: { name },
+        pathname: '/',
       });
     } catch (e) {
-      message.error(e.response.data);
+      console.log(e);
+      message.error(e);
     }
   }
 
