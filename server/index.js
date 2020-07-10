@@ -42,6 +42,7 @@ app.prepare().then(async () => {
   server.all('*', (req, res) => {
     const parsedUrl = parse(req.url, true);
 
+    // Don't validate JWT for routes that AREN'T /api/server
     if (!parsedUrl.path.startsWith('/api/server')) {
       return handle(req, res, parsedUrl);
     }
