@@ -4,6 +4,7 @@ const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
 const FileSync = require('lowdb/adapters/FileSync');
 const fs = require('fs');
+const parse5 = require('parse5');
 
 const { sendTextInput } = require('../../../server/helpers/assistant');
 const { logger } = require('../../../server/helpers/logger');
@@ -111,7 +112,6 @@ export default async (req, res) => {
          * as the data is useless
          **/
         if (!broadcast) {
-          saveHTMLFile(timestamp, screen.data);
           response.html = `/html-responses/${timestamp}.html`;
           response.rawHtml = screen.data.toString();
         }
