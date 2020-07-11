@@ -20,7 +20,7 @@ function Dashboard({ children, title }) {
       }
     }
     getUsers();
-  });
+  }, []);
 
   const [isOpen, setIsOpen] = useState(true);
 

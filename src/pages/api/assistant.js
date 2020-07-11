@@ -4,7 +4,7 @@ const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
 const FileSync = require('lowdb/adapters/FileSync');
 const fs = require('fs');
-const parse5 = require('parse5');
+const cheerio = require('cheerio');
 
 const { sendTextInput } = require('../../../server/helpers/assistant');
 const { logger } = require('../../../server/helpers/logger');
@@ -110,8 +110,14 @@ export default async (req, res) => {
         /**
          * If the request is a broadcast, don't write the HTML file
          * as the data is useless
+         * Extract the content text from the HTML as text value from Assistant SDK is blank due to bug
          **/
         if (!broadcast) {
+          const $ = cheerio.load(screen.data.toString());
+          const stringFromHTML = $('.popout-content').text();
+          console.log(stringFromHTML);
+
+          response.text = stringFromHTML;
           response.html = `/html-responses/${timestamp}.html`;
           response.rawHtml = screen.data.toString();
         }
