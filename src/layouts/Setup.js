@@ -2,7 +2,7 @@ import Logo from '~/src/components/Logo';
 import LoadingAnimation from '../components/LoadingAnimation';
 import Router from 'next/router';
 import { post } from '../helpers/api';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function SetupLayout({ children }) {
   const [data, setData] = useState();
@@ -21,7 +21,16 @@ function SetupLayout({ children }) {
     getUsers();
   });
 
-  if (!data) return <LoadingAnimation />;
+  if (!data)
+    return (
+      <div className="w-screen h-screen setupBg bg-gray-200">
+        <div className="bg-grey-400 flex items-center justify-center w-screen h-screen max-w-2xl mx-auto">
+          <div className="h-auto">
+            <LoadingAnimation />
+          </div>
+        </div>
+      </div>
+    );
 
   if (data.size >= 1 && data.users[0]?.tokens) {
     Router.push('/');

@@ -115,11 +115,10 @@ export default async (req, res) => {
         if (!broadcast) {
           const $ = cheerio.load(screen.data.toString());
           const stringFromHTML = $('.popout-content').text();
-          console.log(stringFromHTML);
 
           response.text = stringFromHTML;
           response.html = `/html-responses/${timestamp}.html`;
-          response.rawHtml = screen.data.toString();
+          //response.rawHtml = screen.data.toString();
         }
       })
       .on('ended', async (error, continueConversation) => {

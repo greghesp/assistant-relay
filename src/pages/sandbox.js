@@ -6,6 +6,7 @@ import Dashboard from '~/src/layouts/Dashboard';
 import ResponseBlock from '../components/ResponseBlock';
 import path from 'path';
 import low from 'lowdb';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 const presets = [
   {
@@ -54,15 +55,18 @@ function Sandbox({ users }) {
   const [json, setJSON] = useState({ broadcast: false, converse: false });
   const [disabled, setDisabled] = useState([]);
   const [response, setResponse] = useState();
+  const [loading, setLoading] = useState(false);
 
   async function sendRequest(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const r = await axios.post(`/api/assistant`, json);
       setResponse(r.data);
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
   }
 
   return (
@@ -265,9 +269,16 @@ function Sandbox({ users }) {
                 <span className="ml-3 inline-flex rounded-md shadow-sm">
                   <button
                     onClick={e => sendRequest(e)}
+                    disabled={loading}
                     className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
                   >
-                    Execute
+                    {loading ? (
+                      <span className="-my-5 h-15 ">
+                        <LoadingAnimation />
+                      </span>
+                    ) : (
+                      <span>Execute</span>
+                    )}
                   </button>
                 </span>
               </div>
