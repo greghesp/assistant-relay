@@ -1,30 +1,25 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const path = require('path');
 const { OAuth2Client } = require('google-auth-library');
-
-const configAdapter = new FileSync(path.resolve(__dirname, '../bin/config.json'));
-const dbAdapter = new FileSync(path.resolve(__dirname, '../bin/db.json'));
 const { sendTextInput } = require('../helpers/assistant.js');
 const { logger } = require('../helpers/logger');
 const packageFile = require('../../package.json');
+
+const { database, configuration } = require('../helpers/db');
+const config = configuration();
+const db = database();
 
 const Assistant = require('google-assistant/components/assistant');
 
 exports.initializeServer = function () {
   return new Promise(async (res, rej) => {
     try {
-      const configDb = await low(configAdapter);
-      const db = await low(dbAdapter);
-
-      const users = db.get('users').value();
-      const muteStartup = db.get('muteStartup').value();
+      const users = await db.get('users').value();
+      const muteStartup = await db.get('muteStartup').value();
       //const isQH = await exports.isQuietHour();
       const promises = [];
       let firstLoad = true;
 
       // Generate default databases
-      await configDb
+      await config
         .defaults({
           port: 3000,
           muteStartup: false,
