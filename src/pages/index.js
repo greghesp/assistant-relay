@@ -1,4 +1,5 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 function Index() {
   return (

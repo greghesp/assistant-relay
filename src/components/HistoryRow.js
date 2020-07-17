@@ -92,7 +92,7 @@ function HistoryRow({ data }) {
         </div>
         <div className="mt-5 sm:flex sm:justify-between">
           <div className="sm:flex w-2/3">
-            {data.response ? (
+            {data?.response.trim().length ? (
               <p className="pl-5">{data.response}</p>
             ) : (
               <p className="pl-5 italic">No Response</p>
