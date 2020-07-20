@@ -6,12 +6,10 @@ const db = database();
 
 export default async (req, res) => {
   try {
-    const buf = crypto.randomBytes(32);
-    const key = buf.toString('hex');
-    await db.get('accessControl').push(key).write();
-    await config.set('accessControl', true).write();
-
-    res.status(200).send({ key });
+    console.log(req.body);
+    const key = req.body.apiKey;
+    db.get('accessControl').pull(key).write();
+    res.status(200).send();
   } catch (e) {
     console.error(e);
     logger.log('error', e.message, { service: 'api' });

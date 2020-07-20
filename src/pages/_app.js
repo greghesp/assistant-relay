@@ -24,6 +24,7 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <meta name="msapplication-TileColor" content="#ffffff" />
       </Head>
       <LoadingBar color="#FABD05" />

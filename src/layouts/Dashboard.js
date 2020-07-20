@@ -53,7 +53,7 @@ function Dashboard({ children, title }) {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0">
-              <div className="absolute inset-0 bg-gray-600 opacity-75"></div>
+              <div className="absolute inset-0 bg-gray-600 opacity-75" />
             </div>
           </Transition>
           <Transition
@@ -87,34 +87,16 @@ function Dashboard({ children, title }) {
                   </svg>
                 </button>
               </div>
-              <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+              <div className="flex-1 h-0 pt-5 pb-4">
                 <div className="flex-shrink-0 flex items-center px-4">
                   <img className="h-8 w-auto" src="/images/logo.svg" alt="Assistant Relay" />
+                  <span className="text-white ml-5 font-medium text-lg">Assistant Relay</span>
                 </div>
                 <NavBar />
               </div>
-              {/*<div className="flex-shrink-0 flex border-t border-gray-700 p-4">*/}
-              {/*  <a href="#" className="flex-shrink-0 group block focus:outline-none">*/}
-              {/*    <div className="flex items-center">*/}
-              {/*      <div>*/}
-              {/*        <img*/}
-              {/*          className="inline-block h-10 w-10 rounded-full"*/}
-              {/*          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
-              {/*          alt=""*/}
-              {/*        />*/}
-              {/*      </div>*/}
-              {/*      <div className="ml-3">*/}
-              {/*        <p className="text-base leading-6 font-medium text-white">Tom Cook</p>*/}
-              {/*        <p className="text-sm leading-5 font-medium text-gray-300 group-hover:text-gray-100 group-focus:underline transition ease-in-out duration-150">*/}
-              {/*          View profile*/}
-              {/*        </p>*/}
-              {/*      </div>*/}
-              {/*    </div>*/}
-              {/*  </a>*/}
-              {/*</div>*/}
             </div>
           </Transition>
-          <div className="flex-shrink-0 w-14"></div>
+          {/*<div className="flex-shrink-0 w-14"></div>*/}
         </div>
       </div>
 
@@ -134,23 +116,6 @@ function Dashboard({ children, title }) {
             <p className="text-xs leading-4 font-medium text-center text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">
               Copyright © 2020 Assistant Relay
             </p>
-            {/*<a href="#" className="flex-shrink-0 w-full group block">*/}
-            {/*  <div className="flex items-center">*/}
-            {/*    <div>*/}
-            {/*      <img*/}
-            {/*        className="inline-block h-9 w-9 rounded-full"*/}
-            {/*        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
-            {/*        alt=""*/}
-            {/*      />*/}
-            {/*    </div>*/}
-            {/*    <div className="ml-3">*/}
-            {/*      <p className="text-sm leading-5 font-medium text-white">Tom Cook</p>*/}
-            {/*      <p className="text-xs leading-4 font-medium text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">*/}
-            {/*        View profile*/}
-            {/*      </p>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-            {/*</a>*/}
           </div>
         </div>
       </div>

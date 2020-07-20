@@ -60,6 +60,8 @@ exports.initializeServer = function () {
         })
         .write();
 
+      // TODO: Check what audio/html files exist. Remove from db if not there.  HASS IO workaround
+
       logger.log('info', 'Initialised configuration and database', { service: 'server' });
 
       if (db.get('users').size().value() > 0) {
@@ -73,7 +75,6 @@ exports.initializeServer = function () {
                 key.redirect_uris[0],
               );
               oauthClient.setCredentials(user.tokens);
-
               global.assistants[user.name] = new Assistant(oauthClient);
               resolve();
             }),

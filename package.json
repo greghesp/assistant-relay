@@ -24,16 +24,16 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tailwindcss/ui": "^0.3.0",
-    "antd": "^4.4.0",
+    "@tailwindcss/ui": "^0.3.1",
+    "antd": "^4.4.2",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bonjour": "^3.5.0",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
-    "google-assistant": "^0.6.2",
-    "google-auth-library": "^6.0.2",
+    "google-assistant": "^0.6.4",
+    "google-auth-library": "^6.0.5",
     "html-react-parser": "^0.13.0",
     "ip": "^1.1.5",
     "isomorphic-fetch": "^2.2.1",
@@ -58,6 +58,6 @@
     "babel-plugin-root-import": "^6.5.0",
     "postcss-preset-env": "^6.7.0",
     "prettier": "2.0.5",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.5.1"
   }
 }
