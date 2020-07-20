@@ -1,18 +1,14 @@
-const low = require('lowdb');
-const path = require('path');
 const Assistant = require('google-assistant/components/assistant');
 const { OAuth2Client } = require('google-auth-library');
 
 const { sendTextInput } = require('../../../../server/helpers/assistant');
 const { trackVersion } = require('../../../../server/helpers/server');
 
-const FileSync = require('lowdb/adapters/FileSync');
-const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
+const { database } = require('../.././../../server/helpers/db');
+const db = database();
 
 export default async (req, res) => {
   try {
-    const db = await low(dbAdapter);
-
     const oauthCode = req.body.oauthCode;
     const name = req.body.name;
 

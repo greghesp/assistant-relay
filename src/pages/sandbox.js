@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { post } from '../helpers/api';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Dashboard from '~/src/layouts/Dashboard';
@@ -61,8 +61,8 @@ function Sandbox({ users }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const r = await axios.post(`/api/assistant`, json);
-      setResponse(r.data);
+      const response = await post('/api/assistant', json);
+      setResponse(response.data);
     } catch (e) {
       console.log(e);
     }

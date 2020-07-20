@@ -1,13 +1,10 @@
-const low = require('lowdb');
-const path = require('path');
-const FileSync = require('lowdb/adapters/FileSync');
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
-//const basicAuth = require('basic-auth');
+const { database } = require('../.././../../server/helpers/db');
+
+const db = database();
 
 export default async (req, res) => {
   try {
     //await basicAuth();
-    const db = await low(configAdapter);
     let item = db.get(req.body.item).value();
 
     if (req.body.item === 'password') {

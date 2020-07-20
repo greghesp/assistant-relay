@@ -1,8 +1,24 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import ChangePassword from '../components/ChangePassword';
-import Link from 'next/link';
+import { useState } from 'react';
+import { post } from '../helpers/api';
 
 function AccessControl() {
+  const [loading, setLoading] = useState(false);
+  const [newKey, setNewKey] = useState();
+
+  async function generateAPIKey(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const r = await post(`/api/server/generateAPIKey`);
+      setNewKey(r.data.key);
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+  }
+
   return (
     <Dashboard title="Access Control">
       <p className="mt-5">
@@ -21,20 +37,19 @@ function AccessControl() {
             </div>
             <div className="ml-4 mt-2 flex-shrink-0">
               <span className="inline-flex rounded-md shadow-sm">
-                <Link href="/sandbox">
-                  <button
-                    type="button"
-                    className="relative inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700"
-                  >
-                    Add API Key
-                  </button>
-                </Link>
+                <button
+                  type="button"
+                  onClick={e => generateAPIKey(e)}
+                  className="relative inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700"
+                >
+                  Add API Key
+                </button>
               </span>
             </div>
           </div>
         </div>
 
-        <div></div>
+        <div>No</div>
       </div>
 
       <ChangePassword />

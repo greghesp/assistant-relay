@@ -6,7 +6,7 @@ const logger = winston.createLogger({
     new winston.transports.File({
       filename: './logs/assistant-relay.log',
       format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-      maxSize: '10m',
+      maxSize: '1m',
     }),
   ],
 });

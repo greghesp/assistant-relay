@@ -46,6 +46,7 @@ exports.initializeServer = function () {
           track: false,
           pipCommand: 'pip3',
           accessControl: false,
+          passwordLock: true,
           password: null,
         })
         .write();

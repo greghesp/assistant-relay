@@ -1,15 +1,12 @@
-const low = require('lowdb');
-const path = require('path');
-
-const FileSync = require('lowdb/adapters/FileSync');
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
 const { logger } = require('../../../../server/helpers/logger');
+
+const { configuration } = require('../.././../../server/helpers/db');
+
+const config = configuration();
 
 export default async (req, res) => {
   try {
-    const config = await low(configAdapter);
     const password = req.body.password;
-    console.log(password);
     await config.set('password', password).write();
     res.sendStatus(200);
   } catch (e) {

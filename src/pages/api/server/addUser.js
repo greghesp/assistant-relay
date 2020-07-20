@@ -1,16 +1,13 @@
-const low = require('lowdb');
 const { OAuth2Client } = require('google-auth-library');
-const path = require('path');
-
-const FileSync = require('lowdb/adapters/FileSync');
-const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
 const { logger } = require('../../../../server/helpers/logger');
+
+const { configuration, database } = require('../.././../../server/helpers/db');
+
+const config = configuration();
+const db = database();
 
 export default async (req, res) => {
   try {
-    const db = await low(dbAdapter);
-    const config = await low(configAdapter);
     const secret = req.body.secret;
     const userFound = await db.get('users').find({ name: req.body.name }).size().value();
     await config.set('track', req.body.track === 'true').write();

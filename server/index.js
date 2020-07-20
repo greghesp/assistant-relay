@@ -1,15 +1,15 @@
 const express = require('express');
 const next = require('next');
 const { parse } = require('url');
-const path = require('path');
-const low = require('lowdb');
 const chalk = require('chalk');
 const ip = require('ip');
 const bonjour = require('bonjour')();
 const jwt = require('jsonwebtoken');
 
-const FileSync = require('lowdb/adapters/FileSync');
-const configAdapter = new FileSync(path.resolve(__dirname, '../server/bin/config.json'));
+const { configuration } = require('./helpers/db');
+const { logger } = require('./helpers/logger');
+
+const config = configuration();
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -21,10 +21,8 @@ const { initializeServer } = require('./helpers/server.js');
 global.assistants = {};
 
 app.prepare().then(async () => {
-  const db = await low(configAdapter);
-
   const server = express();
-  const port = db.get('port').value();
+  const port = config.get('port').value();
 
   await initializeServer();
 
@@ -42,18 +40,19 @@ app.prepare().then(async () => {
   server.all('*', (req, res) => {
     const parsedUrl = parse(req.url, true);
 
-    // Don't validate JWT for routes that AREN'T /api/server
-    if (!parsedUrl.path.startsWith('/api/server')) {
+    // Validate JWT for routes that start with /api/server
+    if (parsedUrl.path.startsWith('/api/server') && config.get('passwordLock').value()) {
+      try {
+        const token = req.headers.authorization;
+        jwt.verify(token, process.env.jwtSecret);
+      } catch (err) {
+        logger.log('error', `JWT Validation failed: ${err.message}`, { service: 'server' });
+
+        console.log(err);
+        return res.status(401).json({ msg: err.message });
+      }
+
       return handle(req, res, parsedUrl);
-    }
-
-    const token = req.headers.authorization;
-
-    try {
-      const decoded = jwt.verify(token, process.env.jwtSecret);
-    } catch (err) {
-      console.log(err);
-      return res.status(401).json({ msg: err.message });
     }
 
     return handle(req, res, parsedUrl);
