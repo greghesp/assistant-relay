@@ -50,9 +50,8 @@ function AccessControl() {
     try {
       await post('/api/server/deleteKey', { apiKey: k });
       setDeletingKey(prevState => !prevState);
-      console.log(deletingKey);
     } catch (e) {
-      console.log(e);
+      console.log('deleteKey Error', e);
     }
   }
 

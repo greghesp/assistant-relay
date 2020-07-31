@@ -1,9 +1,9 @@
 const { logger } = require('../../../../server/helpers/logger');
 const { database } = require('../.././../../server/helpers/db');
-const db = database();
 
 export default async (req, res) => {
   try {
+    const db = database();
     const keys = await db.get('accessControl').value();
     res.status(200).send({ apiKeys: keys });
   } catch (e) {

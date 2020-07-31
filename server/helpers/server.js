@@ -5,14 +5,15 @@ const jwt = require('jsonwebtoken');
 const packageFile = require('../../package.json');
 
 const { database, configuration } = require('../helpers/db');
-const config = configuration();
-const db = database();
 
 const Assistant = require('google-assistant/components/assistant');
 
 exports.initializeServer = function () {
   return new Promise(async (res, rej) => {
     try {
+      const db = database();
+      const config = configuration();
+
       const users = await db.get('users').value();
       const muteStartup = await db.get('muteStartup').value();
       //const isQH = await exports.isQuietHour();
@@ -119,8 +120,10 @@ exports.validateJWT = function (req) {
 };
 
 exports.validateAPIKey = async function (parsedURL, req) {
+  const db = database();
   const apiKey = req.headers?.authorization || parsedURL.query?.authorization;
   const validKeys = await db.get('accessControl').value();
+
   // If no API keys, let access through
   if (validKeys.length === 0) return true;
   // If API keys, check its set and that the provided key is included
