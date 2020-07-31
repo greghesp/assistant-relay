@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import withAuth from '~/src/helpers/withAuth';
 
 import Dashboard from '~/src/layouts/Dashboard';
 import ResponseBlock from '../components/ResponseBlock';
-import path from 'path';
-import low from 'lowdb';
 import LoadingAnimation from '../components/LoadingAnimation';
 
 const presets = [
@@ -51,23 +50,41 @@ const presets = [
   },
 ];
 
-function Sandbox({ users }) {
+function Sandbox() {
   const [json, setJSON] = useState({ broadcast: false, converse: false });
   const [disabled, setDisabled] = useState([]);
   const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const r = await post('/api/server/getUsers');
+        setUsers(r.data.users);
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getUsers();
+  }, []);
 
   async function sendRequest(e) {
     e.preventDefault();
-    setLoading(true);
+    setSending(true);
     try {
       const response = await post('/api/assistant', json);
       setResponse(response.data);
     } catch (e) {
       console.log(e);
     }
-    setLoading(false);
+    setSending(false);
   }
+
+  if (loading) return null;
 
   return (
     <Dashboard title="Sandbox">
@@ -269,10 +286,10 @@ function Sandbox({ users }) {
                 <span className="ml-3 inline-flex rounded-md shadow-sm">
                   <button
                     onClick={e => sendRequest(e)}
-                    disabled={loading}
+                    disabled={sending}
                     className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
                   >
-                    {loading ? (
+                    {sending ? (
                       <span className="-my-5 h-15 ">
                         <LoadingAnimation />
                       </span>
@@ -332,20 +349,4 @@ function Sandbox({ users }) {
   );
 }
 
-export async function getStaticProps(context) {
-  const FileSync = require('lowdb/adapters/FileSync');
-  const dbAdapter = new FileSync(path.resolve(process.cwd(), 'server/bin', 'db.json'));
-  const db = await low(dbAdapter);
-  const responses = await db.get('users').value();
-  const users = [];
-
-  responses.forEach(u => users.push(u.name));
-
-  return {
-    props: {
-      users,
-    },
-  };
-}
-
-export default Sandbox;
+export default withAuth(Sandbox);

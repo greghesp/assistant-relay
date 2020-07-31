@@ -1,4 +1,5 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import withAuth from '~/src/helpers/withAuth';
 
 function Casting() {
   return (
@@ -8,4 +9,4 @@ function Casting() {
   );
 }
 
-export default Casting;
+export default withAuth(Casting);

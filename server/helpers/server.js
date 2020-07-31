@@ -1,6 +1,7 @@
 const { OAuth2Client } = require('google-auth-library');
 const { sendTextInput } = require('../helpers/assistant.js');
 const { logger } = require('../helpers/logger');
+const jwt = require('jsonwebtoken');
 const packageFile = require('../../package.json');
 
 const { database, configuration } = require('../helpers/db');
@@ -106,4 +107,22 @@ exports.initializeServer = function () {
 exports.trackVersion = function () {
   //ToDo: Send version info
   console.log(packageFile.version);
+};
+
+exports.validateJWT = function (req) {
+  const token = req.headers.authorization;
+  if (!token || typeof token === 'undefined') return false;
+  return jwt.verify(token, process.env.jwtSecret, function (err, decoded) {
+    if (!err) return true;
+    return false;
+  });
+};
+
+exports.validateAPIKey = async function (parsedURL, req) {
+  const apiKey = req.headers?.authorization || parsedURL.query?.authorization;
+  const validKeys = await db.get('accessControl').value();
+  // If no API keys, let access through
+  if (validKeys.length === 0) return true;
+  // If API keys, check its set and that the provided key is included
+  return !!(apiKey && validKeys.includes(apiKey));
 };

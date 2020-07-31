@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { post } from '../helpers/api';
 
 import Dashboard from '~/src/layouts/Dashboard';
+import withAuth from '~/src/helpers/withAuth';
 
 const HistoryRow = dynamic(() => import('../components/HistoryRow'), { ssr: false });
 
@@ -80,4 +81,4 @@ function History() {
   );
 }
 
-export default History;
+export default withAuth(History);
