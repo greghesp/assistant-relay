@@ -79,6 +79,7 @@ function Sandbox() {
       const response = await post('/api/assistant', json);
       setResponse(response.data);
     } catch (e) {
+      setResponse(response.data);
       console.log(e);
     }
     setSending(false);
@@ -214,6 +215,30 @@ function Sandbox() {
                       </select>
                     </div>
                   </div>
+                  <div className="sm:col-span-6">
+                    <label
+                      htmlFor="apiKey"
+                      className="block text-sm font-medium leading-5 text-gray-700"
+                    >
+                      API Key
+                    </label>
+                    <div className="mt-1 rounded-md shadow-sm">
+                      <input
+                        id="apiKey"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        onChange={e => {
+                          const u = e.target.value;
+                          if (u.length === 0) {
+                            return setJSON($ => {
+                              delete $.apiKey;
+                              return { ...$ };
+                            });
+                          }
+                          setJSON($ => ({ ...$, apiKey: u }));
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -325,7 +350,9 @@ function Sandbox() {
                       readOnly
                       rows="18"
                       className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                      value={JSON.stringify(json, null, 4)}
+                      value={json => {
+                        JSON.stringify(json, null, 4);
+                      }}
                     />
                   </div>
                 </div>
