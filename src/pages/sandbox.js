@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { post } from '../helpers/api';
+import { post, postWithKey } from '../helpers/api';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import withAuth from '~/src/helpers/withAuth';
 
@@ -52,6 +52,7 @@ const presets = [
 
 function Sandbox() {
   const [json, setJSON] = useState({ broadcast: false, converse: false });
+  const [showResponse, setShowResponse] = useState(false);
   const [disabled, setDisabled] = useState([]);
   const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
@@ -76,23 +77,27 @@ function Sandbox() {
     e.preventDefault();
     setSending(true);
     try {
-      const response = await post('/api/assistant', json);
+      const response = await postWithKey('/api/assistant', json);
       setResponse(response.data);
     } catch (e) {
-      setResponse(response.data);
-      console.log(e);
+      if (e.response.status === 401) {
+        setResponse({
+          success: false,
+          response: e.response.data.msg,
+        });
+      } else setResponse(response.data);
     }
     setSending(false);
+    setShowResponse(true);
   }
 
   if (loading) return null;
-
   return (
     <Dashboard title="Sandbox">
       {response?.rawHtml ? (
         <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />
       ) : null}
-      <ResponseBlock response={response} />
+      <ResponseBlock response={response} show={showResponse} close={() => setShowResponse(false)} />
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">
           <form>

@@ -18,7 +18,8 @@ function withAuth(AuthComponent) {
         await post('/api/server/getConfig');
         this.setState({ loading: false, loggedIn: true });
       } catch (e) {
-        if (e.response.status === 401) Router.push('/login');
+        console.log(e);
+        if (e?.response?.status === 401) Router.push('/login');
       }
     }
 
