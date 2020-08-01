@@ -52,6 +52,7 @@ const presets = [
 
 function Sandbox() {
   const [json, setJSON] = useState({ broadcast: false, converse: false });
+  const [apiKey, setApiKey] = useState();
   const [showResponse, setShowResponse] = useState(false);
   const [disabled, setDisabled] = useState([]);
   const [response, setResponse] = useState();
@@ -77,7 +78,7 @@ function Sandbox() {
     e.preventDefault();
     setSending(true);
     try {
-      const response = await postWithKey('/api/assistant', json);
+      const response = await postWithKey('/api/assistant', json, apiKey);
       setResponse(response.data);
     } catch (e) {
       if (e.response.status === 401) {
@@ -90,6 +91,8 @@ function Sandbox() {
     setSending(false);
     setShowResponse(true);
   }
+
+  console.log(json);
 
   if (loading) return null;
   return (
@@ -233,13 +236,8 @@ function Sandbox() {
                         className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         onChange={e => {
                           const u = e.target.value;
-                          if (u.length === 0) {
-                            return setJSON($ => {
-                              delete $.apiKey;
-                              return { ...$ };
-                            });
-                          }
-                          setJSON($ => ({ ...$, apiKey: u }));
+                          if (u.length === 0) return setApiKey(null);
+                          setApiKey(u);
                         }}
                       />
                     </div>
@@ -355,9 +353,7 @@ function Sandbox() {
                       readOnly
                       rows="18"
                       className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                      value={json => {
-                        JSON.stringify(json, null, 4);
-                      }}
+                      value={JSON.stringify(json, null, 4)}
                     />
                   </div>
                 </div>

@@ -16,18 +16,15 @@ export function post(url, data) {
   return axios(postData);
 }
 
-export function postWithKey(url, data) {
-  const token = data.apiKey;
-
-  delete data.apiKey;
-
+export function postWithKey(url, data, apiKey) {
   const postData = {
     method: 'post',
+    headers: {
+      Authorization: apiKey,
+    },
     url,
     data,
   };
-
-  if (typeof token !== 'undefined') postData.headers = { Authorization: token };
 
   return axios(postData);
 }
