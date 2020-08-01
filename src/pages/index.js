@@ -1,4 +1,5 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import withAuth from '~/src/helpers/withAuth';
 import LoadingAnimation from '../components/LoadingAnimation';
 
 function Index() {
@@ -9,4 +10,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default withAuth(Index);

@@ -1,4 +1,5 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import withAuth from '~/src/helpers/withAuth';
 
 function Logging() {
   return (
@@ -8,4 +9,4 @@ function Logging() {
   );
 }
 
-export default Logging;
+export default withAuth(Logging);

@@ -3,12 +3,15 @@ import { Cookies } from 'react-cookie';
 
 export function post(url, data) {
   const cookies = new Cookies();
-  return axios({
+  const token = cookies.get('token');
+
+  const postData = {
     method: 'post',
     url,
     data,
-    headers: {
-      Authorization: cookies.get('token') || null,
-    },
-  });
+  };
+
+  if (typeof token !== 'undefined') postData.headers = { Authorization: token };
+
+  return axios(postData);
 }

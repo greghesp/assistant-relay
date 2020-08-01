@@ -14,9 +14,7 @@ function Dashboard({ children, title }) {
         const response = await post('/api/server/getUsers');
         setData(response.data);
       } catch (e) {
-        if (e.response.status === 401) {
-          Router.push('/login');
-        }
+        console.log(e);
       }
     }
     getUsers();

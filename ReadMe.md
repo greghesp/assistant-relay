@@ -11,7 +11,7 @@ A rework of Assistant Relay to use [Next.js](https://nextjs.org/), to allow for 
 - [x] Add history page
   - [ ] Fix stop audio bug
 - [ ] Add sandbox
-  - [ ] Add `/assistant` api
+  - [x] Add `/assistant` api
   - [ ] Add request type and user to saved response
   - [ ] Store audio files
   - [ ] Store html responses
@@ -22,6 +22,7 @@ A rework of Assistant Relay to use [Next.js](https://nextjs.org/), to allow for 
 - [ ] Add html response page with interaction
 - [ ] Add dashboard stats
 - [ ] Add auto updater
+- [x] Add authentication
 - [ ] ...and more
 
 

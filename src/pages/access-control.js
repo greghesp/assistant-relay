@@ -3,6 +3,8 @@ import ChangePassword from '../components/ChangePassword';
 import APIKeys from '../components/APIKeys';
 import { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
+import withAuth from '~/src/helpers/withAuth';
+
 import Router from 'next/router';
 
 function AccessControl() {
@@ -48,9 +50,8 @@ function AccessControl() {
     try {
       await post('/api/server/deleteKey', { apiKey: k });
       setDeletingKey(prevState => !prevState);
-      console.log(deletingKey);
     } catch (e) {
-      console.log(e);
+      console.log('deleteKey Error', e);
     }
   }
 
@@ -114,4 +115,4 @@ function AccessControl() {
   );
 }
 
-export default AccessControl;
+export default withAuth(AccessControl);

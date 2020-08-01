@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import SetupLayout from '~/src/layouts/Setup';
+import LoginLayout from '~/src/layouts/Login';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
 import Router from 'next/router';
@@ -32,7 +32,7 @@ function Login() {
         password,
       });
       const token = response.data.token;
-      cookies.set('token', token);
+      await cookies.set('token', token);
 
       Router.push('/');
     } catch (e) {
@@ -44,7 +44,7 @@ function Login() {
   }
 
   return (
-    <SetupLayout>
+    <LoginLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
         <div className="border-gray-100 border-b pb-5">
           <h1 className="text-xl font-semibold">Login to Assistant Relay</h1>
@@ -95,7 +95,7 @@ function Login() {
           </form>
         </div>
       </div>
-    </SetupLayout>
+    </LoginLayout>
   );
 }
 

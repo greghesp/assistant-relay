@@ -13,9 +13,7 @@ function SetupLayout({ children }) {
         const response = await post('/api/server/getUsers');
         setData(response.data);
       } catch (e) {
-        if (e.response.status === 401) {
-          Router.push('/login');
-        }
+        console.log('Setup', e);
       }
     }
     getUsers();
@@ -32,7 +30,7 @@ function SetupLayout({ children }) {
       </div>
     );
 
-  if (data.size >= 1 && data.users[0]?.tokens) {
+  if (data.size >= 1) {
     Router.push('/');
   }
 

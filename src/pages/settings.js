@@ -1,4 +1,5 @@
 import Dashboard from '~/src/layouts/Dashboard';
+import withAuth from '~/src/helpers/withAuth';
 
 function Settings() {
   return (
@@ -8,4 +9,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default withAuth(Settings);

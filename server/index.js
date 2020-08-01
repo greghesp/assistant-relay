@@ -15,7 +15,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const { initializeServer } = require('./helpers/server.js');
+const { initializeServer, validateJWT, validateAPIKey } = require('./helpers/server.js');
 
 // Create global variable to store assistants in memory
 global.assistants = {};
@@ -36,25 +36,34 @@ app.prepare().then(async () => {
     next();
   });
 
-  //Handle all get requests in Next
+  server.all('/api/server/*', (req, res) => {
+    const parsedUrl = parse(req.url, true);
+    const passwordLock = config.get('passwordLock').value();
+
+    // If passwordLock is true && no or invalid JWT, throw 401.  Else, let through
+
+    if ((passwordLock && validateJWT(req)) || !passwordLock) {
+      return handle(req, res, parsedUrl);
+    } else {
+      logger.log('error', `JWT Validation failed`, { service: 'server' });
+      return res.status(401).json({ msg: 'JWT Validation failed' });
+    }
+  });
+
+  server.all('/api/assistant', async (req, res) => {
+    const parsedUrl = parse(req.url, true);
+    const valid = await validateAPIKey(parsedUrl, req);
+
+    if (valid) {
+      return handle(req, res, parsedUrl);
+    } else {
+      logger.log('error', `Invalid API Key provided`, { service: 'server' });
+      return res.status(401).json({ msg: 'Invalid API Key provided' });
+    }
+  });
+
   server.all('*', (req, res) => {
     const parsedUrl = parse(req.url, true);
-
-    // Validate JWT for routes that start with /api/server
-    if (parsedUrl.path.startsWith('/api/server') && config.get('passwordLock').value()) {
-      try {
-        const token = req.headers.authorization;
-        jwt.verify(token, process.env.jwtSecret);
-      } catch (err) {
-        logger.log('error', `JWT Validation failed: ${err.message}`, { service: 'server' });
-
-        console.log(err);
-        return res.status(401).json({ msg: err.message });
-      }
-
-      return handle(req, res, parsedUrl);
-    }
-
     return handle(req, res, parsedUrl);
   });
 
