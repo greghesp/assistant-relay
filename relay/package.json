@@ -30,7 +30,7 @@
     "debug": "~2.6.9",
     "delay": "^4.3.0",
     "express": "~4.16.1",
-    "express-fileupload": "^1.1.6",
+    "express-fileupload": "^1.1.9",
     "google-assistant": "^0.6.2",
     "google-auth-library": "^5.10.1",
     "http-errors": "~1.6.3",
