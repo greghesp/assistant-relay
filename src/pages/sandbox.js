@@ -86,7 +86,12 @@ function Sandbox() {
           success: false,
           response: e.response.data.msg,
         });
-      } else setResponse(response.data);
+      } else {
+        setResponse({
+          success: false,
+          response: e.response.data.error,
+        });
+      }
     }
     setSending(false);
     setShowResponse(true);
