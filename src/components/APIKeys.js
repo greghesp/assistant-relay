@@ -3,6 +3,13 @@ import UseAnimations from 'react-useanimations';
 import copy from 'react-useanimations/lib/copy';
 
 function APIKeys({ keys, deleteKey }) {
+  if (keys.length <= 0)
+    return (
+      <div className="pt-5">
+        <p className="text-center">No API keys set</p>
+      </div>
+    );
+
   return (
     <div className="flex pt-5 overflow-x-auto min-w-full">
       <table className="min-w-full">
