@@ -204,12 +204,15 @@ function updateResponses(command, response, timestamp, type, user = 'default') {
     const size = db.get('responses').size().value();
     const maxResponse = config.get('maxResponses').value();
 
+    console.log(size, maxResponse);
+
     if (size >= maxResponse) {
       const results = db.get('responses').sortBy('timestamp').value();
       const timestamp = results[0].timestamp;
+      console.log(path.resolve(`public/audio-responses/${timestamp}.wav`));
       try {
-        fs.unlinkSync(path.resolve(__dirname, `public/audio-responses/${timestamp}.wav`));
-        fs.unlinkSync(path.resolve(__dirname, `public/html-responses/${timestamp}.html`));
+        fs.unlinkSync(path.resolve(`public/audio-responses/${timestamp}.wav`));
+        fs.unlinkSync(path.resolve(`public/html-responses/${timestamp}.html`));
       } catch (e) {
         logger.log('error', `Failed to remove files: ${e.message}`, { service: 'server' });
         console.error(e.mesage);

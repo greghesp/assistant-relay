@@ -1,12 +1,12 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
-import { useEffect, useState } from 'react';
+import TimePicker from '~/src/components/TimePicker';
+import React, { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
-
-var TimePicker = require('basic-react-timepicker');
+import Transition from '../helpers/Transition';
 
 function Settings() {
-  const [settings, setSettings] = useState();
+  const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -136,6 +136,9 @@ function Settings() {
                         id="port"
                         defaultValue={settings.port}
                         className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        onBlur={e => {
+                          sendRequest({ port: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -169,6 +172,7 @@ function Settings() {
                         defaultChecked={settings.quietHours.enabled}
                         className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         onChange={e => {
+                          setSettings($ => ({ ...$, quietHours: { enabled: true } }));
                           sendRequest({ 'quietHours.enabled': true });
                         }}
                       />
@@ -186,6 +190,7 @@ function Settings() {
                         defaultChecked={!settings.quietHours.enabled}
                         className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         onChange={e => {
+                          setSettings($ => ({ ...$, quietHours: { enabled: false } }));
                           sendRequest({ 'quietHours.enabled': false });
                         }}
                       />
@@ -197,38 +202,48 @@ function Settings() {
                     </div>
                   </div>
                 </div>
-                <div className="max-w-lg pt-5">
-                  <p className="text-sm leading-5 text-gray-500">
-                    Quiet Hours prevents Assistant Relay from sending out broadcast commands
-                  </p>
-                  <div className="mt-4">
-                    <div className="flex items-center">
-                      <TimePicker />
-                      <label htmlFor="h-enabled" className="ml-3">
-                        <span className="block text-sm leading-5 font-medium text-gray-700">
-                          Enabled
-                        </span>
-                      </label>
-                    </div>
-                    <div className="mt-4 flex items-center">
-                      <input
-                        id="qh-disabled"
-                        name="form-input push_notifications"
-                        type="radio"
-                        defaultChecked={!settings.quietHours.enabled}
-                        className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                        onChange={e => {
-                          sendRequest({ 'quietHours.enabled': false });
-                        }}
-                      />
-                      <label htmlFor="qh-disabled" className="ml-3">
-                        <span className="block text-sm leading-5 font-medium text-gray-700">
-                          Disabled
-                        </span>
-                      </label>
+                <Transition
+                  show={settings.quietHours.enabled}
+                  enter="transition fade-in-out duration-150 transform"
+                  enterFrom="-translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transition fade-in-out duration-150 transform"
+                  leaveFrom="translate-x-0"
+                  leaveTo="-translate-x-full"
+                >
+                  <div className="max-w-lg">
+                    <div className="mt-4">
+                      <div className="flex items-center grid grid-cols-2">
+                        <TimePicker
+                          defaultValue={settings.quietHours.start}
+                          step={30}
+                          onChange={e => {
+                            console.log(e.target.value);
+                          }}
+                        />
+                        <label htmlFor="h-enabled" className="ml-3">
+                          <span className="block text-sm leading-5 font-medium text-gray-700">
+                            Start Time
+                          </span>
+                        </label>
+                      </div>
+                      <div className="mt-4 flex items-center grid grid-cols-2">
+                        <TimePicker
+                          defaultValue={settings.quietHours.end}
+                          step={30}
+                          onChange={e => {
+                            console.log(e.target.value);
+                          }}
+                        />
+                        <label htmlFor="qh-disabled" className="ml-3">
+                          <span className="block text-sm leading-5 font-medium text-gray-700">
+                            End Time
+                          </span>
+                        </label>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Transition>
               </div>
             </div>
           </div>
