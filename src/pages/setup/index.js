@@ -12,6 +12,20 @@ function Setup() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function CheckPassword() {
+      const { data } = await post('/api/server/isPasswordDefault');
+      if (!data) {
+        return Router.push({
+          pathname: '/setup/tracking',
+        });
+      }
+      setLoading(false);
+    }
+
+    CheckPassword();
+  }, []);
+
+  useEffect(() => {
     if (password.length < 6 && password.length !== 0) {
       setError(true);
       setErrorMsg('Password must be more than 5 characters long');
@@ -75,6 +89,8 @@ function Setup() {
       console.log(e.message);
     }
   }
+
+  if (loading) return null;
 
   return (
     <SetupLayout>
