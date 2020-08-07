@@ -51,7 +51,7 @@ const presets = [
 ];
 
 function Sandbox() {
-  const [json, setJSON] = useState({ broadcast: false, converse: false });
+  const [json, setJSON] = useState({ broadcast: false, talkback: false });
   const [apiKey, setApiKey] = useState();
   const [showResponse, setShowResponse] = useState(false);
   const [disabled, setDisabled] = useState([]);
@@ -304,9 +304,9 @@ function Sandbox() {
                   <div className="relative flex items-start">
                     <div className="absolute flex items-center h-5">
                       <input
-                        id="converse"
-                        disabled={disabled.includes('converse')}
-                        defaultChecked={json.converse}
+                        id="talkback"
+                        disabled={disabled.includes('talkback')}
+                        defaultChecked={json.talkback}
                         type="checkbox"
                         className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
                         onChange={e => {
@@ -314,7 +314,7 @@ function Sandbox() {
 
                           if (u) {
                             setDisabled($ => [...$, 'preset']);
-                            return setJSON($ => ({ ...$, converse: u }));
+                            return setJSON($ => ({ ...$, talkback: u }));
                           }
 
                           setDisabled($ => {
@@ -323,15 +323,15 @@ function Sandbox() {
                           });
 
                           return setJSON($ => {
-                            delete $.converse;
+                            delete $.talkback;
                             return { ...$ };
                           });
                         }}
                       />
                     </div>
                     <div className="pl-7 text-sm leading-5">
-                      <label htmlFor="converse" className="font-medium text-gray-700">
-                        Converse
+                      <label htmlFor="talkback" className="font-medium text-gray-700">
+                        Talkback
                       </label>
                       <p className="text-gray-500">Broadcast the response from the above command</p>
                     </div>
