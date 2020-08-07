@@ -21,6 +21,26 @@ const tailLayout = {
 function AddSecrets({ track }) {
   const [fileList, setFileList] = useState();
   const [fileData, setFileData] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function checkSecret() {
+      try {
+        const { data } = await post('/api/server/isSecretSetup');
+        if (data) {
+          return Router.push({
+            pathname: '/setup/user',
+          });
+        }
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
+      }
+    }
+
+    checkSecret();
+  }, []);
 
   const fileReader = new FileReader();
 
@@ -44,7 +64,7 @@ function AddSecrets({ track }) {
     fileList,
   };
 
-  async function addUser(values) {
+  async function addUser() {
     try {
       if (fileData) {
         await post('/api/server/addSecret', {
@@ -53,20 +73,17 @@ function AddSecrets({ track }) {
         await post('/api/server/setTracking', {
           track: track === 'true',
         });
-        // const response = await post(`/api/server/addUser`, {
-        //   name: values.name,
-        // });
+
         Router.push({
           pathname: '/setup/user',
         });
-        // const win = window.open(response.data.url, '_blank');
-        // win.focus();
       }
     } catch (e) {
       console.log(e);
-      //message.error(e.response.data);
     }
   }
+
+  if (loading) return null;
 
   return (
     <div>
