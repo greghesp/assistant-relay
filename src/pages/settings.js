@@ -172,7 +172,10 @@ function Settings() {
                         defaultChecked={settings.quietHours.enabled}
                         className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         onChange={e => {
-                          setSettings($ => ({ ...$, quietHours: { enabled: true } }));
+                          setSettings($ => ({
+                            ...$,
+                            quietHours: { ...$.quietHours, enabled: true },
+                          }));
                           sendRequest({ 'quietHours.enabled': true });
                         }}
                       />
@@ -190,7 +193,10 @@ function Settings() {
                         defaultChecked={!settings.quietHours.enabled}
                         className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         onChange={e => {
-                          setSettings($ => ({ ...$, quietHours: { enabled: false } }));
+                          setSettings($ => ({
+                            ...$,
+                            quietHours: { ...$.quietHours, enabled: false },
+                          }));
                           sendRequest({ 'quietHours.enabled': false });
                         }}
                       />
@@ -218,7 +224,11 @@ function Settings() {
                           defaultValue={settings.quietHours.start}
                           step={30}
                           onChange={e => {
-                            console.log(e.target.value);
+                            setSettings($ => ({
+                              ...$,
+                              quietHours: { ...$.quietHours, start: e.target.value },
+                            }));
+                            sendRequest({ 'quietHours.start': e.target.value });
                           }}
                         />
                         <label htmlFor="h-enabled" className="ml-3">
@@ -232,7 +242,11 @@ function Settings() {
                           defaultValue={settings.quietHours.end}
                           step={30}
                           onChange={e => {
-                            console.log(e.target.value);
+                            setSettings($ => ({
+                              ...$,
+                              quietHours: { ...$.quietHours, end: e.target.value },
+                            }));
+                            sendRequest({ 'quietHours.end': e.target.value });
                           }}
                         />
                         <label htmlFor="qh-disabled" className="ml-3">
