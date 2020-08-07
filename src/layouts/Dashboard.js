@@ -7,6 +7,7 @@ import { post } from '../helpers/api';
 
 function Dashboard({ children, title }) {
   const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     async function getUsers() {
@@ -19,8 +20,6 @@ function Dashboard({ children, title }) {
     }
     getUsers();
   }, []);
-
-  const [isOpen, setIsOpen] = useState(true);
 
   if (!data)
     return (

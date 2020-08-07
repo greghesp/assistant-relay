@@ -47,7 +47,7 @@ exports.initializeServer = function () {
           track: false,
           accessControl: false,
           passwordLock: true,
-          password: null,
+          password: 'assistantrelay',
         })
         .write();
       await db
