@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox, Button } from 'antd';
 import Router from 'next/router';
-import axios from 'axios';
 
 const url =
   'https://greghesp.github.io/assistant-relay/docs/getting-started/configuration#configuring-credentials';
@@ -11,11 +10,8 @@ function SetupTutorial() {
 
   async function next(e) {
     try {
-      // await axios.post(`/api/server/setTracking`, {
-      //   password,
-      // });
       Router.push({
-        pathname: '/setup/configuration',
+        pathname: '/setup/credentials',
         query: { track },
       });
     } catch (e) {}

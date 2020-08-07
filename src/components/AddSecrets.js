@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Button, Icon, message, Form, Input } from 'antd';
-import axios from 'axios';
 import { post } from '../helpers/api';
 import Router from 'next/router';
 
@@ -45,24 +44,23 @@ function AddSecrets({ track }) {
     fileList,
   };
 
-  function next(name) {
-    Router.push({
-      pathname: '/setup/authorisation',
-      query: { name },
-    });
-  }
-
   async function addUser(values) {
     try {
       if (fileData) {
-        const response = await post(`/api/server/addUser`, {
-          track,
-          name: values.name,
+        await post('/api/server/addSecret', {
           secret: fileData,
         });
-        const win = window.open(response.data.url, '_blank');
-        win.focus();
-        return next(values.name);
+        await post('/api/server/setTracking', {
+          track: track === 'true',
+        });
+        // const response = await post(`/api/server/addUser`, {
+        //   name: values.name,
+        // });
+        Router.push({
+          pathname: '/setup/user',
+        });
+        // const win = window.open(response.data.url, '_blank');
+        // win.focus();
       }
     } catch (e) {
       console.log(e);
@@ -73,24 +71,10 @@ function AddSecrets({ track }) {
   return (
     <div>
       <p className="text-center">
-        Add an Assistant Relay Username and upload your credentials from the previous step
+        Add your Google Developer Project credentials from the previous step
       </p>
-
       <div className="mt-5">
         <Form {...formItemLayout} onFinish={addUser}>
-          <Form.Item
-            label="Users Name"
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: 'Please input a users name!',
-                type: 'string',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
           <Form.Item label="Client Credentials" name="creds">
             <Upload {...props}>
               <Button>

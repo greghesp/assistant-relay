@@ -47,11 +47,12 @@ exports.initializeServer = function () {
           track: false,
           accessControl: false,
           passwordLock: true,
-          password: 'assistantrelay',
+          password: 'assistant',
         })
         .write();
       await db
         .defaults({
+          secret: {},
           users: [],
           responses: [],
           accessControl: [],
@@ -65,10 +66,11 @@ exports.initializeServer = function () {
       logger.log('info', 'Initialised configuration and database', { service: 'server' });
 
       if (db.get('users').size().value() > 0) {
+        const secret = await db.get('secret').value();
         users.forEach(user => {
           promises.push(
             new Promise(async (resolve, reject) => {
-              const key = user.secret.installed;
+              const key = secret.installed;
               const oauthClient = new OAuth2Client(
                 key.client_id,
                 key.client_secret,
@@ -106,6 +108,7 @@ exports.initializeServer = function () {
 exports.trackVersion = function () {
   //ToDo: Send version info
   console.log(packageFile.version);
+  return;
 };
 
 exports.validateJWT = function (req) {

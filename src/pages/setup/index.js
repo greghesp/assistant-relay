@@ -12,22 +12,6 @@ function Setup() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function checkPW() {
-      const pw = await post('/api/server/getConfig', {
-        item: 'password',
-      });
-      if (pw) {
-        Router.push({
-          pathname: '/setup/tracking',
-        });
-      } else {
-        setLoading(false);
-      }
-    }
-    checkPW();
-  }, []);
-
-  useEffect(() => {
     if (password.length < 6 && password.length !== 0) {
       setError(true);
       setErrorMsg('Password must be more than 5 characters long');
@@ -81,7 +65,7 @@ function Setup() {
   async function sendRequest(e) {
     e.preventDefault();
     try {
-      await axios.post(`/api/server/addPassword`, {
+      await post(`/api/server/changePassword`, {
         password,
       });
       Router.push({
@@ -92,8 +76,6 @@ function Setup() {
     }
   }
 
-  if (loading) return null;
-
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
@@ -102,7 +84,8 @@ function Setup() {
         </div>
         <div className="pt-5">
           <p>
-            Before you can setup Assistant Relay, you need to setup a password for the dashboard.
+            Before you can setup Assistant Relay, you need to change the default password for the
+            dashboard.
           </p>
           <p>Enter a password below to continue</p>
           <form>
@@ -114,7 +97,7 @@ function Setup() {
                       htmlFor="first_name"
                       className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
                     >
-                      Password
+                      New Password
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
                       <div className="max-w-lg rounded-md shadow-sm sm:max-w-xs">

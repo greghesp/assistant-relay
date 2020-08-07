@@ -1,13 +1,13 @@
-const passwordHash = require('password-hash');
-const { logger } = require('../../../server/helpers/logger');
+const { logger } = require('../../../../server/helpers/logger');
 
 const { configuration } = require('../.././../../server/helpers/db');
-const config = configuration();
 
 export default async (req, res) => {
   try {
-    const password = req.body.password;
-    await config.set('password', passwordHash.generate(password)).write();
+    const config = configuration();
+
+    const track = req.body.track;
+    await config.set('track', track).write();
     res.sendStatus(200);
   } catch (e) {
     console.error(e);

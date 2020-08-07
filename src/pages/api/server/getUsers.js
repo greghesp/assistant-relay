@@ -1,8 +1,9 @@
 const { database } = require('../.././../../server/helpers/db');
-const db = database();
 
 export default async (req, res) => {
   try {
+    const db = database();
+
     const size = db.get('users').size().value();
     const users = db.get('users').value();
     const usersToSend = [];

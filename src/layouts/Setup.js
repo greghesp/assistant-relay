@@ -17,7 +17,7 @@ function SetupLayout({ children }) {
       }
     }
     getUsers();
-  });
+  }, []);
 
   if (!data)
     return (
