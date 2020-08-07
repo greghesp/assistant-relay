@@ -30,9 +30,10 @@ function SetupLayout({ children }) {
       </div>
     );
 
-  if (data.size >= 1) {
-    Router.push('/');
-  }
+  // TODO: Fix as this causes a redirect before the auth token is entered
+  // if (data.size >= 1) {
+  //   Router.push('/');
+  // }
 
   return (
     <div className="w-screen h-screen setupBg bg-gray-200">

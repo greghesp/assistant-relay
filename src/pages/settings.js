@@ -65,7 +65,7 @@ function Settings() {
                       />
                       <label htmlFor="startup-sound" className="ml-3">
                         <span className="block text-sm leading-5 font-medium text-gray-700">
-                          Enabled
+                          Mute
                         </span>
                       </label>
                     </div>
