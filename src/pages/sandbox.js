@@ -228,6 +228,31 @@ function Sandbox() {
                       </select>
                     </div>
                   </div>
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="preset"
+                      className="block text-sm font-medium leading-5 text-gray-700"
+                    >
+                      Device
+                    </label>
+                    <div className="mt-1 rounded-md shadow-sm">
+                      <input
+                        id="device"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        onChange={e => {
+                          const u = e.target.value;
+                          if (u.length === 0) {
+                            return setJSON($ => {
+                              delete $.device;
+                              return { ...$ };
+                            });
+                          }
+                          setJSON($ => ({ ...$, device: u }));
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="apiKey"

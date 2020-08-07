@@ -17,8 +17,7 @@ export default async (req, res) => {
     let fileStream;
     const timestamp = Date.now();
     const isQH = await isQuietHour();
-    const { user, converse = false, preset } = req.body;
-    let { command, broadcast = false } = req.body;
+    let { user, converse = false, preset, command, broadcast, device } = req.body;
     const type = broadcast ? 'broadcast' : 'command';
 
     const response = {};
@@ -62,7 +61,10 @@ export default async (req, res) => {
     }
 
     if (!command) return res.status(400).json({ success: false, error: 'No command given' });
-    if (broadcast) command = `broadcast ${command}`;
+    if (broadcast) {
+      if (device) command = `broadcast to ${device}, ${command}`;
+      else command = `broadcast ${command}`;
+    }
 
     // Required as will create a blank .wav file for every request without.
     if (!broadcast) fileStream = await outputFileStream(timestamp);
@@ -203,8 +205,6 @@ function updateResponses(command, response, timestamp, type, user = 'default') {
     const config = await low(configAdapter);
     const size = db.get('responses').size().value();
     const maxResponse = config.get('maxResponses').value();
-
-    console.log(size, maxResponse);
 
     if (size >= maxResponse) {
       const results = db.get('responses').sortBy('timestamp').value();
