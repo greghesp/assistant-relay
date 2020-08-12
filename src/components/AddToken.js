@@ -1,5 +1,4 @@
 import { Button, message, Form, Input } from 'antd';
-import axios from 'axios';
 import { post } from '../helpers/api';
 import Router from 'next/router';
 

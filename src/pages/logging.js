@@ -1,10 +1,13 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
+import LogBrowser from '../components/LogBrowser';
 
 function Logging() {
   return (
     <Dashboard title="Logs">
-      <p>Settings</p>
+      <div className="mt-10">
+        <LogBrowser></LogBrowser>
+      </div>
     </Dashboard>
   );
 }

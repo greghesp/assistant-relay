@@ -40,8 +40,10 @@ app.prepare().then(async () => {
     const parsedUrl = parse(req.url, true);
     const passwordLock = config.get('passwordLock').value();
 
-    // If passwordLock is true && no or invalid JWT, throw 401.  Else, let through
+    // TODO: Remove before launch
+    return handle(req, res, parsedUrl);
 
+    // If passwordLock is true && no or invalid JWT, throw 401.  Else, let through
     if ((passwordLock && validateJWT(req)) || !passwordLock) {
       return handle(req, res, parsedUrl);
     } else {

@@ -97,8 +97,6 @@ function Sandbox() {
     setShowResponse(true);
   }
 
-  console.log(json);
-
   if (loading) return null;
   return (
     <Dashboard title="Sandbox">

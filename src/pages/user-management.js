@@ -7,11 +7,10 @@ import withAuth from '~/src/helpers/withAuth';
 
 import Router from 'next/router';
 import Transition from '../helpers/Transition';
+import ResponseBlock from '../components/ResponseBlock';
 
 function AccessControl() {
   const [loading, setLoading] = useState(true);
-  const [allowed, setAllowed] = useState(false);
-  const [apiKeys, setApiKeys] = useState([]);
   const [gettingKey, setGettingKey] = useState(false);
   const [newKey, setNewUser] = useState();
   const [deletingUser, setDeletingUser] = useState(false);
@@ -19,6 +18,8 @@ function AccessControl() {
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
   const [oauthcode, setOauthcode] = useState();
+  const [response, setResponse] = useState();
+  const [showResponse, setShowResponse] = useState(false);
 
   useEffect(() => {
     async function getUsers() {
@@ -45,11 +46,9 @@ function AccessControl() {
       const win = window.open(response.data.url, '_blank');
       win.focus();
       setShow(true);
-      // Modal
-
-      //setNewKey(r.data.key);
     } catch (e) {
-      console.log(e);
+      setResponse(e.response.data);
+      setShowResponse(true);
     }
     setGettingKey(false);
   }
@@ -121,8 +120,8 @@ function AccessControl() {
                 </div>
               </div>
             </div>
-            <div className="mt-5 sm:mt-6">
-              <span className="flex w-full rounded-md shadow-sm">
+            <div className="mt-5 sm:mt-6 ">
+              <div className="flex w-full rounded-md shadow-sm space-x-4">
                 <button
                   onClick={e => submitAuthToken(e)}
                   type="button"
@@ -130,7 +129,17 @@ function AccessControl() {
                 >
                   Submit
                 </button>
-              </span>
+                <button
+                  onClick={e => {
+                    deleteUser(name);
+                    setShow(false);
+                  }}
+                  type="button"
+                  className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -143,6 +152,7 @@ function AccessControl() {
   return (
     <Dashboard title="User Management">
       <p className="mt-5">Manage your user accounts that Assistant Relay uses</p>
+      <ResponseBlock response={response} show={showResponse} close={() => setShowResponse(false)} />
       <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
         <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
           <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-no-wrap">

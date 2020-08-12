@@ -13,7 +13,7 @@ export default async (req, res) => {
     const secret = await db.get('secret').value();
     if (userFound > 0) {
       logger.log('warn', 'Failed to add user. Username already exists', { service: 'api' });
-      return res.status(400).send('Username already exists');
+      return res.status(400).send({ success: false, response: 'Username already exists' });
     }
 
     // Save user secrets to database.  Required for initialization on reboot

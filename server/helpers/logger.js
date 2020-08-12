@@ -6,11 +6,22 @@ const logger = winston.createLogger({
     new winston.transports.File({
       filename: './logs/assistant-relay.log',
       format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-      maxSize: '1m',
+      maxsize: 500000,
+      maxFiles: 1,
     }),
   ],
 });
 
+function queryLogs(options) {
+  return new Promise((res, rej) => {
+    return logger.query(options, (error, results) => {
+      if (error) rej(error);
+      res(results);
+    });
+  });
+}
+
 module.exports = {
   logger,
+  queryLogs,
 };
