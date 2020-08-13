@@ -23,13 +23,15 @@ exports.sendTextInput = function (text, name) {
         if (!name) nameToUse = users[0].name;
         else nameToUse = name;
         const conversation = new Conversation(global.assistants[nameToUse], convo);
-        logger.log('info', `Assistant conversation from ${nameToUse}: ${text}`, {
+        logger.log('info', `Conversation from ${nameToUse}: ${text}`, {
           service: 'assistant',
+          func: 'sendTextInput',
         });
         return res(conversation);
       }
       logger.log('error', 'Attempted Assistant Conversation. No users found', {
         service: 'assistant',
+        func: 'sendTextInput',
       });
       res();
     } catch (e) {

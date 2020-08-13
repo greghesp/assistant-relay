@@ -7,8 +7,7 @@ export default async (req, res) => {
     await db.get('users').remove({ name: req.body.user }).write();
     res.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'deleteUser' });
     res.status(500).send(e.message);
   }
 };

@@ -27,7 +27,13 @@ function AccessControl() {
         }
         setAllowed(response.data.passwordEnabled);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'AccessControl - checkAuth',
+        });
       }
       setLoading(false);
     }
@@ -41,7 +47,13 @@ function AccessControl() {
       const r = await post(`/api/server/generateAPIKey`);
       setNewKey(r.data.key);
     } catch (e) {
-      console.log(e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'AccessControl - generateAPIKey',
+      });
     }
     setGettingKey(false);
   }
@@ -51,7 +63,13 @@ function AccessControl() {
       await post('/api/server/deleteKey', { apiKey: k });
       setDeletingKey(prevState => !prevState);
     } catch (e) {
-      console.log('deleteKey Error', e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'AccessControl - deleteKey',
+      });
     }
   }
 

@@ -14,8 +14,7 @@ export default async (req, res) => {
     await config.set('password', password).write();
     res.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', `[addPassword] ${e.message}`, { service: 'api', func: 'addPassword' });
     res.status(500).send(e.message);
   }
 };

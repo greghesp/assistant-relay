@@ -19,8 +19,13 @@ function AddFirstUser() {
         query: { name },
       });
     } catch (e) {
-      console.log(e);
-      //message.error(e.response.data);
+      // TODO:  Trigger UI Alert
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'AddFirstUser - addUser',
+      });
     }
   }
 

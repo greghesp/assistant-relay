@@ -4,6 +4,7 @@ import LoginLayout from '~/src/layouts/Login';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
 import Router from 'next/router';
+import { post } from '../helpers/api';
 
 function Login() {
   const cookies = new Cookies();
@@ -36,10 +37,15 @@ function Login() {
 
       Router.push('/');
     } catch (e) {
-      console.log(e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Login - sendRequest',
+      });
       setErrorMsg(e.message);
       setError(true);
-      console.log(e.message);
     }
   }
 

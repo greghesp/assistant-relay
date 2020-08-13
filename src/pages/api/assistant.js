@@ -70,7 +70,10 @@ export default async (req, res) => {
     if (!broadcast) fileStream = await outputFileStream(timestamp);
 
     if (broadcast && isQH) {
-      console.log('Broadcast command received, but quiet hours is enabled');
+      logger.log('warn', `Broadcast command received, but quiet hours is enabled`, {
+        service: 'assistant',
+        func: 'assistant',
+      });
       return res.status(200).json({
         success: false,
         error: 'Quiet Time Enabled - Broadcast command detected',
@@ -91,15 +94,20 @@ export default async (req, res) => {
       })
       .on('response', text => {
         response.response = text;
-        if (talkback && isQH === false) {
+        if (talkback && !isQH) {
           const regex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
           const msg = text.replace(regex, '');
-          logger.log('info', 'Talkback requested, not in quiet hours', { service: 'assistant' });
+          logger.log('info', 'Talkback requested, not in quiet hours', {
+            service: 'assistant',
+            func: 'assistant',
+          });
           sendTextInput(`broadcast ${msg}`, user);
+        } else if (talkback && isQH) {
+          logger.log('warn', 'Talkback requested, but quiet hours is enabled', {
+            service: 'assistant',
+            func: 'assistant',
+          });
         }
-        logger.log('warn', 'Talkback requested, but quiet hours is enabled', {
-          service: 'assistant',
-        });
       })
       .on('volume-percent', percent => {
         // do stuff with a volume percent change (range from 1-100)
@@ -126,19 +134,22 @@ export default async (req, res) => {
         if (error) {
           response.success = false;
           response.error = error;
-          console.error('Conversation Ended Error:', error);
-          logger.log('error', `Conversation Ended with Error: ${error}`, { service: 'assistant' });
+          logger.log('error', `Conversation Ended with Error: ${error}`, {
+            service: 'assistant',
+            func: 'assistant',
+          });
         } else {
-          logger.log('info', `Conversation completed successfully`, { service: 'assistant' });
+          logger.log('info', `Conversation completed successfully`, {
+            service: 'assistant',
+            func: 'assistant',
+          });
           response.success = true;
         }
         if (!broadcast) {
-          logger.log('info', 'Command not a broadcast, html file written', {
-            service: 'assistant',
-          });
-          logger.log('info', 'Command not a broadcast, audio file written', {
-            service: 'assistant',
-          });
+          // logger.log('info', 'Command not a broadcast, html file written', {
+          //   service: 'assistant',
+          //   func: 'assistant',
+          // });
 
           fileStream.end();
         }
@@ -150,12 +161,17 @@ export default async (req, res) => {
       .on('error', error => {
         response.success = false;
         response.error = error.message;
-        console.error(error);
-        logger.log('error', `Assistant error: ${error.message}`, { service: 'assistant' });
+        logger.log('error', `Assistant error: ${error.message}`, {
+          service: 'assistant',
+          func: 'assistant',
+        });
         res.status(500).json(response);
       });
   } catch (e) {
-    logger.log('error', `Something went wrong: ${e.message}`, { service: 'assistant' });
+    logger.log('error', `Something went wrong: ${e.message}`, {
+      service: 'assistant',
+      func: 'assistant',
+    });
     res.status(500).send(e.message);
   }
 };
@@ -188,10 +204,13 @@ function isQuietHour() {
 }
 
 function saveHTMLFile(fileName, data) {
-  logger.log('info', `Saving HTML file`, { service: 'server' });
+  logger.log('info', `Saving HTML file`, { service: 'server', func: 'saveHTMLFile' });
   fs.writeFile(`public/html-responses/${fileName}.html`, data, err => {
     if (err) {
-      logger.log('error', `Failed to write HTML file: ${err}`, { service: 'server' });
+      logger.log('error', `Failed to write HTML file: ${err}`, {
+        service: 'server',
+        func: 'saveHTMLFile',
+      });
       throw err;
     }
     return;
@@ -208,19 +227,23 @@ function updateResponses(command, response, timestamp, type, user = 'default') {
     if (size >= maxResponse) {
       const results = db.get('responses').sortBy('timestamp').value();
       const timestamp = results[0].timestamp;
-      console.log(path.resolve(`public/audio-responses/${timestamp}.wav`));
       try {
         fs.unlinkSync(path.resolve(`public/audio-responses/${timestamp}.wav`));
-        fs.unlinkSync(path.resolve(`public/html-responses/${timestamp}.html`));
+        //fs.unlinkSync(path.resolve(`public/html-responses/${timestamp}.html`));
       } catch (e) {
-        logger.log('error', `Failed to remove files: ${e.message}`, { service: 'server' });
-        console.error(e.mesage);
+        logger.log('error', `Failed to remove files: ${e.message}`, {
+          service: 'server',
+          func: 'updateResponses',
+        });
       }
       const entries = db.get('responses').sortBy('timestamp').drop(1).value();
-      logger.log('info', `Removed oldest response and updated`, { service: 'server' });
+      logger.log('info', `Removed oldest response and updated`, {
+        service: 'server',
+        func: 'updateResponses',
+      });
       await db.set('responses', entries).write();
     }
-    logger.log('info', `Updating responses`, { service: 'server' });
+    logger.log('info', `Updating responses`, { service: 'server', func: 'updateResponses' });
     await db.get('responses').push({ command, response, timestamp, type, user }).write();
     res();
   });

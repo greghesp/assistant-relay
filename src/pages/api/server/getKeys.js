@@ -7,8 +7,7 @@ export default async (req, res) => {
     const keys = await db.get('accessControl').value();
     res.status(200).send({ apiKeys: keys });
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'getKeys' });
     res.status(500).send(e.message);
   }
 };

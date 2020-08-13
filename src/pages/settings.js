@@ -16,7 +16,13 @@ function Settings() {
         setSettings(r.data);
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Settings - getSettings',
+        });
       }
     }
 
@@ -27,7 +33,13 @@ function Settings() {
     try {
       await post('/api/server/saveSettings', json);
     } catch (e) {
-      console.log(e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Settings - sendRequest',
+      });
     }
   }
 

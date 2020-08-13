@@ -13,28 +13,31 @@ function LogBrowser() {
 
   useEffect(() => {
     async function getLogs() {
+      setLoading(true);
       try {
-        setLoading(true);
+        const { data } = await post('/api/server/getLogs', {
+          options: {
+            limit: rowCount,
+            order: order,
+          },
+          filters: {
+            level: logLevel,
+            service: serviceLevel,
+          },
+        });
 
-        try {
-          const { data } = await post('/api/server/getLogs', {
-            options: {
-              limit: rowCount,
-              order: order,
-            },
-            filters: {
-              level: logLevel,
-              service: serviceLevel,
-            },
-          });
-
-          setLogs(data);
-          setLoading(false);
-        } catch (e) {
-          console.log(e);
-        }
+        setLogs(data);
         setLoading(false);
-      } catch (e) {}
+      } catch (e) {
+        // TODO:  Trigger UI Alert
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'LogBrowser - getLogs',
+        });
+      }
+      setLoading(false);
     }
 
     getLogs();
@@ -87,11 +90,16 @@ function LogBrowser() {
         >
           {row.service}
         </td>
+        <td
+          className={`px-6 py-4 whitespace-no-wrap text-sm leading-5 ${serviceClass(row.service)}`}
+        >
+          {row.func}
+        </td>
         <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
           {row.message}
         </td>
         <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-          {moment(row.timestamp).format('LLLL')}
+          {moment(row.timestamp).format('MMM Do, HH:mm')}
         </td>
       </tr>
     );
@@ -118,6 +126,9 @@ function LogBrowser() {
                     Service
                   </th>
                   <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    Function
+                  </th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                     Message
                   </th>
                   <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -133,7 +144,7 @@ function LogBrowser() {
                 ) : (
                   <tr>
                     <td
-                      colspan="4"
+                      colspan="5"
                       className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center"
                     >
                       No Logs

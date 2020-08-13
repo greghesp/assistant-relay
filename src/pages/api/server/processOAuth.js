@@ -1,5 +1,6 @@
 const Assistant = require('google-assistant/components/assistant');
 const { OAuth2Client } = require('google-auth-library');
+const { logger } = require('../../../../server/helpers/logger');
 
 const { sendTextInput } = require('../../../../server/helpers/assistant');
 const { trackVersion } = require('../../../../server/helpers/server');
@@ -31,7 +32,7 @@ export default async (req, res) => {
 
     res.sendStatus(200);
   } catch (e) {
-    console.log(e);
+    logger.log('error', e.message, { service: 'api', func: 'processOAuth' });
     res.status(500).send(e.message);
   }
 };

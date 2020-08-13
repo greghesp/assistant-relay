@@ -13,13 +13,24 @@ function Setup() {
 
   useEffect(() => {
     async function CheckPassword() {
-      const { data } = await post('/api/server/isPasswordDefault');
-      if (!data) {
-        return Router.push({
-          pathname: '/setup/tracking',
+      try {
+        const { data } = await post('/api/server/isPasswordDefault');
+        if (!data) {
+          return Router.push({
+            pathname: '/setup/tracking',
+          });
+        }
+        setLoading(false);
+      } catch (e) {
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Setup - CheckPassword',
         });
+        setLoading(false);
       }
-      setLoading(false);
     }
 
     CheckPassword();
@@ -86,7 +97,13 @@ function Setup() {
         pathname: '/setup/tracking',
       });
     } catch (e) {
-      console.log(e.message);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Setup - sendRequest',
+      });
     }
   }
 

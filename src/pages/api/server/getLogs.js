@@ -1,4 +1,5 @@
 const { queryLogs } = require('../../../../server/helpers/logger');
+const { logger } = require('../../../../server/helpers/logger');
 
 export default async (req, res) => {
   try {
@@ -19,6 +20,6 @@ export default async (req, res) => {
 
     res.status(200).send(logData);
   } catch (e) {
-    console.error(e);
+    logger.log('error', e.message, { service: 'api', func: 'getLogs' });
   }
 };

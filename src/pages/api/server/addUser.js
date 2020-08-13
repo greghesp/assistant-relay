@@ -12,7 +12,10 @@ export default async (req, res) => {
     const userFound = await db.get('users').find({ name: req.body.name }).size().value();
     const secret = await db.get('secret').value();
     if (userFound > 0) {
-      logger.log('warn', 'Failed to add user. Username already exists', { service: 'api' });
+      logger.log('warn', 'Failed to add user. Username already exists', {
+        service: 'api',
+        func: 'addUser',
+      });
       return res.status(400).send({ success: false, response: 'Username already exists' });
     }
 
@@ -30,12 +33,14 @@ export default async (req, res) => {
       scope: ['https://www.googleapis.com/auth/assistant-sdk-prototype'],
     });
 
-    logger.log('info', 'User Added - redirecting to sign in page', { service: 'api' });
+    logger.log('info', 'User Added - redirecting to sign in page', {
+      service: 'api',
+      func: 'addUser',
+    });
 
     res.status(200).send({ url });
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'addUser' });
     res.status(500).send(e.message);
   }
 };

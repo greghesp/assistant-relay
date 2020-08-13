@@ -34,7 +34,13 @@ function AddSecrets({ track }) {
         }
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // TODO:  Trigger UI Alert
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'AddSecrets - checkSecret',
+        });
         setLoading(false);
       }
     }
@@ -79,7 +85,13 @@ function AddSecrets({ track }) {
         });
       }
     } catch (e) {
-      console.log(e);
+      // TODO:  Trigger UI Alert
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'AddSecrets - addUser',
+      });
     }
   }
 

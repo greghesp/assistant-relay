@@ -10,12 +10,11 @@ export default async (req, res) => {
     // Save secret to database.  Required for initialization on reboot
     await db.set('secret', secret).write();
 
-    logger.log('info', 'Added Project Secret', { service: 'api' });
+    logger.log('info', 'Added Project Secret', { service: 'api', func: 'addSecret' });
 
     res.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'addSecret' });
     res.status(500).send(e.message);
   }
 };

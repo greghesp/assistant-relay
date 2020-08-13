@@ -13,7 +13,13 @@ function SetupLayout({ children }) {
         const response = await post('/api/server/getUsers');
         setData(response.data);
       } catch (e) {
-        console.log('Setup', e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Setup - getUsers',
+        });
       }
     }
     getUsers();

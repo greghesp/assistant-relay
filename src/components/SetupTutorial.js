@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Checkbox, Button } from 'antd';
 import Router from 'next/router';
+import { post } from '../helpers/api';
 
 const url =
   'https://greghesp.github.io/assistant-relay/docs/getting-started/configuration#configuring-credentials';
@@ -14,7 +15,15 @@ function SetupTutorial() {
         pathname: '/setup/credentials',
         query: { track },
       });
-    } catch (e) {}
+    } catch (e) {
+      // TODO:  Trigger UI Alert
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'SetupTutorial - next',
+      });
+    }
   }
 
   return (

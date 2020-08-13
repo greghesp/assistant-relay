@@ -19,7 +19,13 @@ function History() {
         setHistory(r.data.responses);
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'History - getHistory',
+        });
       }
     }
 

@@ -15,7 +15,13 @@ function Dashboard({ children, title }) {
         const response = await post('/api/server/getUsers');
         setData(response.data);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Dashboard - getUsers',
+        });
       }
     }
     getUsers();

@@ -47,7 +47,7 @@ app.prepare().then(async () => {
     if ((passwordLock && validateJWT(req)) || !passwordLock) {
       return handle(req, res, parsedUrl);
     } else {
-      logger.log('error', `JWT Validation failed`, { service: 'server' });
+      logger.log('error', `JWT Validation failed`, { service: 'server', func: 'index' });
       return res.status(401).json({ msg: 'JWT Validation failed' });
     }
   });
@@ -59,7 +59,7 @@ app.prepare().then(async () => {
     if (valid) {
       return handle(req, res, parsedUrl);
     } else {
-      logger.log('error', `Invalid API Key provided`, { service: 'server' });
+      logger.log('error', `Invalid API Key provided`, { service: 'server', func: 'index' });
       return res.status(401).json({ msg: 'Invalid API Key provided' });
     }
   });

@@ -67,7 +67,13 @@ function Sandbox() {
         setUsers(r.data.users);
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Sandbox - getUsers',
+        });
       }
     }
 
@@ -81,6 +87,13 @@ function Sandbox() {
       const response = await postWithKey('/api/assistant', json, apiKey);
       setResponse(response.data);
     } catch (e) {
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Sandbox - sendRequest',
+      });
+
       if (e.response.status === 401) {
         setResponse({
           success: false,

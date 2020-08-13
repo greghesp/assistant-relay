@@ -29,7 +29,13 @@ function AddToken({ user }) {
         pathname: '/',
       });
     } catch (e) {
-      console.log(e);
+      // TODO:  Trigger UI Alert
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'AddToken - addUser',
+      });
       message.error(e);
     }
   }

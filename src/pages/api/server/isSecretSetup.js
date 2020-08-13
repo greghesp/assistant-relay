@@ -9,8 +9,7 @@ export default async (req, res) => {
     if (secret.hasOwnProperty('installed')) return res.status(200).send(true);
     else res.status(200).send(false);
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'isSecretSetup' });
     res.status(500).send(e.message);
   }
 };

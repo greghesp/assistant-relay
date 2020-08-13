@@ -18,8 +18,16 @@ function withAuth(AuthComponent) {
         await post('/api/server/getConfig');
         this.setState({ loading: false, loggedIn: true });
       } catch (e) {
-        console.log(e);
-        if (e?.response?.status === 401) Router.push('/login');
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'withAuth - componentDidMount',
+        });
+
+        if (e?.response?.status === 401) {
+          Router.push('/login');
+        }
       }
     }
 

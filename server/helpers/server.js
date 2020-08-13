@@ -63,7 +63,10 @@ exports.initializeServer = function () {
 
       // TODO: Check what audio/html files exist. Remove from db if not there.  HASS IO workaround
 
-      logger.log('info', 'Initialised configuration and database', { service: 'server' });
+      logger.log('info', 'Initialised configuration and database', {
+        service: 'server',
+        func: 'initializeServer',
+      });
 
       if (db.get('users').size().value() > 0) {
         const secret = await db.get('secret').value();
@@ -87,7 +90,10 @@ exports.initializeServer = function () {
 
       // Create Assistant Instances in memory
       await Promise.all(promises);
-      logger.log('info', 'Created Assistant instance', { service: 'server' });
+      logger.log('info', 'Created Assistant instance', {
+        service: 'server',
+        func: 'initializeServer',
+      });
 
       //  Announce Assistant Relay has started up if muteStartup is false, not inside quiet hours and not first load
       // if (!muteStartup && !isQH && !firstLoad) {
@@ -96,7 +102,10 @@ exports.initializeServer = function () {
 
       // const updateAvail = await exports.isUpdateAvailable();
       //if (updateAvail) console.log(chalk.cyan(`An update is available. Please visit https://github.com/greghesp/assistant-relay/releases`));
-      logger.log('info', 'Assistant Relay is ready', { service: 'server' });
+      logger.log('info', 'Assistant Relay is ready', {
+        service: 'server',
+        func: 'initializeServer',
+      });
 
       return res();
     } catch (e) {

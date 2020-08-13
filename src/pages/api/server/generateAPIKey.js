@@ -13,8 +13,7 @@ export default async (req, res) => {
 
     res.status(200).send({ key });
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'generateAPIKey' });
     res.status(500).send(e.message);
   }
 };

@@ -9,7 +9,7 @@ import Router from 'next/router';
 import Transition from '../helpers/Transition';
 import ResponseBlock from '../components/ResponseBlock';
 
-function AccessControl() {
+function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [gettingKey, setGettingKey] = useState(false);
   const [newKey, setNewUser] = useState();
@@ -29,7 +29,13 @@ function AccessControl() {
         setUsers(data.users);
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // TODO: Handle error
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'UserManagement - getUsers',
+        });
       }
       setLoading(false);
     }
@@ -47,6 +53,13 @@ function AccessControl() {
       win.focus();
       setShow(true);
     } catch (e) {
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'UserManagement - addUser',
+      });
       setResponse(e.response.data);
       setShowResponse(true);
     }
@@ -66,7 +79,13 @@ function AccessControl() {
 
       setNewUser(name);
     } catch (e) {
-      console.log(e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'UserManagement - submitAuthToken',
+      });
     }
     setGettingKey(false);
   }
@@ -76,7 +95,13 @@ function AccessControl() {
       await post('/api/server/deleteUser', { user: k });
       setDeletingUser(prevState => !prevState);
     } catch (e) {
-      console.log('deleteKey Error', e);
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'UserManagement - deleteUser',
+      });
     }
   }
 
@@ -188,4 +213,4 @@ function AccessControl() {
   );
 }
 
-export default withAuth(AccessControl);
+export default withAuth(UserManagement);

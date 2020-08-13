@@ -16,11 +16,10 @@ export default async (req, res) => {
       const token = jwt.sign({ service: 'dashboard' }, process.env.jwtSecret);
       return res.status(200).send({ token });
     }
-    logger.log('error', 'Invalid login attempt', { service: 'api' });
+    logger.log('error', 'Invalid login attempt', { service: 'api', func: 'login' });
     res.status(401).send('Credentials do not match');
   } catch (e) {
-    console.error(e);
-    logger.log('error', e.message, { service: 'api' });
+    logger.log('error', e.message, { service: 'api', func: 'login' });
     res.status(500).send(e.message);
   }
 };
