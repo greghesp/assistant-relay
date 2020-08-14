@@ -1,12 +1,12 @@
 const { logger } = require('../../../../server/helpers/logger');
 
-const { isInstalled, search } = require('../.././../../server/helpers/cast');
+const { isInstalled, command } = require('../.././../../server/helpers/cast');
 
 export default async (req, res) => {
   try {
     await isInstalled();
-    const devices = await search();
-    res.status(200).send(devices);
+    await command(req.body.command);
+    res.status(200);
   } catch (e) {
     logger.log('error', e.message, { service: 'api', func: 'cast - devices' });
     res.status(500).send(e.message);

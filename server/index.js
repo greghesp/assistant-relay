@@ -1,5 +1,8 @@
-const express = require('express');
+const app = require('express')();
+const server = require('http').createServer(app);
+global.io = require('socket.io')(server);
 const next = require('next');
+
 const { parse } = require('url');
 const chalk = require('chalk');
 const ip = require('ip');
@@ -7,26 +10,35 @@ const bonjour = require('bonjour')();
 const jwt = require('jsonwebtoken');
 
 const { configuration } = require('./helpers/db');
-const { logger } = require('./helpers/logger');
+const { logger, castLogger } = require('./helpers/logger');
 
 const config = configuration();
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const nextApp = next({ dev });
+const handle = nextApp.getRequestHandler();
 
 const { initializeServer, validateJWT, validateAPIKey } = require('./helpers/server.js');
 
 // Create global variable to store assistants in memory
 global.assistants = {};
+global.socket = null;
 
-app.prepare().then(async () => {
-  const server = express();
+io.on('connection', socket => {
+  global.socket = socket;
+  console.log('Connection');
+
+  castLogger.stream().on('log', function (log) {
+    global.socket.emit('castLog', { message: log.message, timestamp: log.timestamp });
+  });
+});
+
+nextApp.prepare().then(async () => {
   const port = config.get('port').value();
 
   await initializeServer();
 
-  server.use(function (req, res, next) {
+  app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization');
@@ -36,7 +48,7 @@ app.prepare().then(async () => {
     next();
   });
 
-  server.all('/api/server/*', (req, res) => {
+  app.all('/api/server/*', (req, res) => {
     const parsedUrl = parse(req.url, true);
     const passwordLock = config.get('passwordLock').value();
 
@@ -52,7 +64,7 @@ app.prepare().then(async () => {
     }
   });
 
-  server.all('/api/assistant', async (req, res) => {
+  app.all('/api/assistant', async (req, res) => {
     const parsedUrl = parse(req.url, true);
     const valid = await validateAPIKey(parsedUrl, req);
 
@@ -64,7 +76,7 @@ app.prepare().then(async () => {
     }
   });
 
-  server.all('*', (req, res) => {
+  app.all('*', (req, res) => {
     const parsedUrl = parse(req.url, true);
     return handle(req, res, parsedUrl);
   });

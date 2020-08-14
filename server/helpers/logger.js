@@ -12,6 +12,17 @@ const logger = winston.createLogger({
   ],
 });
 
+const castLogger = winston.createLogger({
+  transports: [
+    new winston.transports.File({
+      filename: './logs/casting.log',
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+      maxsize: 500000,
+      maxFiles: 1,
+    }),
+  ],
+});
+
 function queryLogs(options) {
   return new Promise((res, rej) => {
     return logger.query(options, (error, results) => {
@@ -23,5 +34,6 @@ function queryLogs(options) {
 
 module.exports = {
   logger,
+  castLogger,
   queryLogs,
 };

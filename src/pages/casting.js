@@ -1,10 +1,42 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
-import ResponseBlock from '../components/ResponseBlock';
-import LoadingAnimation from '../components/LoadingAnimation';
+import io from 'socket.io-client';
+import moment from 'moment';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useEffect, useState } from 'react';
+import { post } from '../helpers/api';
 
 function Casting() {
+  const [devices, setDevices] = useState([]);
+  const [castLogs, setCastLogs] = useState([]);
+
+  useEffect(() => {
+    async function getDevices() {
+      try {
+        const { data } = await post('/api/cast/devices');
+        setDevices(data.devices);
+      } catch (e) {
+        await post('/api/server/writeLogs', {
+          level: 'error',
+          message: e.message,
+          service: 'web',
+          func: 'Casting - getDevices',
+        });
+      }
+    }
+    getDevices();
+  }, []);
+
+  useEffect(() => {
+    const socket = io();
+    socket.on('castLog', data => {
+      const message = `[${moment(data.timestamp).format('D MMM, HH:mm')}] ${data.message}`;
+      console.log(message);
+      setCastLogs($ => [...$, message]);
+    });
+  }, []);
+
   return (
     <Dashboard title="Casting Sandbox">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -33,7 +65,9 @@ function Casting() {
                         className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         onChange={e => {}}
                       >
-                        <option value="Office Hub">Office Hub</option>
+                        {devices.map(d => {
+                          return <option value={d.name}>{d.name}</option>;
+                        })}
                       </select>
                     </div>
                   </div>
@@ -105,7 +139,7 @@ function Casting() {
                     <textarea
                       id="command"
                       readOnly
-                      rows="18"
+                      rows="13"
                       className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                     />
                   </div>
@@ -124,6 +158,20 @@ function Casting() {
               </span>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="bg-white rounded-lg shadow-lg p-5 mt-5">
+        <div>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">Cast Events</h3>
+        </div>
+        <div className="mt-3 rounded-md shadow-sm">
+          <textarea
+            id="castLogs"
+            readOnly
+            rows="10"
+            className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+            value={castLogs}
+          />
         </div>
       </div>
     </Dashboard>

@@ -1,4 +1,5 @@
 const s = require('shelljs');
+const { castLogger } = require('../helpers/logger');
 
 exports.isInstalled = function () {
   return new Promise((res, rej) => {
@@ -27,5 +28,16 @@ exports.search = async function () {
     });
 
     return res(newDevices);
+  });
+};
+
+exports.command = function (command) {
+  return new Promise((res, rej) => {
+    const catt = s.exec(`catt ${command}`, { silent: true, async: true });
+
+    catt.stdout.on('data', data => {
+      castLogger.log('info', Buffer.from(data).toString());
+      //global.socket.emit('castLog', { message: Buffer.from(data).toString() });
+    });
   });
 };
