@@ -6,7 +6,7 @@ export default async (req, res) => {
   try {
     await isInstalled();
     await command(req.body.command);
-    res.status(200);
+    res.sendStatus(200);
   } catch (e) {
     logger.log('error', e.message, { service: 'api', func: 'cast - devices' });
     res.status(500).send(e.message);

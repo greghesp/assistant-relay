@@ -1,5 +1,6 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
+import CastingLogs from '../components/CastingLogs';
 import io from 'socket.io-client';
 import moment from 'moment';
 
@@ -9,7 +10,6 @@ import { post } from '../helpers/api';
 
 function Casting() {
   const [devices, setDevices] = useState([]);
-  const [castLogs, setCastLogs] = useState([]);
 
   useEffect(() => {
     async function getDevices() {
@@ -28,14 +28,14 @@ function Casting() {
     getDevices();
   }, []);
 
-  useEffect(() => {
-    const socket = io();
-    socket.on('castLog', data => {
-      const message = `[${moment(data.timestamp).format('D MMM, HH:mm')}] ${data.message}`;
-      console.log(message);
-      setCastLogs($ => [...$, message]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   const socket = io();
+  //   socket.on('castLog', data => {
+  //     const message = `[${moment(data.timestamp).format('D MMM, HH:mm')}] ${data.message}`;
+  //     console.log(message);
+  //     setCastLogs($ => [...$, message]);
+  //   });
+  // }, []);
 
   return (
     <Dashboard title="Casting Sandbox">
@@ -165,13 +165,7 @@ function Casting() {
           <h3 className="text-lg leading-6 font-medium text-gray-900">Cast Events</h3>
         </div>
         <div className="mt-3 rounded-md shadow-sm">
-          <textarea
-            id="castLogs"
-            readOnly
-            rows="10"
-            className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-            value={castLogs}
-          />
+          <CastingLogs />
         </div>
       </div>
     </Dashboard>

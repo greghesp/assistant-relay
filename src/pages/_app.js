@@ -1,10 +1,14 @@
 import Head from 'next/head';
 import LoadingBar from '../components/LoadingBar';
+import SocketConnect from '../helpers/SocketContext';
+import * as io from 'socket.io-client';
 
 import stylesheet from 'antd/dist/antd.min.css';
 import '../styles/index.css';
 
 function MyApp({ Component, pageProps }) {
+  const socket = io();
+
   return (
     <React.Fragment>
       <Head>
@@ -28,7 +32,9 @@ function MyApp({ Component, pageProps }) {
         <meta name="msapplication-TileColor" content="#ffffff" />
       </Head>
       <LoadingBar color="#FABD05" />
-      <Component {...pageProps} />
+      <SocketConnect.Provider value={socket}>
+        <Component {...pageProps} />
+      </SocketConnect.Provider>
     </React.Fragment>
   );
 }

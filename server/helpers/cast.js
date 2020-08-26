@@ -33,11 +33,11 @@ exports.search = async function () {
 
 exports.command = function (command) {
   return new Promise((res, rej) => {
-    const catt = s.exec(`catt ${command}`, { silent: true, async: true });
-
-    catt.stdout.on('data', data => {
-      castLogger.log('info', Buffer.from(data).toString());
-      //global.socket.emit('castLog', { message: Buffer.from(data).toString() });
+    s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
+      if (stdout) castLogger.log('info', stdout);
+      if (stderr) castLogger.log('error', stderr);
+      if (code === 0) return res();
+      return rej();
     });
   });
 };
