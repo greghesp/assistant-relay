@@ -2,7 +2,7 @@ const { logger } = require('../../../../server/helpers/logger');
 
 export default async (req, res) => {
   try {
-    const { level = 'info', message, service = 'web', func = null } = req.body.log;
+    const { level = 'info', message, service = 'web', func = null } = req.body;
 
     if (!message) {
       logger.log('error', 'No error message was provided in API request', {
