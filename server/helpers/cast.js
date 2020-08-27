@@ -31,16 +31,40 @@ exports.search = async function () {
   });
 };
 
-exports.command = function (command) {
+exports.command = function ({ command }) {
   return new Promise((res, rej) => {
+    let status;
+    // Check if command already includes `catt`, if so, remove it
     if (command.startsWith('catt ')) command = command.slice(5);
-    command = s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
+
+    s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
       if (stdout) {
         const lines = stdout.split('\r\n');
         lines.forEach(l => {
           if (l.length > 0) castLogger.log('info', l);
         });
       }
+      if (stderr) castLogger.log('error', stderr);
+      if (code === 0) return res();
+      return rej();
+    });
+  });
+};
+
+exports.cast = function ({ device, source, resume = false }) {
+  return new Promise((res, rej) => {
+    if (resume) {
+      s.exec(`catt -d "${device}" save`, { silent: true }, (code, stdout, stderr) => {
+        if (stdout) console.log(stdout);
+        if (stderr) castLogger.log('error', stderr);
+        if (code === 0) return res();
+        return rej();
+      });
+    }
+
+    s.exec(`catt -d "${device}" cast ${source}`, { silent: true }, (code, stdout, stderr) => {
+      console.log(code);
+      if (stdout) console.log(stdout);
       if (stderr) castLogger.log('error', stderr);
       if (code === 0) return res();
       return rej();
