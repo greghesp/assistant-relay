@@ -1,8 +1,6 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
 import CastingLogs from '../components/CastingLogs';
-import io from 'socket.io-client';
-import moment from 'moment';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useEffect, useState } from 'react';
@@ -27,15 +25,6 @@ function Casting() {
     }
     getDevices();
   }, []);
-
-  // useEffect(() => {
-  //   const socket = io();
-  //   socket.on('castLog', data => {
-  //     const message = `[${moment(data.timestamp).format('D MMM, HH:mm')}] ${data.message}`;
-  //     console.log(message);
-  //     setCastLogs($ => [...$, message]);
-  //   });
-  // }, []);
 
   return (
     <Dashboard title="Casting Sandbox">
@@ -76,7 +65,7 @@ function Casting() {
                       htmlFor="about"
                       className="block text-sm font-medium leading-5 text-gray-700"
                     >
-                      Source
+                      Command
                     </label>
                     <div className="mt-1 rounded-md shadow-sm">
                       <input
@@ -85,7 +74,7 @@ function Casting() {
                         onChange={e => {}}
                       />
                     </div>
-                    <p className="mt-2 text-sm text-gray-500">YouTube URL, Local Video etc</p>
+                    <p className="mt-2 text-sm text-gray-500">Command you wish to pass to CATT</p>
                   </div>
 
                   <div className="sm:col-span-6">
@@ -164,7 +153,7 @@ function Casting() {
         <div>
           <h3 className="text-lg leading-6 font-medium text-gray-900">Cast Events</h3>
         </div>
-        <div className="mt-3 rounded-md shadow-sm">
+        <div className="pt-5">
           <CastingLogs />
         </div>
       </div>

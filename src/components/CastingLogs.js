@@ -5,25 +5,36 @@ import moment from 'moment';
 function CastingLogs() {
   const io = useContext(SocketConnect);
   const [castLogs, setCastLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    io.emit('streamCastLogs');
+
     io.on('castLog', data => {
-      const message = `[${moment(data.timestamp).format('D MMM, HH:mm')}] ${data.message}`;
-      console.log(message);
-      setCastLogs($ => [...$, message]);
+      if (loading) setLoading(false);
+      setCastLogs($ => [
+        ...$,
+        {
+          message: data.message,
+          timestamp: moment(data.timestamp).format('D MMM, HH:mm'),
+        },
+      ]);
     });
   }, []);
 
+  if (loading) return <span className="leading-5">Waiting for events...</span>;
+
   return (
-    <div>
-      <textarea
-        id="castLogs"
-        readOnly
-        rows="10"
-        className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-        value={castLogs}
-      />
-    </div>
+    <>
+      {castLogs.map(l => {
+        return (
+          <p>
+            <span className="leading-5 font-medium text-blue-500 mr-5">[{l.timestamp}]</span>
+            <span>{l.message}</span>
+          </p>
+        );
+      })}
+    </>
   );
 }
 

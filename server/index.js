@@ -28,8 +28,10 @@ io.on('connection', socket => {
   global.socket = socket;
   console.log('Connection');
 
-  castLogger.stream().on('log', function (log) {
-    global.socket.emit('castLog', { message: log.message, timestamp: log.timestamp });
+  socket.on('streamCastLogs', () => {
+    castLogger.stream({ start: -1 }).on('log', function (log) {
+      global.socket.emit('castLog', { message: log.message, timestamp: log.timestamp });
+    });
   });
 });
 
