@@ -32,6 +32,7 @@
     "cast-web-api": "^1.2.1",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
+    "chromecast-api": "^0.3.4",
     "create-react-class": "^15.6.3",
     "express": "^4.17.1",
     "google-assistant": "^0.6.4",

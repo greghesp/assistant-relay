@@ -3,17 +3,21 @@ import withAuth from '~/src/helpers/withAuth';
 import CastingLogs from '../components/CastingLogs';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { post } from '../helpers/api';
+import SocketConnect from '../helpers/SocketContext';
+import moment from 'moment';
 
 function Casting() {
+  const io = useContext(SocketConnect);
+
   const [devices, setDevices] = useState([]);
 
   useEffect(() => {
     async function getDevices() {
       try {
         const { data } = await post('/api/cast/devices');
-        setDevices(data.devices);
+        setDevices(data);
       } catch (e) {
         await post('/api/server/writeLogs', {
           level: 'error',
@@ -25,6 +29,23 @@ function Casting() {
     }
     getDevices();
   }, []);
+
+  useEffect(() => {
+    io.on('deviceFound', data => {
+      console.log(data);
+      setDevices($ => [...$, data]);
+    });
+  }, []);
+
+  async function forceRefresh(e) {
+    e.preventDefault();
+    try {
+      setDevices([]);
+      await post('/api/cast/refreshDevices');
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <Dashboard title="Casting Sandbox">
@@ -48,18 +69,39 @@ function Casting() {
                     >
                       Device
                     </label>
-                    <div className="mt-1 rounded-md shadow-sm">
-                      <select
-                        id="user"
-                        className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                        onChange={e => {}}
-                      >
-                        {devices.map(d => {
-                          return <option value={d.name}>{d.name}</option>;
-                        })}
-                      </select>
+                    <div className="mt-1">
+                      <div className="flex items-center w-full">
+                        <select
+                          id="user"
+                          className="form-select block transition duration-150 ease-in-out sm:text-sm sm:leading-5 w-full"
+                          onChange={e => {}}
+                        >
+                          {devices.map(d => {
+                            return <option value={d.name}>{d.name}</option>;
+                          })}
+                        </select>
+                        <div className="block mx-3">
+                          <button
+                            onClick={e => forceRefresh(e)}
+                            className="inline-flex justify-center py-1 px-1 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
+                          >
+                            <svg
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="refresh w-6 h-6"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                                clipRule="evenodd"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="about"

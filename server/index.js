@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 
 const { configuration } = require('./helpers/db');
 const { logger, castLogger } = require('./helpers/logger');
+const { startSearch } = require('./helpers/cast-api');
 
 const config = configuration();
 
@@ -22,6 +23,7 @@ const { initializeServer, validateJWT, validateAPIKey } = require('./helpers/ser
 
 // Create global variable to store assistants in memory
 global.assistants = {};
+global.devices = [];
 global.socket = null;
 
 io.on('connection', socket => {
@@ -39,6 +41,7 @@ nextApp.prepare().then(async () => {
   const port = config.get('port').value();
 
   await initializeServer();
+  startSearch();
 
   app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
