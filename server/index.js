@@ -1,3 +1,8 @@
+// Create global variable to store assistants in memory
+global.assistants = {};
+global.socket = null;
+global.devices = [];
+
 const app = require('express')();
 const server = require('http').createServer(app);
 global.io = require('socket.io')(server);
@@ -21,11 +26,6 @@ const handle = nextApp.getRequestHandler();
 
 const { initializeServer, validateJWT, validateAPIKey } = require('./helpers/server.js');
 
-// Create global variable to store assistants in memory
-global.assistants = {};
-global.devices = [];
-global.socket = null;
-
 io.on('connection', socket => {
   global.socket = socket;
   console.log('Connection');
@@ -35,6 +35,10 @@ io.on('connection', socket => {
       global.socket.emit('castLog', { message: log.message, timestamp: log.timestamp });
     });
   });
+});
+
+io.on('error', e => {
+  console.log(e);
 });
 
 nextApp.prepare().then(async () => {
