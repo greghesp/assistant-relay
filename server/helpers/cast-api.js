@@ -13,7 +13,9 @@ client.on('device', function (device) {
     func: 'startSearch',
   });
 
-  global.socket.emit('deviceFound', { name: device.friendlyName, device: device });
+  if(global.socket){
+    global.socket.emit('deviceFound', { name: device.friendlyName, device: device });
+  }
 });
 
 exports.startSearch = function () {
