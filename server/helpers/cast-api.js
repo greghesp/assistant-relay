@@ -13,7 +13,7 @@ client.on('device', function (device) {
     func: 'startSearch',
   });
 
-  if(global.socket){
+  if (global.socket) {
     global.socket.emit('deviceFound', { name: device.friendlyName, device: device });
   }
 });
