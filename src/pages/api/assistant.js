@@ -2,15 +2,15 @@ const low = require('lowdb');
 const path = require('path');
 const FileWriter = require('wav').FileWriter;
 const moment = require('moment');
-const FileSync = require('lowdb/adapters/FileSync');
 const fs = require('fs');
 const cheerio = require('cheerio');
 
 const { sendTextInput } = require('../../../server/helpers/assistant');
 const { logger } = require('../../../server/helpers/logger');
 
-const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
+const { database, configuration } = require('../../../server/helpers/db');
+const dbAdapter = database();
+const configAdapter = configuration();
 
 export default async (req, res) => {
   try {
