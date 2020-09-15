@@ -2,8 +2,8 @@ const low = require('lowdb');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 
-const FileSync = require('lowdb/adapters/FileSync');
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
+const { configuration } = require('../../../../server/helpers/db');
+const configAdapter = configuration();
 const { logger } = require('../../../../server/helpers/logger');
 
 export default async (req, res) => {

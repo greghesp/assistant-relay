@@ -1,5 +1,5 @@
 const { logger } = require('../../../../server/helpers/logger');
-const { configuration, database } = require('../.././../../server/helpers/db');
+const { database } = require('../.././../../server/helpers/db');
 
 export default async (req, res) => {
   try {

@@ -1,9 +1,8 @@
 const low = require('lowdb');
-const path = require('path');
 
-const FileSync = require('lowdb/adapters/FileSync');
-const dbAdapter = new FileSync(path.resolve('server/bin', 'db.json'));
-const configAdapter = new FileSync(path.resolve('server/bin', 'config.json'));
+const { database, configuration } = require('../helpers/db');
+const dbAdapter = database();
+const configAdapter = configuration();
 const { logger } = require('../helpers/logger');
 
 const Conversation = require('google-assistant/components/conversation');

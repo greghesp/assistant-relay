@@ -1,7 +1,5 @@
 const { logger } = require('../../../../server/helpers/logger');
-const crypto = require('crypto');
-const { configuration, database } = require('../.././../../server/helpers/db');
-const config = configuration();
+const { database } = require('../.././../../server/helpers/db');
 
 export default async (req, res) => {
   try {
