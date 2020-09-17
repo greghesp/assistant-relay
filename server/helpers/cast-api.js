@@ -5,18 +5,18 @@ const { logger } = require('../helpers/logger');
 
 const client = new ChromecastAPI();
 
-client.on('device', function (device) {
-  global.devices.push({ name: device.friendlyName, device: device });
-
-  logger.log('info', `Found Cast device: ${device.friendlyName}`, {
-    service: 'server',
-    func: 'startSearch',
-  });
-
-  if (global.socket) {
-    global.socket.emit('deviceFound', { name: device.friendlyName, device: device });
-  }
-});
+// client.on('device', function (device) {
+//   global.devices.push({ name: device.friendlyName, device: device });
+//
+//   logger.log('info', `Found Cast device: ${device.friendlyName}`, {
+//     service: 'server',
+//     func: 'startSearch',
+//   });
+//
+//   // if (global.socket) {
+//   //   global.socket.emit('deviceFound', { name: device.friendlyName, device: device });
+//   // }
+// });
 
 exports.startSearch = function () {
   logger.log('info', `Clearing cached cast devices and starting new search`, {
@@ -52,6 +52,10 @@ exports.cast = function ({ device, pauseResume, url }) {
         func: 'cast',
       });
     }
+  });
+
+  castDevice.device.on('finished', cb => {
+    console.log('finished');
   });
 
   castDevice.device.on('status', status => {
