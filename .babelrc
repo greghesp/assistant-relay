@@ -1,7 +1,6 @@
 {
   "presets": ["next/babel", "@babel/preset-env"],
   "plugins": [
-    ["import", { "libraryName": "antd" }],
     ["babel-plugin-root-import",
       {
         "rootPathSuffix": "./",

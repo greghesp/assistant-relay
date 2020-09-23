@@ -62,39 +62,6 @@ function AddFirstUser() {
               </button>
             </span>
           </div>
-
-          {/*<Form onFinish={addUser}>*/}
-          {/*  <Form.Item*/}
-          {/*    label="Users Name"*/}
-          {/*    name="name"*/}
-          {/*    rules={[*/}
-          {/*      {*/}
-          {/*        required: true,*/}
-          {/*        message: 'Please input a users name!',*/}
-          {/*        type: 'string',*/}
-          {/*      },*/}
-          {/*    ]}*/}
-          {/*  >*/}
-          {/*    <Input />*/}
-          {/*  </Form.Item>*/}
-
-          {/*  <Form.Item {...tailLayout}>*/}
-          {/*    <div className="flex mt-5">*/}
-          {/*      <div className="mx-auto">*/}
-          {/*        <Button*/}
-          {/*          className="mx-1"*/}
-          {/*          href="https://greghesp.github.io/assistant-relay/docs/getting-started/configuration#configuring-credentials"*/}
-          {/*          target="_blank"*/}
-          {/*        >*/}
-          {/*          Setup Guide*/}
-          {/*        </Button>*/}
-          {/*        <Button className="mx-1" type="primary" htmlType="submit">*/}
-          {/*          Next*/}
-          {/*        </Button>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </Form.Item>*/}
-          {/*</Form>*/}
         </div>
       </form>
     </div>

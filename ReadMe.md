@@ -16,8 +16,8 @@ A rework of Assistant Relay to use [Next.js](https://nextjs.org/), to allow for 
   - [x] Store audio files
   - [ ] Store html responses
   - [ ] Store stats (count requests etc)
-- [ ] Add casting page
-  - [ ] Add `/cast` api 
+- [x] Add casting page
+  - [x] Add `/cast` api 
 - [x] Add settings page
 - [ ] Add html response page with interaction
 - [ ] Add dashboard stats

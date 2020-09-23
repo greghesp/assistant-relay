@@ -26,7 +26,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@tailwindcss/ui": "^0.3.1",
-    "antd": "^4.4.2",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bonjour": "^3.5.0",

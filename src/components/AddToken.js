@@ -1,28 +1,15 @@
-import { Button, message, Form, Input } from 'antd';
 import { post } from '../helpers/api';
 import Router from 'next/router';
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 26 },
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
-};
-
-const tailLayout = {
-  wrapperCol: { span: 24 },
-};
+import React, { useState } from 'react';
 
 function AddToken({ user }) {
-  async function addUser(values) {
+  const [authCode, setAuthCode] = useState();
+
+  async function addUser() {
     try {
       await post(`/api/server/processOAuth`, {
         name: user,
-        oauthCode: values.oauthcode,
+        oauthCode: authCode,
       });
 
       Router.push({
@@ -36,7 +23,6 @@ function AddToken({ user }) {
         service: 'web',
         func: 'AddToken - addUser',
       });
-      message.error(e);
     }
   }
 
@@ -45,31 +31,34 @@ function AddToken({ user }) {
       <p className="text-center">Paste your auth token from the Google Sign In window below</p>
 
       <div className="mt-5">
-        <Form {...formItemLayout} onFinish={addUser}>
-          <Form.Item
-            label="Auth Code"
-            name="oauthcode"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your auth code',
-                type: 'string',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <div className="flex mt-5">
-              <div className="mx-auto">
-                <Button type="primary" htmlType="submit">
-                  Finish
-                </Button>
-              </div>
+        <div className="mt-6 grid grid-cols-2 gap-4 items-center">
+          <label className="block text-sm leading-5 font-medium text-gray-700 overflow-hidden">
+            Auth Code
+          </label>
+          <div className="mt-2">
+            <div className="flex items-center">
+              <input
+                className="flex-1 form-input block w-full min-w-0 rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                type="input"
+                name="ouathcode"
+                onChange={e => setAuthCode(e.target.value)}
+              />
             </div>
-          </Form.Item>
-        </Form>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex mt-6">
+        <div className="mx-auto">
+          <button
+            onClick={e => addUser(e)}
+            className="inline-flex justify-right py-2 px-4 border border-transparent text-sm leading-5 font-medium
+            rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700
+            focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out ml-5"
+          >
+            Finish
+          </button>
+        </div>
       </div>
     </div>
   );

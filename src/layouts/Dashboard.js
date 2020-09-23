@@ -27,7 +27,6 @@ function Dashboard({ children, title }) {
     getUsers();
   }, []);
 
-
   if (!data)
     return (
       <div className="w-screen h-screen setupBg bg-gray-200">
@@ -116,10 +115,24 @@ function Dashboard({ children, title }) {
             </div>
             <NavBar />
           </div>
-          <div className="flex-shrink-0 flex p-4">
-            <p className="text-xs leading-4 font-medium text-center text-gray-300 group-hover:text-gray-100 transition ease-in-out duration-150">
+          <div className="flex-shrink-0 p-4">
+            <div className="w-full bg-gray-900 rounded-md block p-2">
+              <div className="text-xs font-medium text-center text-gray-300 mb-2">
+                Love Assistant Relay?
+              </div>
+              <a
+                href="https://www.paypal.com/paypalme/ghesp"
+                target="_blank"
+                className="inline-flex justify-center py-1 px-2 border border-transparent text-xs leading-5 font-medium
+               rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-indigo-700
+               focus:shadow-outline-indigo active:bg-blue-700 transition duration-150 ease-in-out w-full"
+              >
+                Donate
+              </a>
+            </div>
+            <div className="mt-3 text-xs leading-4 font-medium text-center text-gray-300 transition ease-in-out duration-150">
               Copyright © 2020 Assistant Relay
-            </p>
+            </div>
           </div>
         </div>
       </div>
