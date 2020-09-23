@@ -4,11 +4,14 @@ import ResponseBlock from '../components/ResponseBlock';
 import LoadingAnimation from '../components/LoadingAnimation';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useEffect, useState } from 'react';
-import { post } from '../helpers/api';
+import {post, postWithKey} from '../helpers/api';
 
 function Casting() {
   const [devices, setDevices] = useState([]);
-  const [command, setCommand] = useState([]);
+  const [command, setCommand] = useState({});
+  const [apiKey, setApiKey] = useState();
+  const [sending, setSending] = useState(false);
+
 
   useEffect(() => {
     async function getDevices() {
@@ -27,6 +30,29 @@ function Casting() {
     getDevices();
   }, []);
 
+  async function sendRequest(e) {
+    e.preventDefault();
+    setSending(true);
+    try {
+      const response = await postWithKey('/api/cast/catt', command, apiKey);
+      console.log(response);
+    } catch (e) {
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Casting - sendRequest',
+      });
+
+      if (e.response.status === 401) {
+        console.log(e.response.data.msg)
+      } else {
+        console.log(e.response.data.error)
+      }
+    }
+    setSending(false);
+  }
+
   return (
       <Dashboard title="Casting Sandbox">
         <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -42,25 +68,6 @@ function Casting() {
                     </p>
                   </div>
                   <div className="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
-                    <div className="sm:col-span-3">
-                      <label
-                          htmlFor="device"
-                          className="block text-sm font-medium leading-5 text-gray-700"
-                      >
-                        Device
-                      </label>
-                      <div className="mt-1 rounded-md shadow-sm">
-                        <select
-                            id="user"
-                            className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                            onChange={e => {}}
-                        >
-                          {devices.map(d => {
-                            return <option value={d.name}>{d.name}</option>;
-                          })}
-                        </select>
-                      </div>
-                    </div>
                     <div className="sm:col-span-6">
                       <label
                           htmlFor="about"
@@ -72,10 +79,10 @@ function Casting() {
                         <input
                             id="device"
                             className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                            onChange={e => {setCommand(e.target.value)}}
+                            onChange={e => {setCommand({command: e.target.value})}}
                         />
                       </div>
-                      <p className="mt-2 text-sm text-gray-500">CATT -d Kitchen cast https://www.youtube.com/watch?v=FPfQMVf4vwQ</p>
+                      <p className="mt-2 text-sm text-gray-500">CATT -d "Office Display" cast https://www.youtube.com/watch?v=FPfQMVf4vwQ</p>
                     </div>
 
                     <div className="sm:col-span-6">
@@ -89,7 +96,7 @@ function Casting() {
                         <input
                             id="apiKey"
                             className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                            onChange={e => {}}
+                            onChange={e => setApiKey(e.target.value)}
                         />
                       </div>
                     </div>
@@ -99,7 +106,9 @@ function Casting() {
               <div className="mt-8 border-t border-gray-200 pt-5">
                 <div className="flex justify-end">
                 <span className="ml-3 inline-flex rounded-md shadow-sm">
-                  <button className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out">
+                  <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
+                      onClick={(e) => sendRequest(e)}>
                     <span>Execute</span>
                   </button>
                 </span>
@@ -131,6 +140,7 @@ function Casting() {
                         readOnly
                         rows="13"
                         className="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        value={JSON.stringify(command, null, 4)}
                     />
                     </div>
                   </div>

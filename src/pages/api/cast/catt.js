@@ -8,7 +8,7 @@ export default async (req, res) => {
     await command(req.body);
     res.sendStatus(200);
   } catch (e) {
-    logger.log('error', e.message, { service: 'api', func: 'cast - devices' });
-    res.status(500).send(e.message);
+    logger.log('error', e, { service: 'api', func: 'cast - devices' });
+    res.status(500).send(e);
   }
 };

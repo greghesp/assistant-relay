@@ -6,7 +6,7 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import { post } from '../helpers/api';
 
 function Dashboard({ children, title }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ function Dashboard({ children, title }) {
     }
     getUsers();
   }, []);
+
 
   if (!data)
     return (

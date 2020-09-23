@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Button, Icon, message, Form, Input } from 'antd';
+import { Upload, Button, message, Form, Input } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { post } from '../helpers/api';
 import Router from 'next/router';
 
@@ -106,8 +107,8 @@ function AddSecrets({ track }) {
         <Form {...formItemLayout} onFinish={addUser}>
           <Form.Item label="Client Credentials" name="creds">
             <Upload {...props}>
-              <Button>
-                <Icon type="upload" /> Select File
+              <Button icon={<UploadOutlined />}>
+                Select File
               </Button>
             </Upload>
           </Form.Item>

@@ -1,9 +1,15 @@
 const s = require('shelljs');
-const { castLogger } = require('../helpers/logger');
+const { castLogger, logger } = require('../helpers/logger');
 
 exports.isInstalled = function () {
   return new Promise((res, rej) => {
-    if (!s.which('catt')) return rej('CATT is not installed');
+    if (!s.which('catt')) {
+      logger.log('error', 'CATT is not installed', {
+        service: "server",
+        func: 'cast - isInstalled',
+      });
+      return rej('CATT is not installed');
+    }
     return res();
   });
 };
@@ -11,7 +17,13 @@ exports.isInstalled = function () {
 exports.search = async function () {
   return new Promise((res, rej) => {
     const scan = s.exec('catt scan --json-output', { silent: true });
-    if (scan.code !== 0) return rej('CATT scan failed');
+    if (scan.code !== 0) {
+      logger.log('error', 'CATT scan failed', {
+        service: "server",
+        func: 'cast - search',
+      });
+      return rej('CATT scan failed');
+    }
     const devices = JSON.parse(scan.stdout);
     const newDevices = {
       success: true,
@@ -33,32 +45,31 @@ exports.search = async function () {
 
 exports.command = function ({ command }) {
   return new Promise((res, rej) => {
-    let status;
     // Check if command already includes `catt`, if so, remove it
-    if (command.startsWith('catt ')) command = command.slice(5);
+    if (command.toLowerCase().startsWith('catt ')) command = command.slice(5);
+
+    logger.log('info', `Executing ${command}`, {
+      service: "server",
+      func: 'cast - command',
+    });
 
     s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
       if (stdout) {
         const lines = stdout.split('\r\n');
         lines.forEach(l => {
-          if (l.length > 0) castLogger.log('info', l);
+          if (l.length > 0) {
+            logger.log('info', `${l}`, {
+              service: "server",
+              func: 'cast - command',
+            });
+          }
         });
       }
-      if (stderr) castLogger.log('error', stderr);
-      if (code === 0) return res();
-      return rej();
-    });
-  });
-};
 
-exports.cast = function ({ device, source, resume = false }) {
-  return new Promise((res, rej) => {
-    s.exec(`catt -d "${device}" cast ${source}`, { silent: true }, (code, stdout, stderr) => {
-      console.log(code);
-      if (stdout) console.log(stdout);
-      if (stderr) castLogger.log('error', stderr);
+      if (stderr) return rej(stderr);
+
       if (code === 0) return res();
-      return rej();
+
     });
   });
 };
