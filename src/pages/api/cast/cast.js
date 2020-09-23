@@ -1,9 +1,11 @@
+
 const { logger } = require('../../../../server/helpers/logger');
 
-const { cast } = require('../.././../../server/helpers/cast-api');
+const { isInstalled, cast } = require('../.././../../server/helpers/cast');
 
 export default async (req, res) => {
   try {
+    await isInstalled();
     await cast(req.body);
     res.sendStatus(200);
   } catch (e) {

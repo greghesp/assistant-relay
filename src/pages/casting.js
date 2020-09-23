@@ -8,6 +8,7 @@ import { post } from '../helpers/api';
 
 function Casting() {
   const [devices, setDevices] = useState([]);
+  const [command, setCommand] = useState([]);
 
   useEffect(() => {
     async function getDevices() {
@@ -65,16 +66,16 @@ function Casting() {
                           htmlFor="about"
                           className="block text-sm font-medium leading-5 text-gray-700"
                       >
-                        Source
+                        CATT Command
                       </label>
                       <div className="mt-1 rounded-md shadow-sm">
                         <input
                             id="device"
                             className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                            onChange={e => {}}
+                            onChange={e => {setCommand(e.target.value)}}
                         />
                       </div>
-                      <p className="mt-2 text-sm text-gray-500">YouTube URL, Local Video etc</p>
+                      <p className="mt-2 text-sm text-gray-500">CATT -d Kitchen cast https://www.youtube.com/watch?v=FPfQMVf4vwQ</p>
                     </div>
 
                     <div className="sm:col-span-6">

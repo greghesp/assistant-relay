@@ -1,4 +1,5 @@
 const s = require('shelljs');
+const { castLogger } = require('../helpers/logger');
 
 exports.isInstalled = function () {
   return new Promise((res, rej) => {
@@ -27,5 +28,37 @@ exports.search = async function () {
     });
 
     return res(newDevices);
+  });
+};
+
+exports.command = function ({ command }) {
+  return new Promise((res, rej) => {
+    let status;
+    // Check if command already includes `catt`, if so, remove it
+    if (command.startsWith('catt ')) command = command.slice(5);
+
+    s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
+      if (stdout) {
+        const lines = stdout.split('\r\n');
+        lines.forEach(l => {
+          if (l.length > 0) castLogger.log('info', l);
+        });
+      }
+      if (stderr) castLogger.log('error', stderr);
+      if (code === 0) return res();
+      return rej();
+    });
+  });
+};
+
+exports.cast = function ({ device, source, resume = false }) {
+  return new Promise((res, rej) => {
+    s.exec(`catt -d "${device}" cast ${source}`, { silent: true }, (code, stdout, stderr) => {
+      console.log(code);
+      if (stdout) console.log(stdout);
+      if (stderr) castLogger.log('error', stderr);
+      if (code === 0) return res();
+      return rej();
+    });
   });
 };
