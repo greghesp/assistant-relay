@@ -40,7 +40,7 @@ exports.initializeServer = function () {
             },
             lang: 'en-US',
             screen: {
-              isOn: true,
+              isOn: false,
             },
           },
           releaseChannel: 'stable',

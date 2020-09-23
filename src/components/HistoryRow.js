@@ -4,7 +4,7 @@ import path from 'path';
 
 function HistoryRow({ data }) {
   const [playing, setPlaying] = useState(false);
-  const audio = new Audio(path.resolve(process.cwd(), 'audio-responses', `${data.timestamp}.wav`));
+  const audio = new Audio(`${window.location.origin}/audio-responses/${data.timestamp}.wav`);
 
   audio.onended = function () {
     setPlaying(false);
@@ -23,8 +23,11 @@ function HistoryRow({ data }) {
   };
 
   function execute() {
-    if (playing) return audio.pause();
-    audio.play();
+    if (playing) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
   }
 
   const stopSvg = (
