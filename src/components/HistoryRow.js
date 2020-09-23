@@ -1,33 +1,40 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import m from 'moment';
 import path from 'path';
 
 function HistoryRow({ data }) {
   const [playing, setPlaying] = useState(false);
-  const audio = new Audio(`${window.location.origin}/audio-responses/${data.timestamp}.wav`);
+  const [hasError, setHasError] = useState(false);
 
-  audio.onended = function () {
+  const audio = useRef(
+    new Audio(`${window.location.origin}/audio-responses/${data.timestamp}.wav`),
+  );
+
+  audio.current.onended = function () {
     setPlaying(false);
   };
 
-  audio.onpause = function () {
-    setPlaying(false);
-  };
-
-  audio.onplay = function () {
+  audio.current.onplay = function () {
     setPlaying(true);
   };
 
-  audio.onerror = function () {
-    setPlaying(false);
-  };
+  useEffect(() => {
+    if (playing) {
+      audio.current
+        .play()
+        .then(() => {
+          // Audio is playing.
+        })
+        .catch(error => {
+          setHasError(true);
+        });
+    } else if (!hasError) {
+      audio.current.pause();
+    }
+  }, [playing, hasError]);
 
   function execute() {
-    if (playing) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
+    setPlaying(playing => !playing);
   }
 
   const stopSvg = (
