@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { post } from '../helpers/api';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Toast from './Toast';
 
 const url =
   'https://greghesp.github.io/assistant-relay/docs/getting-started/configuration#configuring-credentials';
 
 function SetupTutorial() {
-  const [track, setTrack] = useState(false);
+  const [track, setTrack] = useState(true);
+  const [toastData, setToastData] = useState({ show: false });
 
   async function next(e) {
     try {
+      await post('/api/server/setTracking', {
+        track: track,
+      });
+
       Router.push({
         pathname: '/setup/credentials',
-        query: { track },
       });
     } catch (e) {
-      // TODO:  Trigger UI Alert
+      setToastData({
+        show: true,
+        content: e.message,
+        success: false,
+      });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -28,6 +36,7 @@ function SetupTutorial() {
 
   return (
     <div>
+      <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
       <p className="text-center">
         To continue your setup, and get your credentials. <a href={url}>Follow the setup guide</a>{' '}
         in the documentation{' '}
@@ -38,6 +47,7 @@ function SetupTutorial() {
           <input
             id="comments"
             type="checkbox"
+            defaultChecked={track}
             className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
             onChange={e => setTrack(e.target.checked)}
           />

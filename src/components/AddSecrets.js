@@ -41,9 +41,6 @@ function AddSecrets({ track }) {
         await post('/api/server/addSecret', {
           secret: JSON.parse(event.target.result),
         });
-        await post('/api/server/setTracking', {
-          track: track === 'true',
-        });
 
         Router.push({
           pathname: '/setup/user',

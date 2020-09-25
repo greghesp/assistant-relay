@@ -3,7 +3,6 @@ const { OAuth2Client } = require('google-auth-library');
 const { logger } = require('../../../../server/helpers/logger');
 
 const { sendTextInput } = require('../../../../server/helpers/assistant');
-const { trackVersion } = require('../../../../server/helpers/server');
 
 const { database } = require('../.././../../server/helpers/db');
 
@@ -23,8 +22,6 @@ export default async (req, res) => {
     oauthClient.setCredentials(r.tokens);
 
     await db.get('users').chain().find({ name: name }).assign({ tokens: r.tokens }).write();
-
-    await trackVersion();
 
     global.assistants[name] = new Assistant(oauthClient);
 

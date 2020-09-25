@@ -3,6 +3,7 @@ const { sendTextInput } = require('../helpers/assistant.js');
 const { logger } = require('../helpers/logger');
 const jwt = require('jsonwebtoken');
 const packageFile = require('../../package.json');
+const axios = require('axios');
 
 const { database, configuration } = require('../helpers/db');
 
@@ -14,8 +15,6 @@ exports.initializeServer = function () {
       const db = database();
       const config = configuration();
 
-      const users = await db.get('users').value();
-      const muteStartup = await db.get('muteStartup').value();
       //const isQH = await exports.isQuietHour();
       const promises = [];
       let firstLoad = true;
@@ -44,7 +43,7 @@ exports.initializeServer = function () {
             },
           },
           releaseChannel: 'stable',
-          track: false,
+          trackID: null,
           accessControl: false,
           passwordLock: true,
           password: 'assistant',
@@ -61,12 +60,19 @@ exports.initializeServer = function () {
         })
         .write();
 
+      const users = await db.get('users').value();
+      const muteStartup = await db.get('muteStartup').value();
+      const uid = config.get('trackID').value();
+
       // TODO: Check what audio/html files exist. Remove from db if not there.  HASS IO workaround
 
       logger.log('info', 'Initialised configuration and database', {
         service: 'server',
         func: 'initializeServer',
       });
+
+      // If there is a saved UID, update the tracked version
+      if (uid) await this.updateTrackingVersion(uid);
 
       if (db.get('users').size().value() > 0) {
         const secret = await db.get('secret').value();
@@ -116,8 +122,34 @@ exports.initializeServer = function () {
 
 exports.trackVersion = function () {
   //ToDo: Send version info
-  console.log(packageFile.version);
-  return;
+  return axios({
+    method: 'post',
+    url: `${process.env.functions_base}/initialize`,
+    data: {
+      version: packageFile.version,
+    },
+  });
+};
+
+exports.removeTracking = function (uid) {
+  return axios({
+    method: 'post',
+    url: `${process.env.functions_base}/removeTracking`,
+    data: {
+      uid,
+    },
+  });
+};
+
+exports.updateTrackingVersion = function (uid) {
+  return axios({
+    method: 'post',
+    url: `${process.env.functions_base}/updateTrackingVersion`,
+    data: {
+      uid,
+      version: packageFile.version,
+    },
+  });
 };
 
 exports.validateJWT = function (req) {
