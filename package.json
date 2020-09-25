@@ -50,6 +50,7 @@
     "react-cookie": "^4.0.3",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
+    "react-mailchimp-subscribe": "^2.1.0",
     "react-transition-group": "^4.4.1",
     "react-useanimations": "^2.0.5",
     "shelljs": "^0.8.4",
