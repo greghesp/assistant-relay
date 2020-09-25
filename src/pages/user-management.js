@@ -8,6 +8,7 @@ import withAuth from '~/src/helpers/withAuth';
 import Router from 'next/router';
 import Transition from '../helpers/Transition';
 import ResponseBlock from '../components/ResponseBlock';
+import Toast from '../components/Toast';
 
 function UserManagement() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ function UserManagement() {
   const [oauthcode, setOauthcode] = useState();
   const [response, setResponse] = useState();
   const [showResponse, setShowResponse] = useState(false);
+  const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
     async function getUsers() {
@@ -44,6 +46,11 @@ function UserManagement() {
 
   async function addUser(e) {
     e.preventDefault();
+
+    if (!name || name.length < 1) {
+      return setToastData({ show: true, content: 'Please enter a user name', success: false });
+    }
+
     setGettingKey(true);
     try {
       const response = await post(`/api/server/addUser`, {
@@ -176,7 +183,12 @@ function UserManagement() {
 
   return (
     <Dashboard title="User Management">
-      <p className="mt-5">Manage your user accounts that Assistant Relay uses</p>
+      <Toast
+        show={toastData.show} //showResponse
+        content={toastData.content} //response.response
+        success={toastData.success} //response.success
+      />
+      <p className="mt-5 text-sm">Manage your user accounts that Assistant Relay uses</p>
       <ResponseBlock response={response} show={showResponse} close={() => setShowResponse(false)} />
       <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
         <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">

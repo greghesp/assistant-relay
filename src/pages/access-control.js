@@ -97,10 +97,10 @@ function AccessControl() {
 
   return (
     <Dashboard title="Access Control">
-      <p className="mt-5">
+      <p className="mt-5 text-sm">
         Here you can set API keys for the endpoints, as well as set a password for the dashboard
       </p>
-      <p className="mt-1">
+      <p className="mt-1 text-sm">
         If you're setting a API key because you plan to expose the endpoints publicly, it's highly
         recommended that you set a dashboard password to prevent the API keys being replaced or
         accessed.

@@ -6,7 +6,7 @@ function APIKeys({ keys, deleteKey }) {
   if (keys.length <= 0)
     return (
       <div className="pt-5">
-        <p className="text-center">No API keys set</p>
+        <p className="text-center text-sm">No API keys set</p>
       </div>
     );
 

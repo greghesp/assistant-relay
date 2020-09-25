@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { post } from '../helpers/api';
+import Toast from './Toast';
 
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState('');
@@ -9,6 +9,7 @@ function ChangePassword() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
     if (newPassword.length < 6 && newPassword.length !== 0) {
@@ -29,12 +30,30 @@ function ChangePassword() {
 
   async function sendRequest(e) {
     e.preventDefault();
+
+    if (!newPassword || !repeatPassword || !oldPassword) {
+      return setToastData({
+        show: true,
+        content: 'Please make sure all password fields are complete',
+        success: false,
+      });
+    }
+
     try {
       await post(`/api/server/changePassword`, {
         password: newPassword,
       });
+      setToastData({
+        show: true,
+        content: 'Password changed',
+        success: true,
+      });
     } catch (e) {
-      // TODO:  Trigger UI Alert
+      setToastData({
+        show: true,
+        content: e.message,
+        success: false,
+      });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -79,6 +98,7 @@ function ChangePassword() {
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
+      <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
       <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
         <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-no-wrap">
           <div className="ml-4 mt-2">

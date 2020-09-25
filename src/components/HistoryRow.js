@@ -74,7 +74,7 @@ function HistoryRow({ data }) {
             onClick={() => execute()}
           >
             {data.type === 'command' ? (playing ? stopSvg : playSvg) : null}
-            <span>{data.command}</span>
+            <span className="text-sm leading-5">{data.command}</span>
           </div>
           <div className="ml-2 flex-shrink-0 flex">
             <div className="mr-6 flex items-center text-sm leading-5 text-gray-500">
@@ -103,9 +103,9 @@ function HistoryRow({ data }) {
         <div className="mt-5 sm:flex sm:justify-between">
           <div className="sm:flex w-2/3">
             {data?.response.trim().length ? (
-              <p className="pl-5">{data.response}</p>
+              <p className="pl-5 text-sm leading-5">{data.response}</p>
             ) : (
-              <p className="pl-5 italic">No Response</p>
+              <p className="pl-5 italic text-sm leading-5">No Response</p>
             )}
           </div>
           <div className="mt-2 flex items-center justify-end text-sm leading-5 text-gray-500 sm:mt-0 w-1/3">

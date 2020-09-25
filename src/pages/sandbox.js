@@ -54,12 +54,11 @@ const presets = [
 function Sandbox() {
   const [json, setJSON] = useState({ broadcast: false, talkback: false });
   const [apiKey, setApiKey] = useState();
-  const [showResponse, setShowResponse] = useState(false);
   const [disabled, setDisabled] = useState([]);
-  const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [users, setUsers] = useState([]);
+  const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
     async function getUsers() {
@@ -86,7 +85,7 @@ function Sandbox() {
     setSending(true);
     try {
       const response = await postWithKey('/api/assistant', json, apiKey);
-      setResponse(response.data);
+      setToastData({ show: true, content: response.data.response, success: true });
     } catch (e) {
       await post('/api/server/writeLogs', {
         level: 'error',
@@ -96,35 +95,25 @@ function Sandbox() {
       });
 
       if (e.response.status === 401) {
-        setResponse({
-          success: false,
-          response: e.response.data.msg,
-        });
+        setToastData({ show: true, content: e.response.data.msg, success: false });
       } else {
-        setResponse({
-          success: false,
-          response: e.response.data.error,
-        });
+        setToastData({ show: true, content: e.response.data.error, success: false });
       }
     }
     setSending(false);
-    setShowResponse(true);
   }
 
   if (loading) return null;
 
-  console.log('showResp', showResponse);
+  console.log(toastData);
 
   return (
     <Dashboard title="Sandbox">
-      {/*{response?.rawHtml ? (*/}
-      {/*  <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />*/}
-      {/*) : null}*/}
       <Toast
-        show={showResponse} //showResponse
-        content={response?.response} //response.response
-        onClose={() => setShowResponse(false)}
-        success={response?.success} //response.success
+        show={toastData.show}
+        content={toastData.content}
+        onClose={() => setToastData({ show: false })}
+        success={toastData.success}
       />
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">
