@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 
 import SetupLayout from '~/src/layouts/Setup';
-import { post } from '../../helpers/api';
 import Router from 'next/router';
 
 function SignUp() {
