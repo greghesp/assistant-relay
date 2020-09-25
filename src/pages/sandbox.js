@@ -6,6 +6,7 @@ import withAuth from '~/src/helpers/withAuth';
 import Dashboard from '~/src/layouts/Dashboard';
 import ResponseBlock from '../components/ResponseBlock';
 import LoadingAnimation from '../components/LoadingAnimation';
+import Toast from '../components/Toast';
 
 const presets = [
   {
@@ -111,12 +112,20 @@ function Sandbox() {
   }
 
   if (loading) return null;
+
+  console.log('showResp', showResponse);
+
   return (
     <Dashboard title="Sandbox">
       {response?.rawHtml ? (
         <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />
       ) : null}
-      <ResponseBlock response={response} show={showResponse} close={() => setShowResponse(false)} />
+      <Toast
+        show={showResponse} //showResponse
+        content={response?.response} //response.response
+        onClose={() => setShowResponse(false)}
+        success={response?.success} //response.success
+      />
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10 md:col-span-2">
           <form>
