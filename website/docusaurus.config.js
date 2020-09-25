@@ -2,7 +2,9 @@ module.exports = {
   title: 'Assistant Relay',
   tagline: 'Exposing the Google Assistant Service as a REST API',
   url: 'https://greghesp.github.io',
+  //url: 'https://www.assistantrelay.com',
   baseUrl: '/assistant-relay/',
+  // baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'greghesp', // Usually your GitHub org/user name.
   projectName: 'assistant-relay', // Usually your repo name.
