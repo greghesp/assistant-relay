@@ -1,10 +1,10 @@
 module.exports = {
   title: 'Assistant Relay',
   tagline: 'Exposing the Google Assistant Service as a REST API',
-  url: 'https://greghesp.github.io',
-  //url: 'https://www.assistantrelay.com',
-  baseUrl: '/assistant-relay/',
-  // baseUrl: '/',
+  //url: 'https://greghesp.github.io',
+  url: 'https://assistant-relay.netlify.app/',
+  //baseUrl: '/assistant-relay/',
+  baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'greghesp', // Usually your GitHub org/user name.
   projectName: 'assistant-relay', // Usually your repo name.
