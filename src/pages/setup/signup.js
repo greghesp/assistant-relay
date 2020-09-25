@@ -6,43 +6,17 @@ import { post } from '../../helpers/api';
 import Router from 'next/router';
 
 function SignUp() {
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  async function sendRequest(e) {
-    e.preventDefault();
-    try {
-      await post(`/api/server/changePassword`, {
-        password,
-      });
-      Router.push({
-        pathname: '/setup/tracking',
-      });
-    } catch (e) {
-      // TODO: Handle error
-      await post('/api/server/writeLogs', {
-        level: 'error',
-        message: e.message,
-        service: 'web',
-        func: 'Setup - sendRequest',
-      });
-    }
-  }
-
   return (
     <SetupLayout>
       <div className="bg-white rounded-lg border shadow-lg p-10">
         <div className="border-gray-100 border-b pb-5">
-          <h1 className="text-xl font-semibold">Setup Assistant Relay</h1>
+          <h1 className="text-xl font-semibold">Our Mailing List</h1>
         </div>
-        <div className="pt-5">
-          <p>
-            Before you can setup Assistant Relay, you need to change the default password for the
-            dashboard.
-          </p>
-          <p>Enter a password below to continue</p>
+        <div className="pt-5 text-sm">
+          <p>Want to sign up to our mailing list? Just complete the form below.</p>
+          <p>No spam, we promise.</p>
           <MailchimpSubscribe
-            url={'https://gmail.us2.list-manage.com/subscribe/post?u=a0998a875b6b9e8b2b8a362d1'}
+            url="https://gmail.us2.list-manage.com/subscribe/post?u=a0998a875b6b9e8b2b8a362d1&amp;id=6b3bc05c1c"
             render={({ subscribe, status, message }) => (
               <CustomForm
                 status={status}
@@ -63,22 +37,43 @@ function CustomForm({ status, message, onValidated }) {
 
   function submit(e) {
     e.preventDefault();
-    if (email && name && email.value.indexOf('@') > 1) {
+    if (name && email) {
       onValidated({
-        EMAIL: email.value,
-        NAME: name.value,
+        MERGE0: email,
+        MERGE1: name,
       });
     }
   }
 
+  function skip() {
+    Router.push({
+      pathname: '/setup/tracking',
+    });
+  }
+
+  function StatusBlock() {
+    if (!status) return null;
+    if (status === 'sending') return <div className="text-blue-500">Sending...</div>;
+    if (status === 'error')
+      return <div className="text-red-500" dangerouslySetInnerHTML={{ __html: message }} />;
+    if (status === 'success') {
+    }
+    return <div className="text-green-500" dangerouslySetInnerHTML={{ __html: message }} />;
+  }
+
+  if (status === 'success') skip();
+
   return (
     <div>
       <div>
+        <div className="mt-5">
+          <StatusBlock />
+        </div>
         <div>
           <div className="mt-6 sm:mt-5">
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
               <label
-                htmlFor="first_name"
+                htmlFor="name"
                 className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
               >
                 Name
@@ -99,7 +94,7 @@ function CustomForm({ status, message, onValidated }) {
           <div className="mt-6 sm:mt-5">
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
               <label
-                htmlFor="first_name"
+                htmlFor="email"
                 className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
               >
                 Email
@@ -119,8 +114,8 @@ function CustomForm({ status, message, onValidated }) {
           </div>
         </div>
       </div>
-      <div className="mt-8 border-t border-gray-200 pt-5">
-        <div className="flex justify-end">
+      <div className="mt-6">
+        <div className="flex justify-center">
           <span className="ml-3 inline-flex">
             <button
               type="submit"

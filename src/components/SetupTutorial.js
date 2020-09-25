@@ -37,7 +37,7 @@ function SetupTutorial() {
   return (
     <div>
       <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
-      <p className="text-center">
+      <p className="text-center text-sm">
         To continue your setup, and get your credentials. <a href={url}>Follow the setup guide</a>{' '}
         in the documentation{' '}
       </p>
@@ -48,7 +48,7 @@ function SetupTutorial() {
             id="comments"
             type="checkbox"
             defaultChecked={track}
-            className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+            className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
             onChange={e => setTrack(e.target.checked)}
           />
         </div>
