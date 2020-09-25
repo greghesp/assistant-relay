@@ -1,5 +1,5 @@
 import Transition from '../helpers/Transition';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 const success_svg = (
   <svg
@@ -35,20 +35,26 @@ const fail_svg = (
   </svg>
 );
 
-function Toast({ show, icon, title, content, success, onClose }) {
+function Toast({ show = false, icon, title, content, success, onClose }) {
   const [showToast, setShowToast] = useState(false);
 
-  useEffect(() => {
+  const fetchToast = useCallback(async () => {
+    console.log('Update show:', show);
     setShowToast(show);
-  }, [show]);
-
-  useEffect(() => {
     if (show) {
       setTimeout(() => {
         setShowToast(false);
+        console.log(showToast);
+        // onClose();
       }, 5000);
     }
   }, [show]);
+
+  useEffect(() => {
+    fetchToast();
+  }, [fetchToast]);
+
+  console.log(showToast, show);
 
   return (
     <div className="fixed inset-0 flex items-end justify-center px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end ">

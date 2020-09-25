@@ -112,7 +112,7 @@ function Sandbox() {
       <Toast
         show={toastData.show}
         content={toastData.content}
-        onClose={() => setToastData({ show: false })}
+        onClose={() => setToastData({ ...show, show: false })}
         success={toastData.success}
       />
       <div className="md:grid md:grid-cols-3 md:gap-6">
