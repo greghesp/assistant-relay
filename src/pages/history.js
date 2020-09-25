@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { post } from '../helpers/api';
 
 import Dashboard from '~/src/layouts/Dashboard';
 import withAuth from '~/src/helpers/withAuth';
+import Toast from '../components/Toast';
 
 const HistoryRow = dynamic(() => import('../components/HistoryRow'), { ssr: false });
 
 function History() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
     async function getHistory() {
@@ -19,7 +21,7 @@ function History() {
         setHistory(r.data.responses);
         setLoading(false);
       } catch (e) {
-        // TODO: Handle error
+        setToastData({ show: true, content: e.message, success: false });
         await post('/api/server/writeLogs', {
           level: 'error',
           message: e.message,
@@ -56,6 +58,8 @@ function History() {
 
   return (
     <Dashboard title="History">
+      <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
+
       <div>
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
           <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">

@@ -1,11 +1,12 @@
 import Dashboard from '~/src/layouts/Dashboard';
 import ChangePassword from '../components/ChangePassword';
 import APIKeys from '../components/APIKeys';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
 import withAuth from '~/src/helpers/withAuth';
 
 import Router from 'next/router';
+import Toast from '../components/Toast';
 
 function AccessControl() {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ function AccessControl() {
   const [gettingKey, setGettingKey] = useState(false);
   const [newKey, setNewKey] = useState();
   const [deletingKey, setDeletingKey] = useState(false);
+  const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
     async function checkAuth() {
@@ -27,7 +29,7 @@ function AccessControl() {
         }
         setAllowed(response.data.passwordEnabled);
       } catch (e) {
-        // TODO: Handle error
+        setToastData({ show: true, content: e.message, success: false });
         await post('/api/server/writeLogs', {
           level: 'error',
           message: e.message,
@@ -47,7 +49,7 @@ function AccessControl() {
       const r = await post(`/api/server/generateAPIKey`);
       setNewKey(r.data.key);
     } catch (e) {
-      // TODO: Handle error
+      setToastData({ show: true, content: e.message, success: false });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -63,7 +65,7 @@ function AccessControl() {
       await post('/api/server/deleteKey', { apiKey: k });
       setDeletingKey(prevState => !prevState);
     } catch (e) {
-      // TODO: Handle error
+      setToastData({ show: true, content: e.message, success: false });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -78,6 +80,7 @@ function AccessControl() {
   if (!allowed)
     return (
       <Dashboard title="Access Control">
+        <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
         <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
           <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-no-wrap">

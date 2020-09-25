@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import LoginLayout from '~/src/layouts/Login';
-import { Cookies } from 'react-cookie';
 import axios from 'axios';
 import Router from 'next/router';
 import { post } from '../helpers/api';
+import Toast from '../components/Toast';
 
 function Login() {
-  const cookies = new Cookies();
-
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
   const [errorMsg, setErrorMsg] = useState();
-  const [token, setToken] = useState(cookies.get('token') || null);
-  const [loading, setLoading] = useState(true);
+  const [toastData, setToastData] = useState({ show: false });
 
   function Error() {
     if (error) {
@@ -37,7 +34,7 @@ function Login() {
 
       Router.push('/');
     } catch (e) {
-      // TODO: Handle error
+      setToastData({ show: true, content: e.message, success: false });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -51,6 +48,7 @@ function Login() {
 
   return (
     <LoginLayout>
+      <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
       <div className="bg-white rounded-lg border shadow-lg p-10">
         <div className="border-gray-100 border-b pb-5">
           <h1 className="text-xl font-semibold">Login to Assistant Relay</h1>

@@ -72,7 +72,7 @@ exports.initializeServer = function () {
       });
 
       // If there is a saved UID, update the tracked version
-      if (uid) await this.updateTrackingVersion(uid);
+      if (uid) await exports.updateTrackingVersion(uid);
 
       if (db.get('users').size().value() > 0) {
         const secret = await db.get('secret').value();
@@ -120,29 +120,33 @@ exports.initializeServer = function () {
   });
 };
 
-exports.trackVersion = function () {
-  //ToDo: Send version info
-  return axios({
+exports.trackVersion = async function () {
+  const config = configuration();
+  const { data } = await axios({
     method: 'post',
     url: `${process.env.functions_base}/initialize`,
     data: {
       version: packageFile.version,
     },
   });
+  await config.set('trackID', data.uid).write();
 };
 
-exports.removeTracking = function (uid) {
-  return axios({
+exports.removeTracking = async function () {
+  const config = configuration();
+  const uid = config.get('trackID').value();
+  await axios({
     method: 'post',
     url: `${process.env.functions_base}/removeTracking`,
     data: {
       uid,
     },
   });
+  await config.set('trackID', null).write();
 };
 
-exports.updateTrackingVersion = function (uid) {
-  return axios({
+exports.updateTrackingVersion = async function (uid) {
+  const { data } = await axios({
     method: 'post',
     url: `${process.env.functions_base}/updateTrackingVersion`,
     data: {
@@ -150,6 +154,13 @@ exports.updateTrackingVersion = function (uid) {
       version: packageFile.version,
     },
   });
+  if (!data.success && data.code === 97) await exports.trackVersion();
+  if (!data.success && data.code === 99) {
+    logger.log('error', 'Updating Tracking Version Failed. Please report', {
+      service: 'server',
+      func: 'updateTrackingVersion',
+    });
+  }
 };
 
 exports.validateJWT = function (req) {

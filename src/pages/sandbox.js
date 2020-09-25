@@ -67,7 +67,7 @@ function Sandbox() {
         setUsers(r.data.users);
         setLoading(false);
       } catch (e) {
-        // TODO: Handle error
+        setToastData({ show: true, content: e.message, success: false });
         await post('/api/server/writeLogs', {
           level: 'error',
           message: e.message,

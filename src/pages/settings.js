@@ -4,11 +4,14 @@ import TimePicker from '~/src/components/TimePicker';
 import React, { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
 import Transition from '../helpers/Transition';
+import Toast from '../components/Toast';
 
 function Settings() {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
+  const [toastData, setToastData] = useState({ show: false });
 
+  // Get initial settings
   useEffect(() => {
     async function getSettings() {
       try {
@@ -16,7 +19,7 @@ function Settings() {
         setSettings(r.data);
         setLoading(false);
       } catch (e) {
-        // TODO: Handle error
+        setToastData({ show: true, content: e.message, success: false });
         await post('/api/server/writeLogs', {
           level: 'error',
           message: e.message,
@@ -33,7 +36,7 @@ function Settings() {
     try {
       await post('/api/server/saveSettings', json);
     } catch (e) {
-      // TODO: Handle error
+      setToastData({ show: true, content: e.message, success: false });
       await post('/api/server/writeLogs', {
         level: 'error',
         message: e.message,
@@ -47,6 +50,7 @@ function Settings() {
 
   return (
     <Dashboard title="Settings">
+      <Toast show={toastData.show} content={toastData.content} success={toastData.success} />
       <div className="bg-white rounded-lg shadow-lg p-5 mt-10">
         <div className="mt-6">
           <div role="group" aria-labelledby="label-notifications">
