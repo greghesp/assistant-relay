@@ -71,10 +71,10 @@ module.exports = {
         {
           title: 'Social',
           items: [
-            // {
-            //   label: 'Blog',
-            //   to: 'blog',
-            // },
+            {
+              label: 'Facebook',
+              href: 'https://www.facebook.com/assistantrelay',
+            },
             {
               label: 'GitHub',
               href: 'https://github.com/greghesp/assistant-relay',
@@ -83,6 +83,11 @@ module.exports = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Assistant Relay. Built with Docusaurus.`,
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
     },
   },
   presets: [
