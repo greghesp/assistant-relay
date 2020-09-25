@@ -36,15 +36,16 @@ const fail_svg = (
 );
 
 function Toast({ show, icon, title, content, success, onClose }) {
-  const [showToast, setShow] = useState(show);
-  console.log(show, showToast); // true, false
+  const [showToast, setShowToast] = useState();
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log('hi');
-  //     setShow(false);
-  //   }, 5000);
-  // }, []);
+  useEffect(() => {
+    setShowToast(show);
+
+    setTimeout(() => {
+      console.log('hi');
+      setShowToast(false);
+    }, 5000);
+  }, [show]);
 
   return (
     <div className="fixed inset-0 flex items-end justify-center px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end ">

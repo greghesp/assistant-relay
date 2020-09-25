@@ -117,9 +117,9 @@ function Sandbox() {
 
   return (
     <Dashboard title="Sandbox">
-      {response?.rawHtml ? (
-        <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />
-      ) : null}
+      {/*{response?.rawHtml ? (*/}
+      {/*  <div className="overlay" dangerouslySetInnerHTML={{ __html: response.rawHtml }} />*/}
+      {/*) : null}*/}
       <Toast
         show={showResponse} //showResponse
         content={response?.response} //response.response
