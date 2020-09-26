@@ -9,8 +9,8 @@ module.exports = {
   docs: {
     "Assistant Relay": ['introduction', 'contributing'],
     "Getting Started": ['getting-started/installation', 'getting-started/configuration'],
-    "Assistant": ['assistant/broadcast', 'assistant/commands'],
-    "Casting": ['cast/search', 'cast/casting'],
+    "Commands": ['assistant/broadcast', 'assistant/presets', 'assistant/custom-assistant'],
+    "Casting": ['cast/search', 'cast/casting', 'cast/stop'],
     "Smart Home Integration": ['integration/webcore', 'integration/hass'],
     "Other Information": ['other/faq', 'other/changes', 'other/contributors']
   },

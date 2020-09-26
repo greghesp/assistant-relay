@@ -15,7 +15,11 @@ module.exports = {
         alt: 'Assistant Relay Logo',
         src: 'img/logo.svg',
       },
-      links: [
+      items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
         {to: 'docs/introduction', label: 'Docs', position: 'left'},
         {href: `https://github.com/greghesp/assistant-relay/releases/latest`, label: 'Download', position: 'left'},
         {href: `https://github.com/greghesp/assistant-relay/issues/new/choose`, label: 'Report an Issue', position: 'right'},
@@ -43,7 +47,7 @@ module.exports = {
             },
             {
               label: 'Commands',
-              to: 'docs/commands/broadcast',
+              to: 'docs/assistant/broadcast',
             },
             {
               label: 'Casting',
@@ -95,8 +99,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          path: '../docs',
-          sidebarPath: require.resolve('../docs/sidebars.js'),
+          sidebarPath: require.resolve('./docs/sidebars.js'),
           editUrl: 'https://github.com/greghesp/assistant-relay/edit/doc-src/',
         },
         theme: {

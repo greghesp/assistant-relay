@@ -9,7 +9,7 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
-//import IdealImage from '@theme/IdealImage';
+import IdealImage from '@theme/IdealImage';
 
 
 import styles from './styles.module.css';
@@ -37,7 +37,8 @@ export default {
   h5: Heading('h5'),
   h6: Heading('h6'),
   img: (props) => {
-    const image = require(`../../../../docs/_assets/${props.src}`);
+    if (!props.src) return null;
+
     let alt = props.alt || '';
     if (alt.startsWith('hide:')) {
       alt = alt.replace('hide:', '');
@@ -45,29 +46,9 @@ export default {
 
     return (
         <figure className={styles.figure}>
-          <img src={image.src.src} alt={alt}/>
+          <img src={props.src} alt={alt}  />
           {alt === props.alt && <figcaption>{alt}</figcaption>}
         </figure>
     );
   }
-  // img: (props) => {
-  //   console.log(props)
-  //   let alt = props.alt || '';
-  //
-  //   // Prefix any alt tags with "hide:" to not show them as a caption
-  //   if (alt.startsWith('hide:')) {
-  //     alt = alt.replace('hide:', '');
-  //   }
-  //
-  //   return (
-  //       <figure className={styles.figure}>
-  //           <IdealImage
-  //               img={require(`../../../../docs/_assets/${props.src ?? ''}`)}
-  //               alt={alt}
-  //               quality={100}
-  //           />
-  //         {alt === props.alt && <figcaption>{alt}</figcaption>}
-  //       </figure>
-  //   );
-  // },
 };

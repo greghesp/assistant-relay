@@ -16,14 +16,7 @@ If you'd rather you weren't listed below, ping me in Discord, raise a GitHub iss
 - MPPS International
 - R.Huska
 - A.Galetto
-- A.Hoover
-- M.Heimbrodt
-- P.Nelson
-- C.Boulenger
-- F.Bigler
-- B.Rönnau
-- L.Bos
-
+- A. Hoover
 
 > If you're on Discord, drop me a message and I will add your Donator role.
 

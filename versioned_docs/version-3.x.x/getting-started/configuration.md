@@ -5,7 +5,9 @@ description: How to configure Assistant Relay
 ---
 
 ## Configuring Credentials
-To get started with Assistant Relay, you will first need to setup a project in the Google Cloud Console to integrate with.  
+To get started with Assistant Relay, you will first need to setup a project in the Google Cloud Console to integrate with.  You will need to repeat these steps, for every Google Account you wish to add to Assistant Relay
+
+>  **Make sure you are signed into the Google Account you want this to work with!**
 
 Rather than list all the steps on how to configure this, please follow the [Configure a Developer Project and Account Settings](https://developers.google.com/assistant/sdk/guides/service/python/embed/config-dev-project-and-account) guide from Google.  
 Once you have completed steps 1 - 6, come back to this guide and follow the below instructions:
@@ -28,12 +30,11 @@ Now that you have your credentials json file downloaded, it's time to setup Assi
 
 ## Configuring Assistant Relay
 
-Assistant Relay has a set of options that can be configured under the `Settings` tab of the Assistant Relay dashboard.
+Assistant Relay has a set of options that can be configured under the `Configuration` tab of the Assistant Relay dashboard.
 
 At this time, the following configuration options are available:
 
 * **Mute Startup Sound**: If set to off, Assistant Relay will broadcast a message when it starts up
-* **Track Version**: If enabled, we will anonymously upload the version of Assistant Relay you are using for version analytics
 * **Port Number**: Change the port Assistant Relay is running on
 * **Quiet Hours**: If enabled, Quiet Hours let you set a time when broadcasts are not announced.
 * **Conversation Language**: Change the language that Assistant Relay communicates with the Assistant SDK

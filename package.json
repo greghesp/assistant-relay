@@ -6,12 +6,13 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "cross-env GIT_USER=greghesp docusaurus deploy"
+    "deploy": "cross-env GIT_USER=greghesp docusaurus deploy",
+    "version": "docusaurus docs:version 4.0.0"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.56",
-    "@docusaurus/plugin-ideal-image": "2.0.0-alpha.39",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.56",
+    "@docusaurus/core": "^2.0.0-alpha.64",
+    "@docusaurus/plugin-ideal-image": "2.0.0-alpha.64",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.64",
     "classnames": "^2.2.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"

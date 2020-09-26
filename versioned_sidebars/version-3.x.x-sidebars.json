@@ -1,0 +1,106 @@
+{
+  "version-3.x.x/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Assistant Relay",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/contributing"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/getting-started/installation"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/getting-started/configuration"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Commands",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/commands/broadcast"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/commands/presets"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/commands/custom-commands"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Casting",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/cast/search"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/cast/casting"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/cast/stop"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Smart Home Integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/integration/webcore"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/integration/hass"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Other Information",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-3.x.x/other/faq"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/other/changes"
+        },
+        {
+          "type": "doc",
+          "id": "version-3.x.x/other/contributors"
+        }
+      ]
+    }
+  ]
+}
