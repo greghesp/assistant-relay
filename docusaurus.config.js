@@ -1,13 +1,12 @@
 module.exports = {
   title: 'Assistant Relay',
   tagline: 'Exposing the Google Assistant Service as a REST API',
-  //url: 'https://greghesp.github.io',
-  url: 'https://assistant-relay.netlify.app/',
-  //baseUrl: '/assistant-relay/',
+  url: 'https://assistantrelay.com',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'greghesp', // Usually your GitHub org/user name.
   projectName: 'assistant-relay', // Usually your repo name.
+  onBrokenLinks: "warn",
   themeConfig: {
     navbar: {
       title: 'Assistant Relay',
@@ -16,9 +15,7 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        {
-          type: 'docsVersionDropdown',
-          position: 'left',
+        {type: 'docsVersionDropdown', position: 'left',
         },
         {to: 'docs/introduction', label: 'Docs', position: 'left'},
         {href: `https://github.com/greghesp/assistant-relay/releases/latest`, label: 'Download', position: 'left'},
