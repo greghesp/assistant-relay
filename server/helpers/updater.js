@@ -15,22 +15,28 @@ const autoupdater = new AutoUpdater({
 autoupdater.on('git-clone', function () {
   s.exec(`git pull`, (code, stdout, stderr) => {
     if (stdout) {
-      const lines = stdout.split('\r\n');
-      lines.forEach(l => {
-        if (l.length > 0) {
-          console.log(l);
-        }
+      console.info('Updating Assistant Relay using git pull');
+      logger.log('info', 'Updating Assistant Relay using git pull', {
+        service: 'server',
+        func: 'updater',
       });
     }
 
-    if (stderr) return rej(stderr);
+    if (stderr) {
+      console.error(`Git Pull failed: ${stderr}`);
+      logger.log('error', `Git Pull failed: ${stderr}`, {
+        service: 'server',
+        func: 'updater',
+      });
+    }
 
-    if (code === 0) return res();
-  });
-
-  logger.log('info', 'You have a clone of the repository. Executing git pull', {
-    service: 'server',
-    func: 'updater',
+    if (code === 0) {
+      console.error(`Git Pull Complete`);
+      logger.log('info', `Git Pull Complete`, {
+        service: 'server',
+        func: 'updater',
+      });
+    }
   });
 });
 
