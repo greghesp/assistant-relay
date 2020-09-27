@@ -135,13 +135,17 @@ exports.trackVersion = async function () {
 exports.removeTracking = async function () {
   const config = configuration();
   const uid = config.get('trackID').value();
-  await axios({
-    method: 'post',
-    url: `${process.env.functions_base}/removeTracking`,
-    data: {
-      uid,
-    },
-  });
+  try {
+    await axios({
+      method: 'post',
+      url: `${process.env.functions_base}/removeTracking`,
+      data: {
+        uid,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
   await config.set('trackID', null).write();
 };
 

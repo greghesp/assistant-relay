@@ -17,6 +17,10 @@
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
   "license": "GPL-2.0-only",
   "main": "index.js",
+  "auto-updater":{
+    "repo":"/greghesp/assistant-relay",
+    "branch":"v4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "babel-node server/index.js --env=dev",
@@ -26,6 +30,7 @@
   },
   "dependencies": {
     "@tailwindcss/ui": "^0.3.1",
+    "auto-updater": "^1.0.2",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bonjour": "^3.5.0",

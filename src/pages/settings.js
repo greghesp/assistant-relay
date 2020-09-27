@@ -99,7 +99,7 @@ function Settings() {
                   className="text-base leading-6 font-medium text-gray-900 sm:text-sm sm:leading-5 sm:text-gray-700"
                   id="label-notifications"
                 >
-                  Track Install
+                  Track Version
                 </div>
               </div>
               <div className="sm:col-span-2">
