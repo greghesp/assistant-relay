@@ -13,60 +13,78 @@ const autoupdater = new AutoUpdater({
 });
 
 autoupdater.on('git-clone', function () {
-  s.exec(`git pull`, (code, stdout, stderr) => {
-    if (stdout) {
-      console.info('Updating Assistant Relay using git pull');
-      logger.log('info', 'Updating Assistant Relay using git pull', {
-        service: 'server',
-        func: 'updater',
-      });
-    }
-
-    if (stderr) {
-      console.error(`Git Pull failed: ${stderr}`);
-      logger.log('error', `Git Pull failed: ${stderr}`, {
-        service: 'server',
-        func: 'updater',
-      });
-    }
-
-    if (code === 0) {
-      console.error(`Git Pull Complete`);
-      logger.log('info', `Git Pull Complete`, {
-        service: 'server',
-        func: 'updater',
-      });
-    }
-  });
+  // s.exec(`git pull`, {silent: true}, (code, stdout, stderr) => {
+  //   if (stdout) {
+  //     console.info('Updating Assistant Relay using git pull');
+  //     logger.log('info', 'Updating Assistant Relay using git pull', {
+  //       service: 'server',
+  //       func: 'updater',
+  //     });
+  //   }
+  //
+  //   if (stderr) {
+  //     console.error(`Git Pull failed: ${stderr}`);
+  //     logger.log('error', `Git Pull failed: ${stderr}`, {
+  //       service: 'server',
+  //       func: 'updater',
+  //     });
+  //   }
+  //
+  //   if (code === 0) {
+  //     console.error(`Git Pull Complete`);
+  //     logger.log('info', `Git Pull Complete`, {
+  //       service: 'server',
+  //       func: 'updater',
+  //     });
+  //   }
+  // });
 });
 
 autoupdater.on('check.up-to-date', function (v) {
-  console.info('You have the latest version: ' + v);
+  logger.log('info', `You have the latest version: ${v}`, {
+    service: 'server',
+    func: 'updater',
+  });
 });
 
 autoupdater.on('check.out-dated', function (v_old, v) {
-  console.warn('Your version is outdated. ' + v_old + ' of ' + v);
+  logger.log('info', `Your version is outdated. ${v_old} of ${v}`, {
+    service: 'server',
+    func: 'updater',
+  });
   autoupdater.fire('download-update'); // If autoupdate: false, you'll have to do this manually.
   // Maybe ask if the'd like to download the update.
 });
 
 autoupdater.on('update.downloaded', function () {
-  console.log('Update downloaded and ready for install');
+  logger.log('info', `Update downloaded and ready for install`, {
+    service: 'server',
+    func: 'updater',
+  });
   autoupdater.fire('extract'); // If autoupdate: false, you'll have to do this manually.
 });
 
 autoupdater.on('update.not-installed', function () {
-  console.log("The Update was already in your folder! It's read for install");
+  logger.log('info', `The was already downloaded! It's read for install`, {
+    service: 'server',
+    func: 'updater',
+  });
   autoupdater.fire('extract'); // If autoupdate: false, you'll have to do this manually.
 });
 
 autoupdater.on('update.extracted', function () {
-  console.log('Update extracted successfully!');
+  logger.log('info', `Update successful`, {
+    service: 'server',
+    func: 'updater',
+  });
   console.warn('RESTART THE APP!');
 });
 
 autoupdater.on('download.start', function (name) {
-  console.log('Starting downloading: ' + name);
+  logger.log('info', `Starting download: ${name}`, {
+    service: 'server',
+    func: 'updater',
+  });
 });
 
 autoupdater.on('download.progress', function (name, perc) {
@@ -74,11 +92,17 @@ autoupdater.on('download.progress', function (name, perc) {
 });
 
 autoupdater.on('download.end', function (name) {
-  console.log('Downloaded ' + name);
+  logger.log('info', `Downloaded ${name}`, {
+    service: 'server',
+    func: 'updater',
+  });
 });
 
 autoupdater.on('download.error', function (err) {
-  console.error('Error when downloading: ' + err);
+  logger.log('error', `Download failed: ${err}`, {
+    service: 'server',
+    func: 'updater',
+  });
 });
 
 autoupdater.on('end', function () {
@@ -86,9 +110,16 @@ autoupdater.on('end', function () {
 });
 
 autoupdater.on('error', function (name, e) {
-  console.error(name, e);
+  logger.log('error', `${name}: ${e}`, {
+    service: 'server',
+    func: 'updater',
+  });
 });
 
 exports.updater = function () {
+  logger.log('info', `Checking for updates...`, {
+    service: 'server',
+    func: 'updater',
+  });
   autoupdater.fire('check');
 };

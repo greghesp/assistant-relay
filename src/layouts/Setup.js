@@ -45,8 +45,10 @@ function SetupLayout({ children }) {
     <div className="w-screen h-screen setupBg bg-gray-200">
       <div className="bg-grey-400 flex items-center justify-center w-screen h-screen max-w-2xl mx-auto">
         <div className="h-auto">
-          <Logo w="24" />
-          <div>{children}</div>
+          <div className="m-5">
+            <Logo w="48" />
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-10">{children}</div>
         </div>
       </div>
     </div>

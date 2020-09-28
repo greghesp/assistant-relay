@@ -1,4 +1,5 @@
 import Head from 'next/head';
+
 import LoadingBar from '../components/LoadingBar';
 import '../styles/index.css';
 
@@ -26,8 +27,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="msapplication-TileColor" content="#ffffff" />
       </Head>
       <LoadingBar color="#FABD05" />
-      {/*<SocketConnect.Provider value={socket}>*/}
-      <Component {...pageProps} />
+      {/*<SocketConnect.Provider value={socket}>*/} <Component {...pageProps} />
       {/*</SocketConnect.Provider>*/}
     </React.Fragment>
   );

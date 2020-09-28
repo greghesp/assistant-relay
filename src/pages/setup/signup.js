@@ -7,24 +7,22 @@ import Router from 'next/router';
 function SignUp() {
   return (
     <SetupLayout>
-      <div className="bg-white rounded-lg border shadow-lg p-10">
-        <div className="border-gray-100 border-b pb-5">
-          <h1 className="text-xl font-semibold">Our Mailing List</h1>
-        </div>
-        <div className="pt-5 text-sm">
-          <p>Want to sign up to our mailing list? Just complete the form below.</p>
-          <p>No spam, we promise.</p>
-          <MailchimpSubscribe
-            url="https://gmail.us2.list-manage.com/subscribe/post?u=a0998a875b6b9e8b2b8a362d1&amp;id=6b3bc05c1c"
-            render={({ subscribe, status, message }) => (
-              <CustomForm
-                status={status}
-                message={message}
-                onValidated={formData => subscribe(formData)}
-              />
-            )}
-          />
-        </div>
+      <div className="border-gray-100 border-b pb-5">
+        <h1 className="text-xl font-semibold">Our Mailing List</h1>
+      </div>
+      <div className="pt-5 text-sm">
+        <p>Want to sign up to our mailing list? Just complete the form below.</p>
+        <p>No spam, we promise.</p>
+        <MailchimpSubscribe
+          url="https://gmail.us2.list-manage.com/subscribe/post?u=a0998a875b6b9e8b2b8a362d1&amp;id=6b3bc05c1c"
+          render={({ subscribe, status, message }) => (
+            <CustomForm
+              status={status}
+              message={message}
+              onValidated={formData => subscribe(formData)}
+            />
+          )}
+        />
       </div>
     </SetupLayout>
   );

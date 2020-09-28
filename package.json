@@ -17,9 +17,9 @@
   "author": "Greg Hesp <greg.hesp@gmail.com> (http://www.greghesp.com)",
   "license": "GPL-2.0-only",
   "main": "index.js",
-  "auto-updater":{
-    "repo":"/greghesp/assistant-relay",
-    "branch":"v4"
+  "auto-updater": {
+    "repo": "/greghesp/assistant-relay",
+    "branch": "v4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -67,6 +67,7 @@
     "@babel/node": "^7.10.5",
     "@babel/plugin-proposal-optional-chaining": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@svgr/webpack": "^5.4.0",
     "babel-plugin-root-import": "^6.5.0",
     "postcss-preset-env": "^6.7.0",
     "prettier": "2.0.5",

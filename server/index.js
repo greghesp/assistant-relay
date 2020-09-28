@@ -21,8 +21,8 @@ global.assistants = {};
 
 app.prepare().then(async () => {
   const server = express();
-  //await initializeServer();
-  updater();
+  await initializeServer();
+  //updater();
 
   // Get config after server initialized
   const config = configuration();

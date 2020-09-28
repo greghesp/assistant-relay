@@ -111,74 +111,72 @@ function Setup() {
 
   return (
     <SetupLayout>
-      <div className="bg-white rounded-lg border shadow-lg p-10">
-        <div className="border-gray-100 border-b pb-5">
-          <h1 className="text-xl font-semibold">Setup Assistant Relay</h1>
-        </div>
-        <div className="pt-5">
-          <p>
-            Before you can setup Assistant Relay, you need to change the default password for the
-            dashboard.
-          </p>
-          <p>Enter a password below to continue</p>
-          <form>
+      <div className="border-gray-100 border-b pb-5">
+        <h1 className="text-xl font-semibold">Setup Assistant Relay</h1>
+      </div>
+      <div className="pt-5 text-sm">
+        <p>
+          Before you can setup Assistant Relay, you need to change the default password for the
+          dashboard.
+        </p>
+        <p>Enter a password below to continue</p>
+        <form>
+          <div>
             <div>
-              <div>
-                <div className="mt-6 sm:mt-5">
-                  <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                    <label
-                      htmlFor="first_name"
-                      className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
-                    >
-                      New Password
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <div className="max-w-lg rounded-md shadow-sm sm:max-w-xs">
-                        <input
-                          id="password"
-                          type="password"
-                          className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                          onChange={e => {
-                            setPassword(e.target.value);
-                          }}
-                        />
-                      </div>
+              <div className="mt-6 sm:mt-5">
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                  <label
+                    htmlFor="first_name"
+                    className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                  >
+                    New Password
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="max-w-lg rounded-md shadow-sm sm:max-w-xs">
+                      <input
+                        id="password"
+                        type="password"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        onChange={e => {
+                          setPassword(e.target.value);
+                        }}
+                      />
                     </div>
                   </div>
+                </div>
 
-                  <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                    <label
-                      htmlFor="last_name"
-                      className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
-                    >
-                      Repeat Password
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <div className="max-w-lg rounded-md shadow-sm sm:max-w-xs">
-                        <input
-                          type="password"
-                          id="passwordCheck"
-                          className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                          onChange={e => {
-                            setRepeatPassword(e.target.value);
-                          }}
-                        />
-                      </div>
+                <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                  <label
+                    htmlFor="last_name"
+                    className="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                  >
+                    Repeat Password
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="max-w-lg rounded-md shadow-sm sm:max-w-xs">
+                      <input
+                        type="password"
+                        id="passwordCheck"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        onChange={e => {
+                          setRepeatPassword(e.target.value);
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-8 border-t border-gray-200 pt-5">
-              <div className="flex justify-end">
-                <Error />
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
-                  <Button />
-                </span>
-              </div>
+          </div>
+          <div className="mt-8 border-t border-gray-200 pt-5">
+            <div className="flex justify-end">
+              <Error />
+              <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <Button />
+              </span>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </SetupLayout>
   );
