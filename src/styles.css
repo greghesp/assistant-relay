@@ -6,6 +6,9 @@
  */
 
 /* You can override the default Infima variables here. */
+
+
+
 :root {
   --ifm-color-primary: #4485f3;
   --ifm-color-primary-dark: #2772f1;
@@ -24,6 +27,5 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-.facebook-header {
-
+.navbar__title {
 }

@@ -8,7 +8,7 @@ module.exports = {
   projectName: 'assistant-relay', // Usually your repo name.
   onBrokenLinks: "warn",
   themeConfig: {
-    image:'img/logo.svg',
+    image:'img/logo.png',
     navbar: {
       title: 'Assistant Relay',
       logo: {
