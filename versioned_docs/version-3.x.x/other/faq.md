@@ -34,4 +34,6 @@ If not, ensure you have used the correct OAuth Client Type from the [Configurati
 If you can see the command in My Activity, then Assistant Relay is running correctly.  The next step would be to disable
 IPV6 on your router.  Google implemented some security changes a while back, and having IPV6 enabled breaks the SDK integration
 
+## How do I trigger routines?
+Unfortunately the Assistant SDK does not support routines
 
