@@ -65,7 +65,7 @@ jobs:
         with:
           path: release
           dockerfile: Dockerfile
-          repository: poma/assistant-relay
+          repository: greghesp/assistant-relay
           tags: latest
           tag_with_ref: true
           username: ${{ secrets.DOCKER_USERNAME }}
