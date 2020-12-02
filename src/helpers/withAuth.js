@@ -13,7 +13,11 @@ function withAuth(AuthComponent) {
       };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+      this.getConfig();
+    }
+
+    async getConfig() {
       try {
         await post('/api/server/getConfig');
         this.setState({ loading: false, loggedIn: true });

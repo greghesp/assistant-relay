@@ -15,24 +15,24 @@ function History() {
   const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
-    async function getHistory() {
-      try {
-        const r = await post('/api/server/getHistory');
-        setHistory(r.data.responses);
-        setLoading(false);
-      } catch (e) {
-        setToastData({ show: true, content: e.message, success: false });
-        await post('/api/server/writeLogs', {
-          level: 'error',
-          message: e.message,
-          service: 'web',
-          func: 'History - getHistory',
-        });
-      }
-    }
-
-    getHistory();
+    getHistory().then(r => r);
   }, []);
+
+  async function getHistory() {
+    try {
+      const r = await post('/api/server/getHistory');
+      setHistory(r.data.responses);
+      setLoading(false);
+    } catch (e) {
+      setToastData({ show: true, content: e.message, success: false });
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'History - getHistory',
+      });
+    }
+  }
 
   function Responses() {
     if (history.length > 0) {

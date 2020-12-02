@@ -8,24 +8,30 @@ import { post } from '../helpers/api';
 function Dashboard({ children, title }) {
   const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
+  const [version, setVersion] = useState('');
 
   useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await post('/api/server/getUsers');
-        setData(response.data);
-      } catch (e) {
-        // TODO: Handle error
-        await post('/api/server/writeLogs', {
-          level: 'error',
-          message: e.message,
-          service: 'web',
-          func: 'Dashboard - getUsers',
-        });
-      }
-    }
     getUsers();
   }, []);
+
+  async function getUsers() {
+    try {
+      const response = await post('/api/server/getUsers');
+      const versionResponse = await post('/api/server/getVersion');
+
+      setData(response.data);
+      setVersion(versionResponse.data.version);
+      setData(response.data);
+    } catch (e) {
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Dashboard - getUsers',
+      });
+    }
+  }
 
   if (!data)
     return (
@@ -110,8 +116,8 @@ function Dashboard({ children, title }) {
         <div className="flex flex-col w-64 border-r border-gray-200 bg-gray-800">
           <div className="h-0 flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
-              <img className="h-8 w-auto" src="/images/logo.svg" alt="Assistant Relay" />
-              <span className="text-white ml-5 font-medium text-lg">Assistant Relay</span>
+              <img className="h-10 w-auto" src="/images/logo.svg" alt="Assistant Relay" />
+              <span className="text-white ml-2 font-medium text-lg">Assistant Relay</span>
             </div>
             <NavBar />
           </div>
@@ -129,6 +135,9 @@ function Dashboard({ children, title }) {
               >
                 Donate
               </a>
+            </div>
+            <div className="mt-3 text-xs leading-4 font-medium text-center text-gray-300 transition ease-in-out duration-150">
+              Version {version}
             </div>
             <div className="mt-3 text-xs leading-4 font-medium text-center text-gray-300 transition ease-in-out duration-150">
               Copyright © 2020 Assistant Relay

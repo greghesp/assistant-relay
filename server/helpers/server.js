@@ -124,7 +124,7 @@ exports.trackVersion = async function () {
   const config = configuration();
   const { data } = await axios({
     method: 'post',
-    url: `${process.env.functions_base}/initialize`,
+    url: `https://us-central1-assistant-relay-tracker.cloudfunctions.net/initialize`,
     data: {
       version: packageFile.version,
     },
@@ -138,7 +138,7 @@ exports.removeTracking = async function () {
   try {
     await axios({
       method: 'post',
-      url: `${process.env.functions_base}/removeTracking`,
+      url: `https://us-central1-assistant-relay-tracker.cloudfunctions.net/removeTracking`,
       data: {
         uid,
       },
@@ -152,7 +152,7 @@ exports.removeTracking = async function () {
 exports.updateTrackingVersion = async function (uid) {
   const { data } = await axios({
     method: 'post',
-    url: `${process.env.functions_base}/updateTrackingVersion`,
+    url: `https://us-central1-assistant-relay-tracker.cloudfunctions.net/updateTrackingVersion`,
     data: {
       uid,
       version: packageFile.version,

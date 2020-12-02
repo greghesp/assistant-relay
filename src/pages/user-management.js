@@ -1,11 +1,9 @@
 import Dashboard from '~/src/layouts/Dashboard';
-import ChangePassword from '../components/ChangePassword';
 import UserAccounts from '../components/UserAccounts';
 import React, { useEffect, useState } from 'react';
 import { post } from '../helpers/api';
 import withAuth from '~/src/helpers/withAuth';
 
-import Router from 'next/router';
 import Transition from '../helpers/Transition';
 import ResponseBlock from '../components/ResponseBlock';
 import Toast from '../components/Toast';
@@ -24,25 +22,26 @@ function UserManagement() {
   const [toastData, setToastData] = useState({ show: false });
 
   useEffect(() => {
-    async function getUsers() {
-      setLoading(true);
-      try {
-        const { data } = await post('/api/server/getUsers');
-        setUsers(data.users);
-        setLoading(false);
-      } catch (e) {
-        setToastData({ show: true, content: e.message, success: false });
-        await post('/api/server/writeLogs', {
-          level: 'error',
-          message: e.message,
-          service: 'web',
-          func: 'UserManagement - getUsers',
-        });
-      }
-      setLoading(false);
-    }
     getUsers();
   }, [deletingUser, newKey]);
+
+  async function getUsers() {
+    setLoading(true);
+    try {
+      const { data } = await post('/api/server/getUsers');
+      setUsers(data.users);
+      setLoading(false);
+    } catch (e) {
+      setToastData({ show: true, content: e.message, success: false });
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'UserManagement - getUsers',
+      });
+    }
+    setLoading(false);
+  }
 
   async function addUser(e) {
     e.preventDefault();

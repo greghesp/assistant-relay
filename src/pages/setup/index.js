@@ -17,7 +17,7 @@ function Setup() {
         const { data } = await post('/api/server/isPasswordDefault');
         if (!data) {
           return Router.push({
-            pathname: '/setup/signup',
+            pathname: '/setup/tracking',
           });
         }
         setLoading(false);

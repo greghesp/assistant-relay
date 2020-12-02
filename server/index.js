@@ -22,7 +22,7 @@ global.assistants = {};
 app.prepare().then(async () => {
   const server = express();
   await initializeServer();
-  //updater();
+  updater();
 
   // Get config after server initialized
   const config = configuration();
@@ -41,9 +41,15 @@ app.prepare().then(async () => {
   server.all('/api/server/*', (req, res) => {
     const parsedUrl = parse(req.url, true);
     const passwordLock = config.get('passwordLock').value();
+    const password = config.get('password').value();
 
     // TODO: Remove before launch
-    return handle(req, res, parsedUrl);
+    //return handle(req, res, parsedUrl);
+
+    // If passwordLock is true and password hasn't been changed, let through
+    if (passwordLock && password === 'assistant') {
+      return handle(req, res, parsedUrl);
+    }
 
     // If passwordLock is true && no or invalid JWT, throw 401.  Else, let through
     if ((passwordLock && validateJWT(req)) || !passwordLock) {

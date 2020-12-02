@@ -1,5 +1,5 @@
 import Head from 'next/head';
-
+import React from 'react';
 import LoadingBar from '../components/LoadingBar';
 import '../styles/index.css';
 

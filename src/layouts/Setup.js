@@ -8,22 +8,23 @@ function SetupLayout({ children }) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await post('/api/server/getUsers');
-        setData(response.data);
-      } catch (e) {
-        // TODO: Handle error
-        await post('/api/server/writeLogs', {
-          level: 'error',
-          message: e.message,
-          service: 'web',
-          func: 'Setup - getUsers',
-        });
-      }
-    }
     getUsers();
   }, []);
+
+  async function getUsers() {
+    try {
+      const response = await post('/api/server/getUsers');
+      setData(response.data);
+    } catch (e) {
+      // TODO: Handle error
+      await post('/api/server/writeLogs', {
+        level: 'error',
+        message: e.message,
+        service: 'web',
+        func: 'Setup - getUsers',
+      });
+    }
+  }
 
   if (!data)
     return (
