@@ -4,7 +4,7 @@
 
 > Please visit [https://assistantrelay.com/](https://assistantrelay.com) for documentation
 
-Join the [Discord Server](https://discord.gg/Jz8AM9k)!
+Join the [Facebook Group](https://www.facebook.com/groups/621761788536765)!
 
 
 [![discord](https://img.shields.io/discord/671664792896798720?style=flat-square)](https://discord.gg/Jz8AM9k)  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/greghesp/assistant-relay?style=flat-square)
