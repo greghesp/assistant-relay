@@ -18,7 +18,7 @@
   "license": "GPL-2.0-only",
   "main": "index.js",
   "auto-updater": {
-    "repo": "/greghesp/assistant-relay",
+    "repo": "greghesp/assistant-relay",
     "branch": "v4"
   },
   "scripts": {

@@ -4,10 +4,10 @@ const s = require('shelljs');
 
 const autoupdater = new AutoUpdater({
   pathToJson: '',
-  autoupdate: false,
+  autoupdate: true,
   checkgit: true,
   jsonhost: 'raw.githubusercontent.com',
-  contenthost: 'codeload.github.com',
+  contenthost: 'https://github.com/greghesp/assistant-relay/archive/v4.zip',
   progressDebounce: 0,
   devmode: true,
 });
