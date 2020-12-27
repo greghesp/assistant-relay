@@ -23,7 +23,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "babel-node server/index.js --env=dev",
+    "dev": "node server/index.js --env=dev",
+    "dev2": "babel-node server/index.js --env=dev",
     "run": "babel-node server/index.js ",
     "build": "next build",
     "start": "next start"
@@ -64,9 +65,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
-    "@babel/node": "^7.10.5",
-    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
     "@svgr/webpack": "^5.4.0",
     "babel-plugin-root-import": "^6.5.0",
     "postcss-preset-env": "^6.7.0",

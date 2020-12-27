@@ -1,13 +1,15 @@
 {
-  "presets": ["next/babel", "@babel/preset-env"],
+  "presets": [
+    [
+      "next/babel"
+    ]
+  ],
   "plugins": [
     ["babel-plugin-root-import",
       {
         "rootPathSuffix": "./",
         "rootPathPrefix": "~/"
       }
-    ],
-    "@babel/plugin-proposal-optional-chaining",
-    "@babel/plugin-proposal-nullish-coalescing-operator"
+    ]
   ]
 }

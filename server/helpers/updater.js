@@ -13,31 +13,31 @@ const autoupdater = new AutoUpdater({
 });
 
 autoupdater.on('git-clone', function () {
-  // s.exec(`git pull`, {silent: true}, (code, stdout, stderr) => {
-  //   if (stdout) {
-  //     console.info('Updating Assistant Relay using git pull');
-  //     logger.log('info', 'Updating Assistant Relay using git pull', {
-  //       service: 'server',
-  //       func: 'updater',
-  //     });
-  //   }
-  //
-  //   if (stderr) {
-  //     console.error(`Git Pull failed: ${stderr}`);
-  //     logger.log('error', `Git Pull failed: ${stderr}`, {
-  //       service: 'server',
-  //       func: 'updater',
-  //     });
-  //   }
-  //
-  //   if (code === 0) {
-  //     console.error(`Git Pull Complete`);
-  //     logger.log('info', `Git Pull Complete`, {
-  //       service: 'server',
-  //       func: 'updater',
-  //     });
-  //   }
-  // });
+  s.exec(`git pull`, { silent: true }, (code, stdout, stderr) => {
+    if (stdout) {
+      console.info('Updating Assistant Relay using git pull');
+      logger.log('info', 'Updating Assistant Relay using git pull', {
+        service: 'server',
+        func: 'updater',
+      });
+    }
+
+    if (stderr) {
+      console.error(`Git Pull failed: ${stderr}`);
+      logger.log('error', `Git Pull failed: ${stderr}`, {
+        service: 'server',
+        func: 'updater',
+      });
+    }
+
+    if (code === 0) {
+      console.error(`Git Pull Complete`);
+      logger.log('info', `Git Pull Complete`, {
+        service: 'server',
+        func: 'updater',
+      });
+    }
+  });
 });
 
 autoupdater.on('check.up-to-date', function (v) {
