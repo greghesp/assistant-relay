@@ -5,7 +5,7 @@ import LoadingAnimation from '../components/LoadingAnimation';
 function Index() {
   return (
     <Dashboard title="Dashboard">
-      <p>Hi</p>
+      <p>Hi v4</p>
     </Dashboard>
   );
 }
