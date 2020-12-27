@@ -1,9 +1,24 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { useEffect } from 'react';
 import LoadingBar from '../components/LoadingBar';
 import '../styles/index.css';
+import Router from 'next/router';
+
+import { post } from '../helpers/api';
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        await post('/api/server/getUsers');
+      } catch (e) {
+        Router.push('/login');
+      }
+    }
+
+    getUsers();
+  }, []);
+
   return (
     <React.Fragment>
       <Head>

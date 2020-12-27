@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import cookieCutter from 'cookie-cutter';
 
 import LoginLayout from '~/src/layouts/Login';
 import axios from 'axios';
@@ -30,7 +31,7 @@ function Login() {
         password,
       });
       const token = response.data.token;
-      await cookies.set('token', token);
+      await cookieCutter.set('token', token);
 
       Router.push('/');
     } catch (e) {

@@ -46,6 +46,15 @@ app.prepare().then(async () => {
     // TODO: Remove before launch
     //return handle(req, res, parsedUrl);
 
+    // switch (req.url) {
+    //   case '/api/server/getConfig':
+    //   case '/api/server/writeLogs':
+    //   case '/api/server/getUsers':
+    //     return handle(req, res, parsedUrl);
+    //   default:
+    //     break;
+    // }
+
     // If passwordLock is true and password hasn't been changed, let through
     if (passwordLock && password === 'assistant') {
       return handle(req, res, parsedUrl);
