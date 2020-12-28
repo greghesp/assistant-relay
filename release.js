@@ -25,7 +25,10 @@ async function copy() {
         console.log("Copied app.js");
 
         await fs.copy(path.resolve(__dirname, 'relay/package.json'), path.resolve(__dirname, 'release/package.json'));
-        console.log("Copied packages.json");
+        console.log("Copied package.json");
+
+        await fs.copy(path.resolve(__dirname, 'relay/package-lock.json'), path.resolve(__dirname, 'release/package-lock.json'));
+        console.log("Copied package-lock.json");
 
         await fs.copy(path.resolve(__dirname, 'LICENSE'), path.resolve(__dirname, 'release/LICENSE'));
         console.log("Copied license");
