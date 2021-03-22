@@ -54,22 +54,29 @@ exports.command = function ({ command }) {
     });
 
     s.exec(`catt ${command}`, { silent: true }, (code, stdout, stderr) => {
+      var response =  { ok: true } 
       if (stdout) {
-        const lines = stdout.split('\r\n');
+        const lines = stdout.split('\n');
         lines.forEach(l => {
           if (l.length > 0) {
             logger.log('info', `${l}`, {
               service: "server",
               func: 'cast - command',
             });
+            const lData = l.split(': ')
+            if (lData.length > 1) {
+              response[lData[0]] = lData[1]
+            } else {
+              resposne['raw'] += l
+            }
           }
         });
       }
 
       if (stderr) return rej(stderr);
-
-      if (code === 0) return res();
-
+      
+      if (code === 0) return res(response);
+      
     });
   });
 };
