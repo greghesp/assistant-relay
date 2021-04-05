@@ -68,7 +68,7 @@
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "^9.1.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-sound": "^1.2.0",
