@@ -1,3 +1,7 @@
+> **Looking For Maintainers**
+> 
+> Unfortunately I no longer have time to continue supporting Assistant Relay, and I have personally migrated to Home Assistant where I no longer have a personal need for Assistant Relay.  V3 and V4 will remain in their current state, however if you would like to maintain, please create a fork and let me know so I can add to the ReadMe
+
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/greghesp/assistant-relay?include_prereleases&style=flat-square) ![GitHub All Releases](https://img.shields.io/github/downloads/greghesp/assistant-relay/total?style=flat-square) [![GOSPB](https://img.shields.io/badge/Awarded-Google%20Open%20Source%20Peer%20Bonus-blue?style=flat-square)](https://opensource.googleblog.com/2020/04/announcing-2020-first-quarter-google.html?fbclid=IwAR0DJtks904nSRlPLrIFbuAkRHwvuXYbbZ6N0UPpn1Qkb2G0PyT70XU4N3U)
 
 # Assistant Relay v3! 
