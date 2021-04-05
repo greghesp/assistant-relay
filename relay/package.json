@@ -22,7 +22,7 @@
     "dev": "node ./bin/www"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bonjour": "^3.5.0",
     "chalk": "^3.0.0",
     "cookie-parser": "^1.4.5",
