@@ -57,7 +57,7 @@
     "jest-watch-typeahead": "0.4.0",
     "lottie-react-web": "^2.1.4",
     "mini-css-extract-plugin": "0.8.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",
     "postcss-flexbugs-fixes": "4.1.0",
