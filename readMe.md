@@ -4,7 +4,7 @@
 
 ## Home Assistant 2023.1 ##
 
-Starting with Home Assistant 2023.1 you are able to use the Google Assistant SDK directly from Home Assistant using the Notify service: https://rc.home-assistant.io/integrations/google_assistant_sdk/#service-notifygoogle_assistant_sdk
+Starting with Home Assistant 2023.1 you are able to use the Google Assistant SDK directly to broadcast and send commands from Home Assistant: https://rc.home-assistant.io/integrations/google_assistant_sdk/#service-notifygoogle_assistant_sdk
 
 
 
