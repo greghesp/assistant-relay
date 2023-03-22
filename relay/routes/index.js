@@ -10,23 +10,38 @@ const {outputFileStream, isQuietHour, updateResponses, saveHTMLFile} = require('
 
 const router = express.Router();
 
-
-router.get('/', function(req, res) {
-  console.log("Get All")
-  res.sendFile(path.join(__dirname, '../views', 'index.html'));
- });
-
-router.post('/assistant', async(req, res) => {
+router.route('/assistant').get(async(req, res) => {assistantHandler (req, res);}).post(async(req, res) => {assistantHandler (req, res);});
+    
+async function assistantHandler (req, res){
   try {
+    if(req.method === 'GET'){
+        user ='';
+        converse=false;
+        preset=null;
+        command=null;
+        broadcast=false;
+        if(req.query.user)
+            user = req.query.user
+        if(req.query.converse)
+            converse = req.query.converse
+        if(req.query.preset)
+            preset = req.query.preset
+        if(req.query.broadcast)
+            broadcast = req.query.broadcast
+        if(req.query.command)
+            command = req.query.command
+    }
+    if(req.method === 'POST'){
+        const {user, converse = false, preset} = req.body;
+        let {command, broadcast = false} = req.body;
+    }
     const db = await low(adapter);
     const convoData = db.get('conversation').value();
     const port = db.get('port').value();
     const timestamp = Date.now();
     const fileStream = outputFileStream(convoData, timestamp);
     const isQH = await isQuietHour();
-    const {user, converse = false, preset} = req.body;
-    let {command, broadcast = false} = req.body;
-    // console.log(user, converse, preset, command, broadcast)
+    console.log(user, converse, preset, command, broadcast)
 
     const response = {};
 
@@ -68,7 +83,6 @@ router.post('/assistant', async(req, res) => {
       }
     }
 
-
     if(!command) return res.status(400).json({success:  false, error: "No command given"});
     if(broadcast) command = `broadcast ${command}`;
 
@@ -79,7 +93,6 @@ router.post('/assistant', async(req, res) => {
         error: "Quiet Time Enabled - Broadcast command detected"
       });
     }
-
 
     const conversation = await sendTextInput(command, user);
     conversation
@@ -132,6 +145,11 @@ router.post('/assistant', async(req, res) => {
     console.error(e);
     res.status(500).send(e.message)
   }
-});
+}
+
+router.get('/', function(req, res) {
+  console.log("Get All")
+  res.sendFile(path.join(__dirname, '../views', 'index.html'));
+ });
 
 module.exports = router;
